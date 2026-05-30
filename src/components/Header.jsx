@@ -59,6 +59,21 @@ const SEARCH_SUGGESTIONS = [
   },
 ];
 
+// ── City data ─────────────────────────────────────────────────────────────────
+const POPULAR_CITIES = [
+  "Hyderabad","Mumbai","Delhi","Bangalore","Chennai","Kolkata","Pune","Ahmedabad",
+];
+
+const CITIES = [
+  "Hyderabad","Mumbai","Delhi","Bangalore","Chennai","Kolkata","Pune","Ahmedabad",
+  "Jaipur","Surat","Lucknow","Kanpur","Nagpur","Indore","Bhopal","Patna",
+  "Vadodara","Ludhiana","Agra","Nashik","Rajkot","Varanasi","Amritsar",
+  "Allahabad","Ranchi","Coimbatore","Jodhpur","Madurai","Raipur","Kota",
+  "Guwahati","Chandigarh","Mysore","Visakhapatnam","Vijayawada",
+  "Thiruvananthapuram","Meerut","Navi Mumbai","Aurangabad","Jabalpur",
+  "Gwalior","Noida","Gurugram","Faridabad","Thane","Bhubaneswar","Kochi","Hubli",
+];
+
 // ── Component ─────────────────────────────────────────────────────────────────
 const Header = () => {
   const [menuOpen, setMenuOpen]         = useState(false);
@@ -66,8 +81,13 @@ const Header = () => {
   const [query, setQuery]               = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [activeIndex, setActiveIndex]   = useState(-1);
+  const [selectedCity, setSelectedCity] = useState("");
+  const [cityOpen, setCityOpen]         = useState(false);
+  const [cityQuery, setCityQuery]       = useState("");
   const searchInputRef                  = useRef(null);
   const dropdownRef                     = useRef(null);
+  const cityRef                         = useRef(null);
+  const citySearchRef                   = useRef(null);
   const itemRefs                        = useRef([]);
 
   const openMenu  = () => setMenuOpen(true);
@@ -77,6 +97,7 @@ const Header = () => {
     setSearchOpen(true);
     setShowDropdown(true);
     setActiveIndex(-1);
+    setCityOpen(false);
   };
 
   const closeSearch = () => {
@@ -104,6 +125,27 @@ const Header = () => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
+
+  // Close city dropdown on outside click
+  useEffect(() => {
+    const handleOutside = (e) => {
+      if (cityRef.current && !cityRef.current.contains(e.target)) {
+        setCityOpen(false);
+        setCityQuery("");
+      }
+    };
+    document.addEventListener("mousedown", handleOutside);
+    return () => document.removeEventListener("mousedown", handleOutside);
+  }, []);
+
+  // Auto-focus city search when dropdown opens
+  useEffect(() => {
+    if (cityOpen && citySearchRef.current) {
+      setTimeout(() => citySearchRef.current?.focus(), 50);
+    } else {
+      setCityQuery("");
+    }
+  }, [cityOpen]);
 
   // Auto-focus input when search bar opens
   useEffect(() => {
@@ -212,6 +254,150 @@ const Header = () => {
                 <line x1="20.5" y1="20.5" x2="16.2" y2="16.2" />
               </svg>
             </button>
+
+            {/* ── City selector ──────────────────────────────────────────── */}
+            <div className="city-selector" ref={cityRef}>
+
+              {/* Trigger button */}
+              <button
+                className={`city-selector__btn${cityOpen ? " is-open" : ""}${selectedCity ? " has-value" : ""}`}
+                onClick={() => setCityOpen((prev) => !prev)}
+                aria-haspopup="listbox"
+                aria-expanded={cityOpen}
+              >
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"
+                  aria-hidden="true" className="city-selector__pin">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/>
+                </svg>
+                <span className="city-selector__label">
+                  {selectedCity || "Select City"}
+                </span>
+                <svg viewBox="0 0 24 24" width="11" height="11" fill="none"
+                  stroke="currentColor" strokeWidth="2.8"
+                  strokeLinecap="round" strokeLinejoin="round"
+                  className={`city-selector__chevron${cityOpen ? " is-open" : ""}`}
+                  aria-hidden="true">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </button>
+
+              {/* Dropdown panel */}
+              <div
+                className={`city-dropdown${cityOpen ? " is-open" : ""}`}
+                role="dialog"
+                aria-label="Select your city"
+              >
+                {/* Header */}
+                <div className="city-dropdown__head">
+                  <div className="city-dropdown__head-left">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"
+                      className="city-dropdown__head-pin" aria-hidden="true">
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/>
+                    </svg>
+                    <span className="city-dropdown__head-title">Select Your City</span>
+                  </div>
+                  <button
+                    className="city-dropdown__head-close"
+                    onMouseDown={(e) => { e.preventDefault(); setCityOpen(false); }}
+                    aria-label="Close city selector"
+                  >
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none"
+                      stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                      <line x1="18" y1="6" x2="6" y2="18"/>
+                      <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                  </button>
+                </div>
+
+                {/* Search input */}
+                <div className="city-dropdown__search">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none"
+                    stroke="currentColor" strokeWidth="2.2"
+                    strokeLinecap="round" strokeLinejoin="round"
+                    className="city-dropdown__search-icon" aria-hidden="true">
+                    <circle cx="11" cy="11" r="7.5"/>
+                    <line x1="20.5" y1="20.5" x2="16.2" y2="16.2"/>
+                  </svg>
+                  <input
+                    ref={citySearchRef}
+                    type="text"
+                    className="city-dropdown__search-input"
+                    placeholder="Search city..."
+                    value={cityQuery}
+                    onChange={(e) => setCityQuery(e.target.value)}
+                    onMouseDown={(e) => e.stopPropagation()}
+                    onKeyDown={(e) => e.key === "Escape" && setCityOpen(false)}
+                    autoComplete="off"
+                  />
+                  {cityQuery && (
+                    <button
+                      className="city-dropdown__search-clear"
+                      onMouseDown={(e) => { e.preventDefault(); setCityQuery(""); citySearchRef.current?.focus(); }}
+                      aria-label="Clear search"
+                    >
+                      <svg viewBox="0 0 24 24" width="12" height="12" fill="none"
+                        stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                      </svg>
+                    </button>
+                  )}
+                </div>
+
+                <div className="city-dropdown__body">
+                  {/* Popular cities — shown only when not searching */}
+                  {!cityQuery && (
+                    <div className="city-dropdown__section">
+                      <p className="city-dropdown__section-label">Popular Cities</p>
+                      <div className="city-dropdown__chips">
+                        {POPULAR_CITIES.map((city) => (
+                          <button
+                            key={city}
+                            className={`city-dropdown__chip${city === selectedCity ? " is-selected" : ""}`}
+                            onMouseDown={(e) => { e.preventDefault(); setSelectedCity(city); setCityOpen(false); }}
+                          >
+                            {city}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* All / filtered cities grid */}
+                  <div className="city-dropdown__section">
+                    {!cityQuery && (
+                      <p className="city-dropdown__section-label">All Cities</p>
+                    )}
+                    {(() => {
+                      const list = cityQuery
+                        ? CITIES.filter((c) => c.toLowerCase().includes(cityQuery.toLowerCase()))
+                        : CITIES;
+                      return list.length > 0 ? (
+                        <div className="city-dropdown__grid">
+                          {list.map((city) => (
+                            <button
+                              key={city}
+                              className={`city-dropdown__item${city === selectedCity ? " is-selected" : ""}`}
+                              onMouseDown={(e) => { e.preventDefault(); setSelectedCity(city); setCityOpen(false); }}
+                            >
+                              {city === selectedCity && (
+                                <svg viewBox="0 0 24 24" width="10" height="10" fill="currentColor"
+                                  className="city-dropdown__item-check" aria-hidden="true">
+                                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/>
+                                </svg>
+                              )}
+                              {city}
+                            </button>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="city-dropdown__empty">No cities found for "<strong>{cityQuery}</strong>"</p>
+                      );
+                    })()}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Center – Logo */}
