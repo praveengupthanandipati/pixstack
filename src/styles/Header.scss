@@ -1,0 +1,562 @@
+@use "sass:map";
+@use "./variables" as v;
+@use "./mixins" as m;
+
+// ─── Header ──────────────────────────────────────────────────────────────────
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: v.$white;
+  border-bottom: 1px solid v.$gray-border;
+  width: 100%;
+
+  // ── Inner flex container ────────────────────────────────────────────────────
+  .header-inner {
+    display: flex;
+    align-items: center;
+    height: 62px;
+    position: relative;
+  }
+
+  // ── Left ────────────────────────────────────────────────────────────────────
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex: 0 0 auto;
+    padding-left: 1rem;
+  }
+
+  // ── Center (logo – absolutely centered so it never shifts) ──────────────────
+  .header-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    line-height: 1;
+
+    .logo-img {
+      height: 28px;
+      width: auto;
+      display: block;
+    }
+  }
+
+  // ── Right — login link only; margin-left:auto pushes it flush right ─────────
+  // When search bar (flex-grow:1) expands, it absorbs the auto margin → no jump
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex: 0 0 auto;
+    margin-left: auto;
+    transition: gap 0.3s ease;
+  }
+
+  // ── Menu button ─────────────────────────────────────────────────────────────
+  .menu-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: none;
+    overflow: hidden;
+    max-width: 120px;
+    transition: opacity 0.22s ease,
+                max-width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: v.$text-dark;
+
+    &:hover {
+      .menu-label { color: v.$primary; }
+      .bar { background: v.$primary; }
+    }
+
+    .menu-icon {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+
+      .bar {
+        display: block;
+        width: 17px;
+        height: 1.5px;
+        background: v.$text-dark;
+        border-radius: 1px;
+        transition: background 0.2s, transform 0.25s ease, opacity 0.2s ease;
+      }
+    }
+
+    .menu-label {
+      @include m.poppins;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: v.$text-dark;
+      transition: color 0.2s;
+    }
+  }
+
+  // ── Nav text links ───────────────────────────────────────────────────────────
+  .nav-link {
+    @include m.poppins;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: v.$text-dark;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 200px;
+    transition: color 0.2s,
+                opacity 0.22s ease,
+                max-width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover { color: v.$primary; }
+  }
+
+  // ── Search button ────────────────────────────────────────────────────────────
+  .search-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: v.$text-dark;
+    transition: color 0.2s;
+
+    &:hover { color: v.$primary; }
+
+    svg {
+      display: block;
+    }
+  }
+
+  // ── + Business Profile button (flat, no radius) ──────────────────────────────
+  .btn-business {
+    @include m.poppins;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: v.$secondary;
+    color: v.$white;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.7rem 1.1rem;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 300px;
+    height: 62px;
+    transition: background 0.2s,
+                opacity 0.22s ease,
+                max-width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                padding 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover {
+      background: v.$secondary-hover;
+      color: v.$white;
+    }
+  }
+
+  // ── Expanding search bar – always in DOM, collapses to zero by default ──────
+  .header-search {
+    display: flex;
+    align-items: center;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 0%;
+    overflow: hidden;
+    opacity: 0;
+    padding: 0;
+    pointer-events: none;
+    transition: flex-grow 0.38s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.28s ease 0.08s,
+                padding 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &__input {
+      @include m.poppins;
+      width: 100%;
+      height: 62px;
+      border: none;
+      outline: none;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      color: v.$text-dark;
+      background: transparent;
+
+      &::placeholder { color: v.$gray-mid; }
+      &::-webkit-search-cancel-button { display: none; }
+    }
+  }
+
+  // ── Search close button – collapses to zero width by default ─────────────
+  .search-close-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 0;
+    height: 62px;
+    overflow: hidden;
+    background: v.$secondary;
+    color: v.$white;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    flex-shrink: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: width 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.25s ease,
+                background 0.2s;
+
+    &:hover { background: v.$secondary-hover; }
+    svg { display: block; flex-shrink: 0; }
+  }
+
+  // ── search-active: transition to open state ───────────────────────────────
+  // header-search (flex-grow:1) absorbs margin-left:auto on header-right →
+  // no CSS property needs to change on header-right for the layout to work.
+  &.search-active {
+    .menu-btn {
+      opacity: 0;
+      max-width: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .post-needs {
+      opacity: 0;
+      max-width: 0;
+      pointer-events: none;
+    }
+
+    .header-center {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(-50%) scale(0.92);
+      pointer-events: none;
+    }
+
+    .header-search {
+      flex-grow: 1;
+      opacity: 1;
+      padding: 0 1rem;
+      pointer-events: auto;
+    }
+
+    .login-link {
+      opacity: 0;
+      max-width: 0;
+      pointer-events: none;
+    }
+
+    .search-close-btn {
+      width: 62px;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .btn-business {
+      opacity: 0;
+      max-width: 0;
+      padding-left: 0;
+      padding-right: 0;
+      pointer-events: none;
+    }
+  }
+
+  // ── Search suggestions dropdown ──────────────────────────────────────────
+  .search-dropdown {
+    position: absolute;
+    top: 62px;
+    left: 0;
+    right: 0;
+    background: v.$white;
+    border-top: 1px solid v.$gray-border;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    max-height: 420px;
+    overflow-y: auto;
+    opacity: 0;
+    transform: translateY(-6px);
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.22s ease,
+                transform 0.22s ease,
+                visibility 0.22s ease;
+    // scrollbar styling
+    scrollbar-width: thin;
+    scrollbar-color: v.$gray-border transparent;
+
+    &::-webkit-scrollbar { width: 4px; }
+    &::-webkit-scrollbar-track { background: transparent; }
+    &::-webkit-scrollbar-thumb { background: v.$gray-border; border-radius: 2px; }
+
+    &.is-open {
+      opacity: 1;
+      transform: translateY(0);
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    &__group {
+      padding: 0.5rem 0 0.25rem;
+
+      & + & {
+        border-top: 1px solid v.$gray-border;
+      }
+    }
+
+    &__group-label {
+      @include m.poppins;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: v.$primary;
+      padding: 0.35rem 1.5rem 0.2rem;
+      margin: 0;
+    }
+
+    &__list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    &__item {
+      @include m.poppins;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      width: 100%;
+      padding: 0.55rem 1.5rem;
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: v.$text-dark;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.15s ease, color 0.15s ease;
+
+      &:hover,
+      &.is-active {
+        background: v.$gray-50;
+        color: v.$primary;
+
+        .search-dropdown__icon { stroke: v.$primary; }
+      }
+
+      &.is-active {
+        background: #f0efef;
+      }
+
+      mark {
+        background: none;
+        color: v.$primary;
+        font-weight: 600;
+      }
+    }
+
+    &__icon {
+      flex-shrink: 0;
+      stroke: v.$gray-mid;
+      transition: stroke 0.15s ease;
+    }
+  }
+
+}
+
+// ─── Off-canvas backdrop ─────────────────────────────────────────────────────
+
+.offcanvas-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+
+  &.is-active {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+// ─── Off-canvas panel (slides in from left, full height) ─────────────────────
+
+.offcanvas-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 100vh;
+  background: v.$white;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-100%);
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.12);
+
+  &.is-open {
+    transform: translateX(0);
+  }
+
+  // ── Panel header: logo + close button ────────────────────────────────────
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.25rem;
+    height: 62px;
+    border-bottom: 1px solid v.$gray-border;
+    flex-shrink: 0;
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    line-height: 1;
+
+    img {
+      height: 24px;
+      width: auto;
+      display: block;
+    }
+  }
+
+  &__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.3rem;
+    color: v.$text-dark;
+    border-radius: 4px;
+    transition: color 0.2s, background 0.2s;
+
+    &:hover {
+      color: v.$primary;
+      background: v.$gray-50;
+    }
+
+    svg { display: block; }
+  }
+
+  // ── Nav links list ────────────────────────────────────────────────────────
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem 0;
+    flex: 1;
+  }
+
+  &__link {
+    @include m.poppins;
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: v.$text-dark;
+    text-decoration: none;
+    padding: 0.95rem 1.5rem;
+    border-bottom: 1px solid v.$gray-border;
+    transition: color 0.2s, background 0.2s;
+
+    &:hover {
+      color: v.$primary;
+      background: v.$gray-50;
+    }
+
+    li:last-child & { border-bottom: none; }
+  }
+
+  // ── Sticky CTA pinned to the bottom ──────────────────────────────────────
+  &__footer {
+    padding: 1.25rem;
+    border-top: 1px solid v.$gray-border;
+    flex-shrink: 0;
+  }
+
+  &__cta {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: v.$secondary;
+    color: v.$white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.9rem 1rem;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background: v.$secondary-hover;
+      color: v.$white;
+    }
+  }
+}
+
+// ─── Responsive ──────────────────────────────────────────────────────────────
+
+@media (max-width: 991px) {
+  .site-header {
+    .post-needs,
+    .login-link,
+    .btn-business {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 575px) {
+  .site-header .header-inner {
+    padding: 0 1rem;
+  }
+
+  .site-header .logo .logo-img {
+    height: 22px;
+  }
+
+  .offcanvas-nav {
+    width: 85vw;
+  }
+}

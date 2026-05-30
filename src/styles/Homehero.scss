@@ -1,0 +1,251 @@
+@use "sass:map";
+@use "./variables" as v;
+@use "./mixins" as m;
+
+// ─── Home Hero ───────────────────────────────────────────────────────────────
+
+.home-hero {
+  position: relative;
+  width: 100%;
+  height: 68vh;
+  min-height: 480px;
+  overflow: hidden;
+
+  // ── Layered background images — cross-fade on category change ────────────
+  &__bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center center;
+    opacity: 0;
+    transition: opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity;
+
+    &.is-active { opacity: 1; }
+  }
+
+  // ── Gradient overlay ──────────────────────────────────────────────────────
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.25) 0%,
+      rgba(0, 0, 0, 0.40) 20%,
+      rgba(0, 0, 0, 0.65) 100%
+    );
+    z-index: 1;
+  }
+
+  // ── Foreground content ────────────────────────────────────────────────────
+  &__inner {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem 5rem;
+    gap: 1.75rem;
+  }
+
+  // ── Headline ──────────────────────────────────────────────────────────────
+  &__title {
+    @include m.poppins;
+    font-size: clamp(1.3rem, 2.5vw, 2.2rem);
+    font-weight: 700;
+    color: v.$white;
+    text-align: center;
+    letter-spacing: 0.01em;
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.45);
+    margin: 0;
+  }
+
+  // ── Category icon cards ───────────────────────────────────────────────────
+  &__cats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.85rem;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 0.25rem;
+    max-width: 900px;
+    width: 100%;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  &__cat {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 100px;
+    padding: 1rem 0.85rem 0.8rem;
+    background: rgba(255, 255, 255, 0.13);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.28s ease,
+                border-color 0.28s ease,
+                transform 0.22s ease,
+                box-shadow 0.28s ease;
+
+    &:hover,
+    &.is-active {
+      background: rgba(255, 255, 255, 0.24);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    &.is-active {
+      background: rgba(255, 255, 255, 0.3);
+      border-color: v.$white;
+    }
+  }
+
+  &__cat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: v.$white;
+    width: 34px;
+    height: 34px;
+
+    svg { width: 100%; height: 100%; }
+  }
+
+  &__cat-label {
+    @include m.poppins;
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: v.$white;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  // ── Featured content block — stacked, one visible at a time ──────────────
+  &__feature {
+    position: relative;
+    width: 100%;
+    max-width: 840px;
+    height: 90px;          // fixed so layout never jumps
+    text-align: center;
+  }
+
+  &__feature-item {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.45rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+    pointer-events: none;
+
+    &.is-active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+  }
+
+  &__feature-title {
+    @include m.poppins;
+    font-size: clamp(1rem, 2.6vw, 2.25rem);
+    font-weight: 700;
+    color: v.$white;
+    margin: 0;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+    line-height: 1.3;
+  }
+
+  &__feature-desc {
+    @include m.poppins;
+    font-size: clamp(0.72rem, 1vw, 0.82rem);
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+    line-height: 1.55;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+    max-width: 560px;
+  }
+
+  // ── View all — pinned to bottom-left of the section ───────────────────────
+  &__view-all {
+    @include m.poppins;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: v.$white;
+    background: v.$secondary;
+    text-decoration: none;
+    padding: 0.8rem 1.4rem;
+    transition: background 0.2s, letter-spacing 0.2s;
+
+    &:hover {
+      background: #2a2a2a;
+      color: v.$white;
+      letter-spacing: 0.13em;
+    }
+  }
+}
+
+// ─── Responsive ──────────────────────────────────────────────────────────────
+
+@media (max-width: 767px) {
+  .home-hero {
+    height: 75vh;
+
+    &__inner {
+      padding: 2.5rem 1rem 4.5rem;
+      gap: 1.25rem;
+    }
+
+    &__cats {
+      justify-content: flex-start;
+      gap: 0.6rem;
+    }
+
+    &__cat {
+      min-width: 86px;
+      padding: 0.85rem 0.65rem;
+    }
+
+    &__feature { height: 110px; }
+  }
+}
+
+@media (max-width: 479px) {
+  .home-hero {
+    height: 80vh;
+
+    &__title { font-size: 1.15rem; }
+
+    &__cat {
+      min-width: 74px;
+      padding: 0.75rem 0.5rem;
+    }
+
+    &__cat-icon { width: 28px; height: 28px; }
+    &__cat-label { font-size: 0.52rem; }
+    &__feature { height: 120px; }
+  }
+}
