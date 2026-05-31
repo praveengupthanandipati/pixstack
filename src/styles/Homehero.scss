@@ -11,20 +11,24 @@
   min-height: 480px;
   overflow: hidden;
 
-  // ── Layered background images — cross-fade on category change ────────────
-  &__bg {
-    position: absolute;
+  // ── Swiper — covers the full hero as the background ──────────────────────
+  &__swiper {
+    position: absolute !important;
     inset: 0;
-    background-size: cover;
-    background-position: center center;
-    opacity: 0;
-    transition: opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: opacity;
-
-    &.is-active { opacity: 1; }
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 0;
   }
 
-  // ── Gradient overlay ──────────────────────────────────────────────────────
+  // ── Individual background slide ────────────────────────────────────────────
+  &__bg {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center center;
+  }
+
+  // ── Gradient overlay — sits above Swiper ─────────────────────────────────
   &__overlay {
     position: absolute;
     inset: 0;
@@ -34,13 +38,13 @@
       rgba(0, 0, 0, 0.40) 20%,
       rgba(0, 0, 0, 0.65) 100%
     );
-    z-index: 1;
+    z-index: 2;
   }
 
-  // ── Foreground content ────────────────────────────────────────────────────
+  // ── Foreground content — sits above overlay ───────────────────────────────
   &__inner {
     position: relative;
-    z-index: 2;
+    z-index: 3;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -187,7 +191,7 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    z-index: 2;
+    z-index: 3;
     display: inline-flex;
     align-items: center;
     font-size: 0.7rem;

@@ -1,0 +1,333 @@
+@use "./variables" as v;
+@use "./mixins" as m;
+
+$footer-dark: #0d0d0d;
+$footer-light: #f5f4f4;
+
+.site-footer {
+  // ── Main two-column section ───────────────────────────────────────────────
+  &__main {
+    display: flex;
+    min-height: 320px;
+  }
+
+  // ── Left — dark column ────────────────────────────────────────────────────
+  &__left {
+    flex: 0 0 56%;
+    background: $footer-dark;
+    padding: 52px 56px 52px 44px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  &__logo {
+    @include m.poppins;
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: v.$white;
+    letter-spacing: -0.02em;
+    margin-bottom: 18px;
+    line-height: 1;
+
+    span {
+      color: v.$primary;
+    }
+  }
+
+  &__tagline {
+    @include m.poppins;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: v.$white;
+    margin: 0 0 12px;
+    line-height: 1.5;
+    max-width: 520px;
+  }
+
+  &__desc {
+    @include m.poppins;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.55);
+    line-height: 1.7;
+    margin: 0 0 28px;
+    max-width: 520px;
+  }
+
+  // ── Nav links ─────────────────────────────────────────────────────────────
+  &__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 1.5rem;
+    margin-bottom: 20px;
+  }
+
+  &__nav-link {
+    @include m.poppins;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: v.$white;
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: v.$primary;
+    }
+  }
+
+  // ── Social row ────────────────────────────────────────────────────────────
+  &__social {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.3rem 1rem;
+  }
+
+  &__social-label {
+    @include m.poppins;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: v.$white;
+  }
+
+  &__social-link {
+    @include m.poppins;
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.65);
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: v.$white;
+    }
+  }
+
+  // ── Right — light column ──────────────────────────────────────────────────
+  &__right {
+    flex: 0 0 44%;
+    background: $footer-light;
+    padding: 52px 44px 52px 52px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &__newsletter-title {
+    @include m.poppins;
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: v.$text-dark;
+    margin: 0 0 14px;
+    line-height: 1.3;
+  }
+
+  &__newsletter-desc {
+    @include m.poppins;
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: v.$text-muted;
+    line-height: 1.7;
+    margin: 0 0 28px;
+  }
+
+  // ── Subscribe form ────────────────────────────────────────────────────────
+  &__form {
+    display: flex;
+    gap: 0;
+  }
+
+  &__input {
+    @include m.poppins;
+    flex: 1;
+    height: 50px;
+    border: 1.5px solid v.$gray-border;
+    border-right: none;
+    outline: none;
+    padding: 0 16px;
+    font-size: 0.82rem;
+    color: v.$text-dark;
+    background: v.$white;
+    transition: border-color 0.2s ease;
+
+    &::placeholder {
+      color: v.$gray-mid;
+    }
+
+    &:focus {
+      border-color: v.$text-dark;
+    }
+  }
+
+  &__subscribe-btn {
+    @include m.poppins;
+    height: 50px;
+    padding: 0 22px;
+    background: $footer-dark;
+    color: v.$white;
+    border: none;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: #2a2a2a;
+    }
+  }
+
+  // ── Bottom bar ────────────────────────────────────────────────────────────
+  &__bottom {
+    display: flex;
+    align-items: stretch;
+  }
+
+  &__bottom-left {
+    flex: 0 0 56%;
+    background: $footer-dark;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 18px 56px 18px 44px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+  }
+
+  &__links-label {
+    @include m.poppins;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: v.$white;
+    margin-right: 0.25rem;
+  }
+
+  &__bottom-link {
+    @include m.poppins;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.55);
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: v.$white;
+    }
+  }
+
+  &__bottom-right {
+    flex: 0 0 44%;
+    background: $footer-light;
+    border-top: 1px solid v.$gray-border;
+    padding: 18px 44px 18px 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  &__copy {
+    @include m.poppins;
+    font-size: 0.75rem;
+    color: v.$text-muted;
+  }
+
+  &__top-btn {
+    @include m.poppins;
+    background: none;
+    border: none;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: v.$text-dark;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: v.$primary;
+    }
+  }
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 991px) {
+  .site-footer {
+    &__main {
+      flex-direction: column;
+    }
+
+    &__left,
+    &__right {
+      flex: none;
+      width: 100%;
+    }
+
+    &__left {
+      padding: 44px 32px;
+    }
+    &__right {
+      padding: 44px 32px;
+    }
+
+    &__bottom {
+      flex-direction: column;
+    }
+
+    &__bottom-left,
+    &__bottom-right {
+      flex: none;
+      width: 100%;
+    }
+
+    &__bottom-left {
+      padding: 16px 32px;
+    }
+    &__bottom-right {
+      padding: 16px 32px;
+    }
+  }
+}
+
+@media (max-width: 575px) {
+  .site-footer {
+    &__left {
+      padding: 36px 20px;
+    }
+    &__right {
+      padding: 36px 20px;
+    }
+
+    &__newsletter-title {
+      font-size: 1.25rem;
+    }
+
+    &__form {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    &__input {
+      border-right: 1.5px solid v.$gray-border;
+    }
+
+    &__subscribe-btn {
+      width: 100%;
+      height: 46px;
+    }
+
+    &__bottom-left {
+      padding: 16px 20px;
+    }
+    &__bottom-right {
+      padding: 14px 20px;
+    }
+
+    &__nav {
+      gap: 0.3rem 1rem;
+    }
+  }
+}

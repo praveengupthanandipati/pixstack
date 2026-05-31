@@ -1,0 +1,98 @@
+@use "./variables" as v;
+@use "./mixins" as m;
+
+.event-item {
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+  }
+
+  // ── Banner image ─────────────────────────────────────────────────────────────
+  &__img-wrap {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: v.$gray-50;
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  &:hover &__img {
+    transform: scale(1.04);
+  }
+
+  // ── Body ──────────────────────────────────────────────────────────────────────
+  &__body {
+    padding: 14px 2px 0;
+  }
+
+  &__title {
+    @include m.poppins;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: v.$text-dark;
+    margin: 0 0 10px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  // ── Meta row (location + date) ───────────────────────────────────────────────
+  &__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  &__location,
+  &__date {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    color: v.$text-muted;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    svg {
+      width: 12px;
+      height: 12px;
+      flex-shrink: 0;
+    }
+  }
+
+  &__location {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__divider {
+    border: none;
+    border-top: 1px solid v.$gray-border;
+    margin: 0 0 10px;
+  }
+
+  // ── Organizer ────────────────────────────────────────────────────────────────
+  &__organizer {
+    @include m.poppins;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: v.$text-dark;
+    margin: 0;
+  }
+}

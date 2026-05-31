@@ -8,7 +8,8 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: v.$white;  
+  background: v.$white;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   width: 100%;
 
   // ── Inner flex container ────────────────────────────────────────────────────
@@ -140,11 +141,11 @@
       @include m.poppins;
       display: inline-flex;
       align-items: center;
-      gap: 0.3rem;
+      gap: 0.4rem;
       background: v.$gray-50;
       border: 1.5px solid v.$gray-border;
-      border-radius: 20px;
-      padding: 0.32rem 0.65rem 0.32rem 0.5rem;
+      border-radius: 4px;
+      padding: 0.48rem 0.9rem 0.48rem 0.7rem;
       cursor: pointer;
       color: v.$text-muted;
       white-space: nowrap;
@@ -177,10 +178,10 @@
     }
 
     &__label {
-      font-size: 0.67rem;
+      font-size: 0.8rem;
       font-weight: 600;
       letter-spacing: 0.02em;
-      max-width: 90px;
+      max-width: 100px;
       overflow: hidden;
       text-overflow: ellipsis;
     }
@@ -821,28 +822,70 @@
   }
 }
 
+// ─── Login icon link (hidden on desktop, shown on tablet/mobile) ─────────────
+
+.login-icon-link {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  color: v.$text-dark;
+  text-decoration: none;
+  padding: 4px;
+  transition: color 0.2s;
+
+  &:hover { color: v.$primary; }
+
+  svg { display: block; }
+}
+
 // ─── Responsive ──────────────────────────────────────────────────────────────
 
+// ── Tablet (768px – 991px) ────────────────────────────────────────────────────
 @media (max-width: 991px) {
   .site-header {
+    // hide text-heavy desktop-only items
     .post-needs,
     .login-link,
-    .btn-business {
-      display: none;
+    .btn-business { display: none; }
+
+    // hide "MENU" label — keep hamburger bars only
+    .menu-label { display: none; }
+
+    // tighten left-side gap
+    .header-left { gap: 1rem; }
+
+    // show icon-only login
+    .login-icon-link { display: inline-flex; }
+
+    // city dropdown — prevent it from overflowing narrow viewports
+    .city-dropdown {
+      width: min(320px, calc(100vw - 2rem));
     }
   }
 }
 
+// ── Mobile (≤ 767px) ──────────────────────────────────────────────────────────
+@media (max-width: 767px) {
+  .site-header {
+    // remove city selector from header bar — accessible via menu instead
+    .city-selector { display: none; }
+
+    .header-left { gap: 0.75rem; }
+  }
+}
+
+// ── Small mobile (≤ 575px) ────────────────────────────────────────────────────
 @media (max-width: 575px) {
-  .site-header .header-inner {
-    padding: 0 1rem;
+  .site-header {
+    .header-inner { padding: 0 0.75rem; }
+
+    .logo .logo-img { height: 22px; }
+
+    .header-left { gap: 0.6rem; }
+
+    // search active: slightly smaller close button
+    &.search-active .search-close-btn { width: 52px; }
   }
 
-  .site-header .logo .logo-img {
-    height: 22px;
-  }
-
-  .offcanvas-nav {
-    width: 85vw;
-  }
+  .offcanvas-nav { width: 85vw; }
 }

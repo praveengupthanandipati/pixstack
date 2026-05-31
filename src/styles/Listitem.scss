@@ -1,0 +1,152 @@
+@use "./variables" as v;
+@use "./mixins" as m;
+
+.list-item {
+  background: v.$white;
+  border: 1px solid v.$gray-border;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+
+  &:hover {
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.13);
+    transform: translateY(-4px);
+  }
+
+  // ── Image ─────────────────────────────────────────────────────────────────
+  &__img-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+  }
+
+  &:hover &__img {
+    transform: scale(1.04);
+  }
+
+  &__badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #1a1a1a;
+    color: v.$white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 5px 10px;
+    @include m.poppins;
+    text-transform: uppercase;
+  }
+
+  // ── Body ──────────────────────────────────────────────────────────────────
+  &__body {
+    padding: 14px 16px 12px;
+  }
+
+  &__title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  &__name {
+    @include m.poppins;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: v.$text-dark;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  // ── Like button ───────────────────────────────────────────────────────────
+  &__like {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    padding: 2px;
+    cursor: pointer;
+    color: v.$gray-mid;
+    line-height: 1;
+    transition: color 0.2s ease, transform 0.15s ease;
+
+    svg {
+      width: 17px;
+      height: 17px;
+      display: block;
+    }
+
+    &:hover {
+      color: v.$primary;
+      transform: scale(1.15);
+    }
+
+    &--active {
+      color: v.$primary;
+    }
+  }
+
+  // ── Location ──────────────────────────────────────────────────────────────
+  &__location {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    color: v.$text-muted;
+    margin: 0 0 10px;
+
+    svg {
+      width: 12px;
+      height: 12px;
+      flex-shrink: 0;
+    }
+  }
+
+  &__divider {
+    border: none;
+    border-top: 1px solid v.$gray-border;
+    margin: 0 0 10px;
+  }
+
+  // ── Footer ────────────────────────────────────────────────────────────────
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__reviews {
+    @include m.poppins;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: v.$text-dark;
+  }
+
+  &__rating {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: v.$text-dark;
+
+    svg {
+      width: 13px;
+      height: 13px;
+      color: v.$primary;
+    }
+  }
+}

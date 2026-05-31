@@ -1,0 +1,109 @@
+@use "./variables" as v;
+@use "./mixins" as m;
+
+.recent-listings {
+  padding: 48px 40px 56px;
+  background: v.$white;
+  position: relative;
+
+  // ── Wishlist toast notification ────────────────────────────────────────────
+  &__toast {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 9999;
+    background: v.$text-dark;
+    color: v.$white;
+    padding: 13px 22px;
+    border-radius: 8px;
+    @include m.poppins;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+
+    svg {
+      width: 15px;
+      height: 15px;
+      color: v.$primary;
+      flex-shrink: 0;
+    }
+
+    &--visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  // ── Section header ─────────────────────────────────────────────────────────
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+
+  &__title {
+    @include m.poppins;
+    font-size: 1.65rem;
+    color: v.$text-dark;
+    margin: 0;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+
+    strong {
+      font-weight: 800;
+    }
+  }
+
+  &__view-all {
+    @include m.poppins;
+    background: none;
+    border: 1.5px solid v.$text-dark;
+    padding: 8px 20px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: v.$text-dark;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: background 0.2s ease, color 0.2s ease;
+    text-transform: uppercase;
+
+    &:hover {
+      background: v.$text-dark;
+      color: v.$white;
+    }
+  }
+
+  // ── 5-column grid ──────────────────────────────────────────────────────────
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+
+    @media (max-width: 1200px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    @media (max-width: 992px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 480px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
