@@ -60,30 +60,23 @@ const SEARCH_SUGGESTIONS = [
 ];
 
 // ── City data ─────────────────────────────────────────────────────────────────
-const POPULAR_CITIES = [
-  "Hyderabad", "Mumbai", "Delhi", "Bangalore", "Chennai", "Kolkata", "Pune", "Ahmedabad",
-];
-
-const CITIES = [
-  "Hyderabad", "Mumbai", "Delhi", "Bangalore", "Chennai", "Kolkata", "Pune", "Ahmedabad",
-  "Jaipur", "Surat", "Lucknow", "Kanpur", "Nagpur", "Indore", "Bhopal", "Patna",
-  "Vadodara", "Ludhiana", "Agra", "Nashik", "Rajkot", "Varanasi", "Amritsar",
-  "Allahabad", "Ranchi", "Coimbatore", "Jodhpur", "Madurai", "Raipur", "Kota",
-  "Guwahati", "Chandigarh", "Mysore", "Visakhapatnam", "Vijayawada",
-  "Thiruvananthapuram", "Meerut", "Navi Mumbai", "Aurangabad", "Jabalpur",
-  "Gwalior", "Noida", "Gurugram", "Faridabad", "Thane", "Bhubaneswar", "Kochi", "Hubli",
-];
+import { POPULAR_CITIES, CITIES } from '../constants/cities'
 
 // ── Component ─────────────────────────────────────────────────────────────────
-const Header = () => {
+const Header = ({ gateCity = '' }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
-  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedCity, setSelectedCity] = useState(gateCity);
   const [cityOpen, setCityOpen] = useState(false);
   const [cityQuery, setCityQuery] = useState("");
+
+  // keep in sync when gateCity is set after the gate closes
+  useEffect(() => {
+    if (gateCity) setSelectedCity(gateCity);
+  }, [gateCity]);
   const searchInputRef = useRef(null);
   const dropdownRef = useRef(null);
   const cityRef = useRef(null);

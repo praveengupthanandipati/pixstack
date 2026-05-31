@@ -1,0 +1,280 @@
+@use "./variables" as v;
+@use "./mixins" as m;
+
+.city-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 99998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+
+  // ── Dark blocking backdrop ─────────────────────────────────────────────────
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(3px);
+  }
+
+  // ── Modal card ─────────────────────────────────────────────────────────────
+  &__modal {
+    position: relative;
+    z-index: 1;
+    background: v.$white;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 520px;
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.35);
+    animation: cg-pop 0.32s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+  }
+
+  @keyframes cg-pop {
+    from { opacity: 0; transform: scale(0.88) translateY(20px); }
+    to   { opacity: 1; transform: scale(1)    translateY(0);    }
+  }
+
+  // ── Header ─────────────────────────────────────────────────────────────────
+  &__head {
+    padding: 32px 28px 20px;
+    text-align: center;
+    border-bottom: 1px solid v.$gray-border;
+  }
+
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: rgba(228, 41, 41, 0.08);
+    border-radius: 50%;
+    margin-bottom: 14px;
+
+    svg {
+      width: 22px;
+      height: 22px;
+      color: v.$primary;
+    }
+  }
+
+  &__title {
+    @include m.poppins;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: v.$text-dark;
+    margin: 0 0 8px;
+    letter-spacing: -0.02em;
+  }
+
+  &__subtitle {
+    @include m.poppins;
+    font-size: 0.8rem;
+    color: v.$text-muted;
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  // ── Search bar ─────────────────────────────────────────────────────────────
+  &__search {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 12px 20px;
+    border-bottom: 1px solid v.$gray-border;
+    flex-shrink: 0;
+  }
+
+  &__search-icon {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    color: v.$gray-mid;
+  }
+
+  &__search-input {
+    @include m.poppins;
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 0.82rem;
+    color: v.$text-dark;
+    background: transparent;
+
+    &::placeholder { color: v.$gray-mid; }
+  }
+
+  &__search-clear {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    background: v.$gray-border;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    flex-shrink: 0;
+    color: v.$text-muted;
+    transition: background 0.15s, color 0.15s;
+
+    svg { width: 9px; height: 9px; }
+
+    &:hover { background: v.$primary; color: v.$white; }
+  }
+
+  // ── Scrollable body ────────────────────────────────────────────────────────
+  &__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 4px 0 8px;
+    scrollbar-width: thin;
+    scrollbar-color: v.$gray-border transparent;
+
+    &::-webkit-scrollbar { width: 4px; }
+    &::-webkit-scrollbar-thumb { background: v.$gray-border; border-radius: 2px; }
+  }
+
+  &__section { padding: 12px 20px 4px; }
+
+  &__section-label {
+    @include m.poppins;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: v.$gray-mid;
+    margin: 0 0 10px;
+  }
+
+  // ── Popular city chips ─────────────────────────────────────────────────────
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 4px;
+  }
+
+  &__chip {
+    @include m.poppins;
+    font-size: 0.72rem;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1.5px solid v.$gray-border;
+    background: v.$white;
+    color: v.$text-dark;
+    cursor: pointer;
+    transition: all 0.18s ease;
+
+    &:hover {
+      border-color: v.$primary;
+      color: v.$primary;
+      background: rgba(228, 41, 41, 0.05);
+    }
+
+    &.is-selected {
+      background: v.$primary;
+      border-color: v.$primary;
+      color: v.$white;
+      font-weight: 600;
+    }
+  }
+
+  // ── All cities grid ────────────────────────────────────────────────────────
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2px;
+  }
+
+  &__city-btn {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: v.$text-dark;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    border-radius: 6px;
+    transition: background 0.15s, color 0.15s;
+
+    &:hover {
+      background: rgba(228, 41, 41, 0.06);
+      color: v.$primary;
+    }
+
+    &.is-selected {
+      color: v.$primary;
+      font-weight: 600;
+      background: rgba(228, 41, 41, 0.07);
+    }
+  }
+
+  &__check {
+    width: 11px;
+    height: 11px;
+    color: v.$primary;
+    flex-shrink: 0;
+  }
+
+  // ── Empty state ────────────────────────────────────────────────────────────
+  &__empty {
+    @include m.poppins;
+    font-size: 0.78rem;
+    color: v.$gray-mid;
+    text-align: center;
+    padding: 20px 0;
+    margin: 0;
+
+    strong { color: v.$text-dark; }
+  }
+
+  // ── Footer — confirm button ────────────────────────────────────────────────
+  &__footer {
+    padding: 16px 20px 20px;
+    border-top: 1px solid v.$gray-border;
+    flex-shrink: 0;
+  }
+
+  &__confirm {
+    @include m.poppins;
+    width: 100%;
+    height: 46px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    cursor: not-allowed;
+    background: v.$gray-border;
+    color: v.$gray-mid;
+    transition: background 0.22s ease, color 0.22s ease, transform 0.15s ease;
+
+    &.is-ready {
+      background: v.$text-dark;
+      color: v.$white;
+      cursor: pointer;
+
+      &:hover  { background: #2a2a2a; }
+      &:active { transform: scale(0.98); }
+    }
+  }
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 480px) {
+  .city-gate__modal   { max-height: 92vh; border-radius: 12px; }
+  .city-gate__head    { padding: 24px 20px 16px; }
+  .city-gate__grid    { grid-template-columns: 1fr 1fr; }
+}
