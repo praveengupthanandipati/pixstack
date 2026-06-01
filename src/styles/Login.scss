@@ -1,0 +1,773 @@
+@use "./variables" as v;
+@use "./mixins" as m;
+
+.login-page {
+  display: flex;
+  min-height: 100vh;
+
+  // ── Left brand panel ─────────────────────────────────────────────────────────
+  &__brand {
+    flex: 1;
+    position: relative;
+    background-color: v.$primary-dark;
+    background-size: cover;
+    background-position: center top;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 52px 48px;
+    overflow: hidden;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        155deg,
+        rgba(0, 0, 0, 0.25) 0%,
+        rgba(#b21d20, 0.78) 55%,
+        rgba(#3d0b0b, 0.97) 100%
+      );
+    }
+
+    @media (max-width: 860px) {
+      display: none;
+    }
+  }
+
+  &__brand-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__brand-logo {
+    display: inline-block;
+    margin-bottom: 40px;
+
+    img {
+      height: 38px;
+      filter: brightness(0) invert(1);
+    }
+  }
+
+  &__brand-title {
+    @include m.poppins;
+    font-size: 2.05rem;
+    font-weight: 800;
+    color: v.$white;
+    margin: 0 0 14px;
+    line-height: 1.22;
+    letter-spacing: -0.03em;
+    max-width: 380px;
+  }
+
+  &__brand-sub {
+    @include m.poppins;
+    font-size: 0.92rem;
+    color: rgba(255, 255, 255, 0.78);
+    margin: 0 0 44px;
+    line-height: 1.75;
+    max-width: 340px;
+  }
+
+  &__brand-hook {
+    @include m.poppins;
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0 0 14px;
+  }
+
+  &__brand-features {
+    list-style: none;
+    margin: 0 0 36px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  &__brand-feature {
+    @include m.poppins;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.5;
+  }
+
+  &__brand-feature-icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+
+    svg {
+      color: v.$white;
+    }
+  }
+
+  &__brand-divider {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    margin: 0 0 28px;
+  }
+
+  &__brand-stats {
+    display: flex;
+    gap: 36px;
+  }
+
+  &__brand-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+
+    strong {
+      @include m.poppins;
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: v.$white;
+      letter-spacing: -0.02em;
+    }
+
+    span {
+      @include m.poppins;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.65);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+  }
+
+  // ── Right form panel ──────────────────────────────────────────────────────────
+  &__form-panel {
+    width: 500px;
+    flex-shrink: 0;
+    background: v.$white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 56px 52px;
+
+    @media (max-width: 860px) {
+      width: 100%;
+    }
+
+    @media (max-width: 480px) {
+      padding: 36px 24px;
+      align-items: flex-start;
+    }
+  }
+
+  &__form-inner {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  &__mobile-logo {
+    display: none;
+    margin-bottom: 32px;
+
+    img {
+      height: 30px;
+    }
+
+    @media (max-width: 860px) {
+      display: block;
+    }
+  }
+
+  // ── Headings ─────────────────────────────────────────────────────────────────
+  &__heading {
+    @include m.poppins;
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: v.$text-dark;
+    margin: 0 0 6px;
+    letter-spacing: -0.02em;
+  }
+
+  &__subheading {
+    @include m.poppins;
+    font-size: 0.84rem;
+    color: v.$text-muted;
+    margin: 0 0 28px;
+    line-height: 1.6;
+  }
+
+  // ── Field ────────────────────────────────────────────────────────────────────
+  &__field {
+    margin-bottom: 20px;
+  }
+
+  &__label {
+    @include m.poppins;
+    display: block;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: v.$text-dark;
+    margin-bottom: 7px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  &__phone-wrap {
+    display: flex;
+    border: 1.5px solid v.$gray-border;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+
+    &:focus-within {
+      border-color: v.$primary;
+      box-shadow: 0 0 0 3px rgba(v.$primary, 0.1);
+    }
+
+    .has-error & {
+      border-color: v.$danger;
+    }
+  }
+
+  &__country-code {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 14px;
+    background: v.$gray-50;
+    border-right: 1.5px solid v.$gray-border;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: v.$text-dark;
+    flex-shrink: 0;
+    user-select: none;
+
+    svg {
+      color: v.$text-muted;
+    }
+  }
+
+  &__phone-input {
+    @include m.poppins;
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 13px 14px;
+    font-size: 0.92rem;
+    color: v.$text-dark;
+    background: v.$white;
+    min-width: 0;
+
+    &::placeholder {
+      color: v.$gray-mid;
+      font-size: 0.82rem;
+    }
+  }
+
+  &__field-error {
+    @include m.poppins;
+    font-size: 0.74rem;
+    color: v.$danger;
+    margin: 6px 0 0;
+  }
+
+  // ── Primary CTA ──────────────────────────────────────────────────────────────
+  &__primary-btn {
+    @include m.poppins;
+    width: 100%;
+    background: v.$primary;
+    color: v.$white;
+    border: none;
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    margin-bottom: 24px;
+
+    &:hover {
+      background: v.$primary-hover;
+    }
+
+    &:active {
+      background: v.$primary-dark;
+    }
+  }
+
+  // ── OR divider ────────────────────────────────────────────────────────────────
+  &__or {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+
+    &::before,
+    &::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: v.$gray-border;
+    }
+
+    span {
+      @include m.poppins;
+      font-size: 0.74rem;
+      font-weight: 500;
+      color: v.$text-muted;
+      white-space: nowrap;
+    }
+  }
+
+  // ── Social buttons ────────────────────────────────────────────────────────────
+  &__social {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    margin-bottom: 28px;
+  }
+
+  &__social-btn {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.86rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+
+    &--google {
+      background: v.$white;
+      border: 1.5px solid v.$gray-border;
+      color: v.$text-dark;
+
+      &:hover {
+        background: v.$gray-50;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.09);
+      }
+    }
+
+    &--facebook {
+      background: #1877f2;
+      border: 1.5px solid #1877f2;
+      color: v.$white;
+
+      &:hover {
+        background: #1566d8;
+        border-color: #1566d8;
+      }
+    }
+  }
+
+  // ── OTP step ──────────────────────────────────────────────────────────────────
+  &__change-num {
+    @include m.poppins;
+    background: v.$gray-50;
+    border: 1.5px solid v.$gray-border;
+    border-radius: 8px;
+    padding: 11px 16px;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: v.$primary;
+    cursor: pointer;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    text-align: left;
+    transition: border-color 0.2s ease;
+
+    &:hover {
+      border-color: v.$primary;
+    }
+
+    svg {
+      flex-shrink: 0;
+      color: v.$text-muted;
+    }
+  }
+
+  &__otp-wrap {
+    margin-bottom: 20px;
+  }
+
+  &__otp-boxes {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  &__otp-box {
+    @include m.poppins;
+    flex: 1;
+    min-width: 0;
+    max-width: 58px;
+    height: 58px;
+    text-align: center;
+    border: 1.5px solid v.$gray-border;
+    border-radius: 8px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: v.$text-dark;
+    background: v.$white;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:focus {
+      border-color: v.$primary;
+      box-shadow: 0 0 0 3px rgba(v.$primary, 0.12);
+    }
+
+    &.has-error {
+      border-color: v.$danger;
+    }
+  }
+
+  &__resend {
+    @include m.poppins;
+    text-align: center;
+    font-size: 0.82rem;
+    color: v.$text-muted;
+    margin-bottom: 28px;
+
+    strong {
+      color: v.$text-dark;
+      font-weight: 700;
+    }
+  }
+
+  &__resend-btn {
+    @include m.poppins;
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: v.$primary;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  // ── Vendor / Business bar ─────────────────────────────────────────────────────
+  &__vendor-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: v.$gray-50;
+    border: 1.5px solid v.$gray-border;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+
+    @media (max-width: 380px) {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+
+  &__vendor-text {
+    @include m.poppins;
+    font-size: 0.81rem;
+    font-weight: 500;
+    color: v.$text-muted;
+    line-height: 1.4;
+  }
+
+  &__vendor-btn {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: v.$text-dark;
+    color: v.$white;
+    border: none;
+    border-radius: 6px;
+    padding: 9px 16px;
+    font-size: 0.77rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: v.$primary;
+    }
+  }
+
+  // ── Generic text / email input ───────────────────────────────────────────────
+  &__input {
+    @include m.poppins;
+    width: 100%;
+    border: 1.5px solid v.$gray-border;
+    border-radius: 8px;
+    padding: 13px 14px;
+    font-size: 0.9rem;
+    color: v.$text-dark;
+    background: v.$white;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &::placeholder {
+      color: v.$gray-mid;
+      font-size: 0.83rem;
+    }
+
+    &:focus {
+      border-color: v.$primary;
+      box-shadow: 0 0 0 3px rgba(v.$primary, 0.1);
+    }
+
+    .has-error & {
+      border-color: v.$danger;
+    }
+  }
+
+  // ── City searchable dropdown field ────────────────────────────────────────────
+  &__city-wrap {
+    position: relative;
+  }
+
+  &__city-input-row {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid v.$gray-border;
+    border-radius: 8px;
+    background: v.$white;
+    overflow: hidden;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:focus-within {
+      border-color: v.$primary;
+      box-shadow: 0 0 0 3px rgba(v.$primary, 0.1);
+    }
+
+    .has-error & {
+      border-color: v.$danger;
+    }
+
+    &.is-open {
+      border-color: v.$primary;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      box-shadow: 0 0 0 3px rgba(v.$primary, 0.1);
+    }
+  }
+
+  &__city-pin {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 10px 0 14px;
+    color: v.$text-muted;
+  }
+
+  &__city-input {
+    @include m.poppins;
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 13px 8px 13px 0;
+    font-size: 0.9rem;
+    color: v.$text-dark;
+    background: transparent;
+    min-width: 0;
+
+    &::placeholder {
+      color: v.$gray-mid;
+      font-size: 0.83rem;
+    }
+  }
+
+  &__city-clear {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    padding: 0 10px;
+    cursor: pointer;
+    color: v.$gray-mid;
+    display: flex;
+    align-items: center;
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: v.$text-dark;
+    }
+  }
+
+  &__city-chevron {
+    flex-shrink: 0;
+    padding: 0 12px 0 4px;
+    color: v.$gray-mid;
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+
+    svg {
+      transition: transform 0.2s ease;
+    }
+
+    &.is-open svg {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__city-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: v.$white;
+    border: 1.5px solid v.$primary;
+    border-top: none;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    max-height: 192px;
+    overflow-y: auto;
+    z-index: 200;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: v.$gray-border;
+      border-radius: 2px;
+    }
+  }
+
+  &__city-option {
+    @include m.poppins;
+    display: block;
+    width: 100%;
+    padding: 10px 14px;
+    text-align: left;
+    background: none;
+    border: none;
+    font-size: 0.84rem;
+    color: v.$text-dark;
+    cursor: pointer;
+    transition: background 0.12s ease;
+
+    &:hover {
+      background: v.$gray-50;
+    }
+
+    &.is-selected {
+      color: v.$primary;
+      font-weight: 600;
+      background: #fff5f5;
+    }
+  }
+
+  &__city-empty {
+    @include m.poppins;
+    padding: 14px;
+    font-size: 0.82rem;
+    color: v.$text-muted;
+    text-align: center;
+  }
+
+  // ── Step indicator ────────────────────────────────────────────────────────────
+  &__step-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 22px;
+  }
+
+  &__step-dot {
+    height: 6px;
+    border-radius: 3px;
+    background: v.$gray-border;
+    transition: background 0.25s ease, width 0.25s ease;
+    width: 6px;
+
+    &.is-active {
+      background: v.$primary;
+      width: 22px;
+    }
+
+    &.is-done {
+      background: v.$primary;
+      width: 6px;
+    }
+  }
+
+  // ── Register bar (business login) ────────────────────────────────────────────
+  &__register-bar {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 0.83rem;
+    color: v.$text-muted;
+    margin-bottom: 20px;
+  }
+
+  &__register-link {
+    @include m.poppins;
+    font-size: 0.83rem;
+    font-weight: 700;
+    color: v.$primary;
+    text-decoration: none;
+    text-underline-offset: 2px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  // ── vendor-btn as anchor ──────────────────────────────────────────────────────
+  a#{&}__vendor-btn {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  // ── Terms ─────────────────────────────────────────────────────────────────────
+  &__terms {
+    @include m.poppins;
+    font-size: 0.72rem;
+    color: v.$gray-mid;
+    text-align: center;
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  &__terms-link {
+    color: v.$text-dark;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+
+    &:hover {
+      color: v.$primary;
+    }
+  }
+}

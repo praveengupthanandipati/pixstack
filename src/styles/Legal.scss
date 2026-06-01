@@ -1,0 +1,333 @@
+@use "./variables" as v;
+@use "./mixins" as m;
+
+// Shared styles for all legal / policy pages
+// Used by: Cookies Policy, Privacy Policy, Terms of Service
+
+.legal {
+  background: v.$gray-50;
+  min-height: 100vh;
+
+  // ── Hero ──────────────────────────────────────────────────────────────────────
+  &__hero {
+    background: v.$text-dark;
+    padding: 52px 40px 44px;
+
+    @media (max-width: 768px) { padding: 40px 24px 32px; }
+    @media (max-width: 480px) { padding: 32px 16px 28px; }
+  }
+
+  &__hero-inner {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  &__hero-eyebrow {
+    @include m.poppins;
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: v.$primary;
+    margin-bottom: 12px;
+  }
+
+  &__hero-title {
+    @include m.poppins;
+    font-size: 2rem;
+    font-weight: 800;
+    color: v.$white;
+    margin: 0 0 12px;
+    letter-spacing: -0.03em;
+    line-height: 1.18;
+
+    @media (max-width: 768px) { font-size: 1.6rem; }
+    @media (max-width: 480px) { font-size: 1.3rem; }
+  }
+
+  &__hero-meta {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+
+    span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+  }
+
+  // ── Outer wrapper ─────────────────────────────────────────────────────────────
+  &__outer {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 40px 80px;
+    display: grid;
+    grid-template-columns: 230px 1fr;
+    gap: 36px;
+    align-items: start;
+
+    @media (max-width: 1024px) { padding: 36px 24px 72px; grid-template-columns: 200px 1fr; gap: 28px; }
+    @media (max-width: 768px)  { grid-template-columns: 1fr; padding: 28px 16px 56px; gap: 20px; }
+    @media (max-width: 480px)  { padding: 20px 12px 48px; }
+  }
+
+  // ── Table of contents ─────────────────────────────────────────────────────────
+  &__toc {
+    position: sticky;
+    top: 90px;
+    background: v.$white;
+    border: 1px solid v.$gray-border;
+    border-left: 3px solid v.$primary;
+    border-radius: 0 10px 10px 0;
+    padding: 20px 18px;
+
+    @media (max-width: 768px) {
+      position: static;
+      border-radius: 8px;
+      border-left: 3px solid v.$primary;
+    }
+  }
+
+  &__toc-title {
+    @include m.poppins;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: v.$text-dark;
+    margin: 0 0 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid v.$gray-border;
+  }
+
+  &__toc-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    @media (max-width: 768px) {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 4px 12px;
+    }
+
+    @media (max-width: 480px) { grid-template-columns: 1fr; }
+  }
+
+  &__toc-item {}
+
+  &__toc-link {
+    @include m.poppins;
+    font-size: 0.79rem;
+    color: v.$text-muted;
+    text-decoration: none;
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    padding: 5px 8px;
+    border-radius: 5px;
+    transition: background 0.15s ease, color 0.15s ease;
+
+    &::before {
+      content: attr(data-num);
+      font-size: 0.64rem;
+      font-weight: 700;
+      color: v.$primary;
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    &:hover {
+      background: #fff5f5;
+      color: v.$primary;
+      &::before { opacity: 1; }
+    }
+  }
+
+  // ── Document sections ─────────────────────────────────────────────────────────
+  &__doc {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+
+    @media (max-width: 480px) { gap: 28px; }
+  }
+
+  &__section {
+    background: v.$white;
+    border: 1px solid v.$gray-border;
+    border-radius: 12px;
+    padding: 28px 32px;
+
+    &:target { border-color: v.$primary; box-shadow: 0 0 0 3px rgba(v.$primary, 0.08); }
+
+    @media (max-width: 768px) { padding: 22px 20px; border-radius: 10px; }
+    @media (max-width: 480px) { padding: 18px 16px; border-radius: 8px; }
+  }
+
+  &__section-num {
+    @include m.poppins;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: v.$primary;
+    margin-bottom: 6px;
+  }
+
+  &__section-heading {
+    @include m.poppins;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: v.$text-dark;
+    margin: 0 0 16px;
+    letter-spacing: -0.01em;
+
+    @media (max-width: 480px) { font-size: 0.97rem; margin-bottom: 14px; }
+  }
+
+  &__p {
+    @include m.poppins;
+    font-size: 0.875rem;
+    color: v.$text-muted;
+    line-height: 1.85;
+    margin: 0 0 14px;
+
+    &:last-child { margin-bottom: 0; }
+
+    a { color: v.$primary; text-decoration: none; font-weight: 500;
+      &:hover { text-decoration: underline; }
+    }
+
+    strong { color: v.$text-dark; font-weight: 600; }
+  }
+
+  &__ul {
+    @include m.poppins;
+    font-size: 0.875rem;
+    color: v.$text-muted;
+    line-height: 1.8;
+    margin: 10px 0 14px 0;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    li { strong { color: v.$text-dark; font-weight: 600; } }
+
+    &:last-child { margin-bottom: 0; }
+  }
+
+  // ── Cookie type table ─────────────────────────────────────────────────────────
+  &__table-wrap {
+    overflow-x: auto;
+    margin: 14px 0;
+    border-radius: 8px;
+    border: 1px solid v.$gray-border;
+  }
+
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 500px;
+
+    th {
+      @include m.poppins;
+      background: v.$gray-50;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: v.$text-dark;
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid v.$gray-border;
+    }
+
+    td {
+      @include m.poppins;
+      font-size: 0.83rem;
+      color: v.$text-muted;
+      padding: 12px 16px;
+      border-bottom: 1px solid v.$gray-border;
+      line-height: 1.6;
+      vertical-align: top;
+
+      &:first-child { font-weight: 600; color: v.$text-dark; white-space: nowrap; }
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: v.$gray-50; }
+  }
+
+  // ── Highlight box ─────────────────────────────────────────────────────────────
+  &__highlight {
+    background: #fff5f5;
+    border: 1px solid #fdd;
+    border-left: 4px solid v.$primary;
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    margin: 14px 0;
+
+    p {
+      @include m.poppins;
+      font-size: 0.84rem;
+      color: v.$text-dark;
+      line-height: 1.75;
+      margin: 0;
+    }
+  }
+
+  // ── Contact footer ────────────────────────────────────────────────────────────
+  &__contact-box {
+    background: v.$text-dark;
+    border-radius: 12px;
+    padding: 32px;
+    text-align: center;
+    margin-top: 8px;
+
+    @media (max-width: 480px) { padding: 24px 20px; border-radius: 10px; }
+  }
+
+  &__contact-title {
+    @include m.poppins;
+    font-size: 1rem;
+    font-weight: 700;
+    color: v.$white;
+    margin: 0 0 8px;
+  }
+
+  &__contact-sub {
+    @include m.poppins;
+    font-size: 0.84rem;
+    color: rgba(255, 255, 255, 0.55);
+    margin: 0 0 20px;
+    line-height: 1.65;
+  }
+
+  &__contact-email {
+    @include m.poppins;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: v.$primary;
+    color: v.$white;
+    border-radius: 8px;
+    padding: 11px 24px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s ease;
+
+    &:hover { background: v.$primary-hover; }
+  }
+}

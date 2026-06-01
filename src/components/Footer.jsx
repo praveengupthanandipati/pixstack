@@ -80,12 +80,12 @@ const Footer = () => {
         <div className="site-footer__bottom-left">
           <span className="site-footer__links-label">Links:</span>
           <Link to="/about"          className="site-footer__bottom-link">About us</Link>
-          <Link to="/faq"            className="site-footer__bottom-link">F.A.Q</Link>
+          <Link to="/faqs"            className="site-footer__bottom-link">F.A.Q</Link>
           <Link to="/cookies-policy" className="site-footer__bottom-link">Cookies Policy</Link>
           <Link to="/legal-terms"    className="site-footer__bottom-link">Legal Terms</Link>
-          <Link to="/privacy-policy" className="site-footer__bottom-link">Privacy Policy</Link>
+          <Link to="/privacy" className="site-footer__bottom-link">Privacy Policy</Link>
           <Link to="/contact"        className="site-footer__bottom-link">Contact</Link>
-          <Link to="/blog"           className="site-footer__bottom-link">Blog</Link>
+          <Link to="/blogs"           className="site-footer__bottom-link">Blogs</Link>
         </div>
         <div className="site-footer__bottom-right">
           <span className="site-footer__copy">&copy; 2022 Pixstack. All copy rights reserved</span>

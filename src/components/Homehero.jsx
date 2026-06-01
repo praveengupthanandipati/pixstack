@@ -16,7 +16,7 @@ const CATEGORIES = [
   {
     id: "photographers",
     label: "Photographers",
-    link: "/photographers",
+    link: "/businesses",
     viewAllLabel: "View All Photographers",
     bg: homeBannerPhotographer,
     featuredTitle: "Top Photographers in Your Locality",

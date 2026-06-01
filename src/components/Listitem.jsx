@@ -20,7 +20,7 @@ const IconStar = () => (
   </svg>
 )
 
-const Listitem = ({ image, businessType, businessName, city, state, reviews, rating, onLike }) => {
+const Listitem = ({ image, businessType, businessName, city, state, reviews, rating, onLike, onClick }) => {
   const [liked, setLiked] = useState(false)
 
   const handleLike = (e) => {
@@ -31,7 +31,7 @@ const Listitem = ({ image, businessType, businessName, city, state, reviews, rat
   }
 
   return (
-    <div className="list-item">
+    <div className="list-item" onClick={onClick} role={onClick ? 'button' : undefined}>
       <div className="list-item__img-wrap">
         <img src={image} alt={businessName} className="list-item__img" />
         <span className="list-item__badge">{businessType}</span>

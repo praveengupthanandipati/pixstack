@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Listitem from "./Listitem";
+import { Link } from "react-router-dom";
 import "../styles/HomerecentList.scss";
 
 // ── Replace any import path below to swap the image for that specific listing ─
@@ -148,7 +149,7 @@ const HomerecentList = () => {
         <h2 className="recent-listings__title">
           <strong>Recent</strong> Listings
         </h2>
-        <button className="recent-listings__view-all">VIEW ALL &nbsp;→</button>
+        <Link to="/businesses" className="recent-listings__view-all">VIEW ALL &nbsp;→</Link>
       </div>
 
       <div className="recent-listings__grid">

@@ -1,0 +1,353 @@
+@use "./variables" as v;
+@use "./mixins" as m;
+
+.faqs {
+  background: v.$gray-50;
+  min-height: 100vh;
+
+  // ── Page hero ─────────────────────────────────────────────────────────────────
+  &__hero {
+    background: v.$text-dark;
+    padding: 52px 40px 48px;
+    text-align: center;
+
+    @media (max-width: 768px) { padding: 40px 24px 36px; }
+    @media (max-width: 480px) { padding: 32px 16px 28px; }
+  }
+
+  &__hero-eyebrow {
+    @include m.poppins;
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: v.$primary;
+    margin-bottom: 12px;
+  }
+
+  &__hero-title {
+    @include m.poppins;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: v.$white;
+    margin: 0 0 14px;
+    letter-spacing: -0.03em;
+
+    span { color: v.$primary; filter: brightness(1.3); }
+
+    @media (max-width: 768px) { font-size: 1.7rem; }
+    @media (max-width: 480px) { font-size: 1.4rem; }
+  }
+
+  &__hero-sub {
+    @include m.poppins;
+    font-size: 0.92rem;
+    color: rgba(255, 255, 255, 0.62);
+    margin: 0;
+    line-height: 1.7;
+
+    @media (max-width: 480px) { font-size: 0.84rem; }
+  }
+
+  // ── Body layout ───────────────────────────────────────────────────────────────
+  &__body {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 40px 80px;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 32px;
+    align-items: start;
+
+    @media (max-width: 1024px) { padding: 32px 24px 72px; grid-template-columns: 210px 1fr; gap: 24px; }
+    @media (max-width: 768px)  { grid-template-columns: 1fr; padding: 24px 16px 56px; gap: 0; }
+    @media (max-width: 480px)  { padding: 20px 12px 48px; }
+  }
+
+  // ── Category sidebar ──────────────────────────────────────────────────────────
+  &__sidebar {
+    position: sticky;
+    top: 88px;
+
+    @media (max-width: 768px) {
+      position: static;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin-bottom: 20px;
+      scrollbar-width: none;
+      &::-webkit-scrollbar { display: none; }
+    }
+  }
+
+  &__cat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    @media (max-width: 768px) {
+      flex-direction: row;
+      gap: 8px;
+      width: max-content;
+      padding: 2px 0;
+    }
+  }
+
+  &__cat-btn {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.83rem;
+    font-weight: 500;
+    color: v.$text-muted;
+    cursor: pointer;
+    transition: background 0.18s ease, color 0.18s ease;
+
+    &:hover {
+      background: v.$white;
+      color: v.$text-dark;
+    }
+
+    &.is-active {
+      background: v.$white;
+      color: v.$primary;
+      font-weight: 700;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
+
+      .faqs__cat-count { background: v.$primary; color: v.$white; }
+    }
+
+    @media (max-width: 768px) {
+      width: auto;
+      white-space: nowrap;
+      padding: 8px 14px;
+      background: v.$white;
+      border: 1.5px solid v.$gray-border;
+
+      &.is-active {
+        border-color: v.$primary;
+        background: #fff5f5;
+      }
+    }
+  }
+
+  &__cat-label { flex: 1; }
+
+  &__cat-count {
+    @include m.poppins;
+    font-size: 0.68rem;
+    font-weight: 700;
+    background: v.$gray-50;
+    color: v.$text-muted;
+    border-radius: 20px;
+    padding: 2px 7px;
+    transition: background 0.18s ease, color 0.18s ease;
+    flex-shrink: 0;
+
+    @media (max-width: 768px) { display: none; }
+  }
+
+  // ── Main content ──────────────────────────────────────────────────────────────
+  &__main {}
+
+  &__cat-header {
+    margin-bottom: 20px;
+
+    @media (max-width: 480px) { margin-bottom: 14px; }
+  }
+
+  &__cat-title {
+    @include m.poppins;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: v.$text-dark;
+    margin: 0 0 5px;
+    letter-spacing: -0.02em;
+
+    @media (max-width: 480px) { font-size: 1rem; }
+  }
+
+  &__cat-subtitle {
+    @include m.poppins;
+    font-size: 0.82rem;
+    color: v.$text-muted;
+    margin: 0;
+  }
+
+  // ── Accordion ─────────────────────────────────────────────────────────────────
+  &__accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    @media (max-width: 480px) { gap: 8px; }
+  }
+
+  &__item {
+    background: v.$white;
+    border: 1.5px solid v.$gray-border;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &.is-open {
+      border-color: v.$primary;
+      box-shadow: 0 4px 16px rgba(v.$primary, 0.1);
+    }
+  }
+
+  &__question {
+    @include m.poppins;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 18px 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: v.$text-dark;
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover { color: v.$primary; }
+
+    .is-open & { color: v.$primary; }
+
+    @media (max-width: 480px) { padding: 15px 16px; font-size: 0.85rem; gap: 12px; }
+  }
+
+  &__q-text { flex: 1; line-height: 1.45; }
+
+  &__chevron {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: v.$gray-50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: v.$text-muted;
+    transition: background 0.2s ease, transform 0.28s ease, color 0.2s ease;
+
+    .is-open & {
+      background: v.$primary;
+      color: v.$white;
+      transform: rotate(180deg);
+    }
+  }
+
+  &__answer-wrap {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.32s ease;
+
+    &.is-open { max-height: 600px; }
+  }
+
+  &__answer {
+    @include m.poppins;
+    padding: 0 20px 18px;
+    font-size: 0.86rem;
+    color: v.$text-muted;
+    line-height: 1.82;
+    border-top: 1px solid v.$gray-border;
+    padding-top: 14px;
+
+    p { margin: 0 0 10px; &:last-child { margin-bottom: 0; } }
+
+    ul {
+      margin: 8px 0 0;
+      padding-left: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      li { @include m.poppins; font-size: 0.84rem; color: v.$text-muted; }
+    }
+
+    strong { color: v.$text-dark; font-weight: 600; }
+
+    a { color: v.$primary; text-decoration: none; font-weight: 500;
+      &:hover { text-decoration: underline; }
+    }
+
+    @media (max-width: 480px) { padding: 12px 16px 16px; font-size: 0.83rem; }
+  }
+
+  // ── Contact strip ─────────────────────────────────────────────────────────────
+  &__contact {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 40px 72px;
+
+    @media (max-width: 1024px) { padding: 0 24px 64px; }
+    @media (max-width: 768px)  { padding: 0 16px 48px; }
+    @media (max-width: 480px)  { padding: 0 12px 40px; }
+  }
+
+  &__contact-inner {
+    background: v.$text-dark;
+    border-radius: 14px;
+    padding: 40px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+
+    @media (max-width: 768px) { padding: 32px 28px; flex-direction: column; text-align: center; align-items: center; }
+    @media (max-width: 480px) { padding: 28px 20px; border-radius: 10px; }
+  }
+
+  &__contact-text {}
+
+  &__contact-title {
+    @include m.poppins;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: v.$white;
+    margin: 0 0 6px;
+    letter-spacing: -0.02em;
+  }
+
+  &__contact-sub {
+    @include m.poppins;
+    font-size: 0.84rem;
+    color: rgba(255,255,255,0.6);
+    margin: 0;
+  }
+
+  &__contact-btn {
+    @include m.poppins;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: v.$primary;
+    color: v.$white;
+    border: none;
+    border-radius: 8px;
+    padding: 13px 26px;
+    font-size: 0.86rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+
+    &:hover { background: v.$primary-hover; }
+  }
+}
