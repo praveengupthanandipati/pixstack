@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CITIES } from "../../constants/cities";
 import logoSvg from "../../assets/logo.svg";
 import digitalLabBg from "../../assets/digital-lab-banner.jpg";
@@ -46,6 +46,7 @@ const IconPin = () => (
 );
 
 const Businesssignup = () => {
+  const navigate = useNavigate();
   const [step, setStep] = useState("form"); // 'form' | 'otp'
 
   // Form fields
@@ -177,8 +178,8 @@ const Businesssignup = () => {
       setOtpError("Please enter the complete 6-digit OTP");
       return;
     }
-    // TODO: complete signup with backend
-    console.log("Signup OTP:", code, { businessName, city, email, phone });
+    localStorage.setItem("pixstack_business", JSON.stringify({ businessName, city, email, phone }));
+    navigate("/business-basic");
   };
 
   const handleResend = () => {
