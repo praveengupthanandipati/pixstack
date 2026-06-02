@@ -511,6 +511,16 @@
     &:first-child { padding-top: 0; }
     &:last-child  { border-bottom: none; padding-bottom: 0; }
 
+    &--new {
+      animation: review-reveal 0.4s ease both;
+      background: #fffbf0;
+      border-radius: 8px;
+      padding-left: 12px;
+      padding-right: 12px;
+      margin-left: -12px;
+      margin-right: -12px;
+    }
+
     &--reveal {
       animation: review-reveal 0.38s ease both;
 
@@ -563,6 +573,181 @@
     border-radius: 20px;
     padding: 2px 9px;
     letter-spacing: 0.02em;
+  }
+
+  // ── Section title row (title + Write Review button) ───────────────────────────
+  &__section-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid v.$gray-border;
+
+    .biz-detail__section-title {
+      margin: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    @media (max-width: 480px) { margin-bottom: 16px; padding-bottom: 12px; }
+  }
+
+  &__write-review-btn {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: v.$primary;
+    color: v.$white;
+    border: none;
+    border-radius: 7px;
+    padding: 8px 15px;
+    font-size: 0.77rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background 0.2s ease;
+
+    &:hover { background: v.$primary-hover; }
+
+    svg { flex-shrink: 0; }
+
+    @media (max-width: 480px) { padding: 7px 12px; font-size: 0.74rem; }
+  }
+
+  // ── Write Review form section ─────────────────────────────────────────────────
+  @keyframes write-review-slide {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  &__write-review-section {
+    margin-bottom: 20px;
+    padding: 20px;
+    background: v.$gray-50;
+    border: 1.5px solid v.$gray-border;
+    border-radius: 10px;
+    animation: write-review-slide 0.26s ease both;
+
+    @media (max-width: 480px) { padding: 16px; border-radius: 8px; margin-bottom: 16px; }
+  }
+
+  &__write-review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  &__write-review-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  &__write-review-label {
+    @include m.poppins;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: v.$text-dark;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__write-review-input,
+  &__write-review-textarea {
+    @include m.poppins;
+    width: 100%;
+    border: 1.5px solid v.$gray-border;
+    border-radius: 8px;
+    padding: 10px 13px;
+    font-size: 0.86rem;
+    color: v.$text-dark;
+    background: v.$white;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+
+    &::placeholder { color: v.$gray-mid; }
+
+    &:focus {
+      border-color: v.$primary;
+      box-shadow: 0 0 0 3px rgba(v.$primary, 0.1);
+    }
+
+    @media (max-width: 480px) { font-size: 0.84rem; padding: 9px 11px; }
+  }
+
+  &__write-review-textarea {
+    resize: vertical;
+    min-height: 88px;
+    font-family: "Poppins", sans-serif;
+  }
+
+  &__write-stars {
+    display: flex;
+    gap: 4px;
+
+    svg {
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      transition: transform 0.12s ease;
+
+      &:hover { transform: scale(1.18); }
+    }
+
+    @media (max-width: 480px) {
+      svg { width: 24px; height: 24px; }
+    }
+  }
+
+  &__write-review-error {
+    @include m.poppins;
+    font-size: 0.72rem;
+    color: v.$danger;
+    margin: 2px 0 0;
+  }
+
+  &__write-review-submit {
+    @include m.poppins;
+    align-self: flex-start;
+    background: v.$primary;
+    color: v.$white;
+    border: none;
+    border-radius: 8px;
+    padding: 11px 28px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover { background: v.$primary-hover; }
+
+    @media (max-width: 480px) { align-self: stretch; text-align: center; padding: 12px; }
+  }
+
+  &__write-review-success {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #e8ffed;
+    border: 1.5px solid #34a853;
+    border-radius: 8px;
+    padding: 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1a7a38;
+    animation: verified-pop 0.32s ease both;
+
+    svg { flex-shrink: 0; color: #34a853; }
+
+    @media (max-width: 480px) { font-size: 0.82rem; padding: 14px; }
   }
 
   &__review-head {
@@ -622,6 +807,17 @@
     @include m.poppins;
     font-size: 0.72rem;
     color: v.$gray-mid;
+  }
+
+  &__review-location {
+    @include m.poppins;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.71rem;
+    color: v.$gray-mid;
+
+    svg { flex-shrink: 0; }
   }
 
   &__review-text {

@@ -889,3 +889,130 @@
 
   .offcanvas-nav { width: 85vw; }
 }
+
+// ── User profile button + dropdown ────────────────────────────────────────────
+@keyframes profile-dropdown-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.header-profile {
+  position: relative;
+
+  &__btn {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: 1.5px solid v.$gray-border;
+    border-radius: 8px;
+    padding: 6px 12px 6px 6px;
+    cursor: pointer;
+    color: v.$text-dark;
+    font-size: 0.84rem;
+    font-weight: 600;
+    transition: border-color 0.2s ease, background 0.2s ease;
+
+    &:hover,
+    &.is-open {
+      border-color: v.$primary;
+      background: #fff5f5;
+      color: v.$primary;
+    }
+
+    &.is-open .header-profile__chevron {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__avatar {
+    @include m.poppins;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: v.$primary;
+    color: v.$white;
+    font-size: 0.68rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    letter-spacing: 0.03em;
+  }
+
+  &__name {
+    max-width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    // hide name on tablet — avatar + chevron only
+    @media (max-width: 991px) { display: none; }
+  }
+
+  &__chevron {
+    color: v.$gray-mid;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+
+  &__dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 180px;
+    background: v.$white;
+    border: 1.5px solid v.$gray-border;
+    border-radius: 10px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    z-index: 300;
+    animation: profile-dropdown-in 0.18s ease both;
+    padding: 4px 0;
+  }
+
+  &__item {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    padding: 10px 16px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: v.$text-dark;
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.12s ease, color 0.12s ease;
+
+    svg { flex-shrink: 0; color: v.$gray-mid; transition: color 0.12s ease; }
+
+    &:hover {
+      background: v.$gray-50;
+      color: v.$primary;
+      svg { color: v.$primary; }
+    }
+
+    &--logout {
+      color: v.$danger;
+      svg { color: v.$danger; }
+
+      &:hover {
+        background: v.$danger-bg;
+        color: v.$danger;
+        svg { color: v.$danger; }
+      }
+    }
+  }
+
+  &__divider {
+    height: 1px;
+    background: v.$gray-border;
+    margin: 4px 0;
+  }
+}

@@ -106,6 +106,22 @@ const StarRating = ({ rating }) => (
   </div>
 );
 
+const InteractiveStarRating = ({ rating, hovered, onRate, onHover, onLeave }) => (
+  <div className="biz-detail__write-stars">
+    {[1, 2, 3, 4, 5].map((n) => (
+      <svg key={n} viewBox="0 0 24 24"
+        fill={(hovered || rating) >= n ? "#E42929" : "none"}
+        stroke={(hovered || rating) >= n ? "#E42929" : "#d4d4d4"}
+        strokeWidth="1.5"
+        onClick={() => onRate(n)}
+        onMouseEnter={() => onHover(n)}
+        onMouseLeave={onLeave}>
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+      </svg>
+    ))}
+  </div>
+);
+
 const MetaIcon = {
   pin: (
     <svg viewBox="0 0 24 24" width="14" height="14" fill="none"
@@ -167,10 +183,15 @@ const Businessdetail = () => {
   const [isFav, setIsFav] = useState(false);
   const [lightbox, setLightbox] = useState({ open: false, index: 0 });
   const [showAllReviews, setShowAllReviews] = useState(false);
+  const [reviews, setReviews] = useState(REVIEWS);
+  const [showWriteReview, setShowWriteReview] = useState(false);
+  const [reviewForm, setReviewForm] = useState({ name: "", reviewText: "", rating: 0, location: "" });
+  const [reviewFormErrors, setReviewFormErrors] = useState({});
+  const [starHovered, setStarHovered] = useState(0);
 
   const INITIAL_REVIEWS = 6;
-  const visibleReviews = showAllReviews ? REVIEWS : REVIEWS.slice(0, INITIAL_REVIEWS);
-  const hiddenCount = REVIEWS.length - INITIAL_REVIEWS;
+  const visibleReviews = showAllReviews ? reviews : reviews.slice(0, INITIAL_REVIEWS);
+  const hiddenCount = reviews.length - INITIAL_REVIEWS;
   const [enquiry, setEnquiry] = useState({ name: "", phone: "", email: "", message: "" });
   const [enquiryErrors, setEnquiryErrors] = useState({});
   const [enquirySent, setEnquirySent] = useState(false);
@@ -284,6 +305,55 @@ const Businessdetail = () => {
     const errs = validateEnquiry();
     if (Object.keys(errs).length > 0) { setEnquiryErrors(errs); return; }
     setEnquirySent(true);
+  };
+
+  const handleToggleReviewForm = () => {
+    if (showWriteReview) {
+      setShowWriteReview(false);
+      setReviewForm({ name: "", reviewText: "", rating: 0, location: "" });
+      setReviewFormErrors({});
+      setStarHovered(0);
+    } else {
+      setShowWriteReview(true);
+    }
+  };
+
+  const handleReviewFormChange = (field, val) => {
+    setReviewForm((f) => ({ ...f, [field]: val }));
+    setReviewFormErrors((e) => ({ ...e, [field]: "" }));
+  };
+
+  const handleReviewSubmit = (e) => {
+    e.preventDefault();
+    const errs = {};
+    if (!reviewForm.name.trim()) errs.name = "Name is required";
+    if (!reviewForm.reviewText.trim()) errs.reviewText = "Please describe your review";
+    if (reviewForm.rating === 0) errs.rating = "Please select a star rating";
+    if (!reviewForm.location.trim()) errs.location = "Location is required";
+    if (Object.keys(errs).length > 0) { setReviewFormErrors(errs); return; }
+
+    const words = reviewForm.name.trim().split(/\s+/);
+    const initials = words.length >= 2
+      ? (words[0][0] + words[1][0]).toUpperCase()
+      : reviewForm.name.trim().slice(0, 2).toUpperCase();
+    const now = new Date();
+    const dateStr = now.toLocaleString("en-US", { month: "long", year: "numeric" });
+
+    setReviews((prev) => [{
+      id: Date.now(),
+      name: reviewForm.name.trim(),
+      initials,
+      rating: reviewForm.rating,
+      date: dateStr,
+      text: reviewForm.reviewText.trim(),
+      location: reviewForm.location.trim(),
+      isNew: true,
+    }, ...prev]);
+
+    setShowWriteReview(false);
+    setReviewForm({ name: "", reviewText: "", rating: 0, location: "" });
+    setReviewFormErrors({});
+    setStarHovered(0);
   };
 
   return (
@@ -400,12 +470,58 @@ const Businessdetail = () => {
 
           {/* Section 09: Customer Reviews */}
           <div className="biz-detail__card">
-            <h2 className="biz-detail__section-title">Customer <span>Reviews</span></h2>
+            <div className="biz-detail__section-title-row">
+              <h2 className="biz-detail__section-title">Customer <span>Reviews</span></h2>
+              <button className="biz-detail__write-review-btn" onClick={handleToggleReviewForm}>
+                {showWriteReview ? "Cancel" : (
+                  <>
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                      <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    Write Review
+                  </>
+                )}
+              </button>
+            </div>
+
+            {showWriteReview && (
+              <div className="biz-detail__write-review-section">
+                <form className="biz-detail__write-review-form" onSubmit={handleReviewSubmit} noValidate>
+                  <div className="biz-detail__write-review-field">
+                    <label className="biz-detail__write-review-label">Name</label>
+                    <input type="text" className="biz-detail__write-review-input" placeholder="Your name"
+                      value={reviewForm.name} onChange={(e) => handleReviewFormChange("name", e.target.value)} />
+                    {reviewFormErrors.name && <p className="biz-detail__write-review-error">{reviewFormErrors.name}</p>}
+                  </div>
+                  <div className="biz-detail__write-review-field">
+                    <label className="biz-detail__write-review-label">Describe the Review</label>
+                    <textarea className="biz-detail__write-review-textarea" placeholder="Share your experience…"
+                      value={reviewForm.reviewText} onChange={(e) => handleReviewFormChange("reviewText", e.target.value)} />
+                    {reviewFormErrors.reviewText && <p className="biz-detail__write-review-error">{reviewFormErrors.reviewText}</p>}
+                  </div>
+                  <div className="biz-detail__write-review-field">
+                    <label className="biz-detail__write-review-label">Star Rating</label>
+                    <InteractiveStarRating rating={reviewForm.rating} hovered={starHovered}
+                      onRate={(n) => handleReviewFormChange("rating", n)}
+                      onHover={setStarHovered} onLeave={() => setStarHovered(0)} />
+                    {reviewFormErrors.rating && <p className="biz-detail__write-review-error">{reviewFormErrors.rating}</p>}
+                  </div>
+                  <div className="biz-detail__write-review-field">
+                    <label className="biz-detail__write-review-label">Location</label>
+                    <input type="text" className="biz-detail__write-review-input" placeholder="Your city or area"
+                      value={reviewForm.location} onChange={(e) => handleReviewFormChange("location", e.target.value)} />
+                    {reviewFormErrors.location && <p className="biz-detail__write-review-error">{reviewFormErrors.location}</p>}
+                  </div>
+                  <button type="submit" className="biz-detail__write-review-submit">Submit Review</button>
+                </form>
+              </div>
+            )}
+
             <div className="biz-detail__reviews">
               {visibleReviews.map((r, i) => (
                 <div
                   key={r.id}
-                  className={`biz-detail__review${i >= INITIAL_REVIEWS && showAllReviews ? " biz-detail__review--reveal" : ""}`}
+                  className={`biz-detail__review${i >= INITIAL_REVIEWS && showAllReviews ? " biz-detail__review--reveal" : ""}${r.isNew ? " biz-detail__review--new" : ""}`}
                 >
                   <div className="biz-detail__review-head">
                     <div className="biz-detail__review-avatar"
@@ -417,6 +533,9 @@ const Businessdetail = () => {
                       <div className="biz-detail__review-row">
                         <StarRating rating={r.rating} />
                         <span className="biz-detail__review-date">{r.date}</span>
+                        {r.location && (
+                          <span className="biz-detail__review-location">{MetaIcon.pin}{r.location}</span>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -425,7 +544,7 @@ const Businessdetail = () => {
               ))}
             </div>
 
-            {!showAllReviews && (
+            {!showAllReviews && hiddenCount > 0 && (
               <button
                 className="biz-detail__load-more-reviews"
                 onClick={() => setShowAllReviews(true)}

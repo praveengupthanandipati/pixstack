@@ -1,0 +1,479 @@
+@use "./variables" as v;
+@use "./mixins" as m;
+
+// ── User Profile Page ─────────────────────────────────────────────────────────
+.user-profile {
+  background: v.$gray-50;
+  min-height: calc(100vh - 70px);
+
+  &__wrapper {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 36px 0 80px;
+    display: grid;
+    grid-template-columns: 264px 1fr;
+    gap: 28px;
+    align-items: start;
+
+    @media (max-width: 1024px) { padding: 28px 24px 64px; grid-template-columns: 230px 1fr; }
+    @media (max-width: 768px)  { grid-template-columns: 1fr; padding: 20px 16px 56px; gap: 20px; }
+    @media (max-width: 480px)  { padding: 16px 12px 48px; gap: 16px; }
+  }
+
+  &__sidebar {
+    position: sticky;
+    top: 88px;
+
+    @media (max-width: 768px) { position: static; }
+  }
+
+  &__main { display: flex; flex-direction: column; gap: 24px; }
+
+  // ── Profile Card ─────────────────────────────────────────────────────────────
+  &__card {
+    background: v.$white;
+    border: 1px solid v.$gray-border;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  &__banner {
+    background: linear-gradient(135deg, v.$primary 0%, v.$primary-dark 100%);
+    padding: 32px 32px 28px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    @media (max-width: 600px) { padding: 24px 20px; gap: 16px; }
+  }
+
+  &__avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(v.$white, 0.2);
+    border: 2.5px solid rgba(v.$white, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    span {
+      @include m.poppins;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: v.$white;
+      letter-spacing: 0.04em;
+    }
+
+    @media (max-width: 480px) {
+      width: 58px;
+      height: 58px;
+      span { font-size: 1.05rem; }
+    }
+  }
+
+  &__banner-info { min-width: 0; }
+
+  &__display-name {
+    @include m.poppins;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: v.$white;
+    margin: 0 0 4px;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @media (max-width: 480px) { font-size: 1.05rem; }
+  }
+
+  &__display-sub {
+    @include m.poppins;
+    font-size: 0.82rem;
+    color: rgba(v.$white, 0.75);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @media (max-width: 480px) { font-size: 0.77rem; }
+  }
+
+  &__card-body {
+    padding: 28px 32px 32px;
+
+    @media (max-width: 768px) { padding: 22px 20px 24px; }
+    @media (max-width: 480px) { padding: 18px 16px 20px; }
+  }
+
+  &__card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid v.$gray-border;
+
+    @media (max-width: 480px) { margin-bottom: 18px; padding-bottom: 12px; }
+  }
+
+  &__card-title {
+    @include m.poppins;
+    font-size: 1rem;
+    font-weight: 700;
+    color: v.$text-dark;
+    margin: 0;
+    letter-spacing: -0.01em;
+
+    span { color: v.$primary; }
+
+    @media (max-width: 480px) { font-size: 0.93rem; }
+  }
+
+  &__edit-btn {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1.5px solid v.$gray-border;
+    background: v.$white;
+    border-radius: 7px;
+    padding: 8px 16px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: v.$text-dark;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+
+    svg { flex-shrink: 0; }
+
+    &:hover { border-color: v.$primary; color: v.$primary; }
+
+    @media (max-width: 480px) { padding: 7px 12px; font-size: 0.75rem; }
+  }
+
+  // ── Fields Grid ──────────────────────────────────────────────────────────────
+  &__fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 28px;
+
+    @media (max-width: 600px) { grid-template-columns: 1fr; gap: 16px; }
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    &--full { grid-column: 1 / -1; }
+  }
+
+  &__label {
+    @include m.poppins;
+    font-size: 0.71rem;
+    font-weight: 600;
+    color: v.$text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  &__value {
+    @include m.poppins;
+    font-size: 0.91rem;
+    font-weight: 500;
+    color: v.$text-dark;
+    margin: 0;
+    line-height: 1.45;
+    padding: 2px 0;
+  }
+
+  &__input {
+    @include m.poppins;
+    width: 100%;
+    border: 1.5px solid v.$gray-border;
+    border-radius: 8px;
+    padding: 10px 13px;
+    font-size: 0.87rem;
+    color: v.$text-dark;
+    background: v.$white;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+
+    &::placeholder { color: v.$gray-mid; }
+
+    &:focus {
+      border-color: v.$primary;
+      box-shadow: 0 0 0 3px rgba(v.$primary, 0.1);
+    }
+
+    &.has-error {
+      border-color: v.$danger;
+      box-shadow: 0 0 0 3px rgba(v.$danger, 0.08);
+    }
+
+    @media (max-width: 480px) { font-size: 0.84rem; padding: 9px 11px; }
+  }
+
+  &__error {
+    @include m.poppins;
+    font-size: 0.72rem;
+    color: v.$danger;
+    margin: 2px 0 0;
+  }
+
+  // ── Save / Cancel Actions ────────────────────────────────────────────────────
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid v.$gray-border;
+
+    @media (max-width: 480px) { flex-direction: column; gap: 10px; margin-top: 20px; padding-top: 16px; }
+  }
+
+  &__save-btn {
+    @include m.poppins;
+    background: v.$primary;
+    color: v.$white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 32px;
+    font-size: 0.86rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover { background: v.$primary-hover; }
+
+    @media (max-width: 480px) { width: 100%; padding: 13px; }
+  }
+
+  &__cancel-btn {
+    @include m.poppins;
+    background: none;
+    color: v.$text-muted;
+    border: 1.5px solid v.$gray-border;
+    border-radius: 8px;
+    padding: 11px 24px;
+    font-size: 0.86rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover { border-color: v.$text-dark; color: v.$text-dark; }
+
+    @media (max-width: 480px) { width: 100%; padding: 12px; }
+  }
+
+  // ── Freelancer Promo Banner ───────────────────────────────────────────────────
+  &__promo-wrap {
+    padding: 0 40px 72px;
+
+    @media (max-width: 1024px) { padding: 0 24px 64px; }
+    @media (max-width: 768px)  { padding: 0 16px 48px; }
+    @media (max-width: 480px)  { padding: 0 12px 40px; }
+  }
+
+  &__promo {
+    max-width: 1280px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #1c0808 0%, #2e1212 55%, #1c0808 100%);
+    border-radius: 16px;
+    padding: 44px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    position: relative;
+    overflow: hidden;
+
+    @media (max-width: 768px) { flex-direction: column; align-items: flex-start; padding: 36px 32px; gap: 24px; border-radius: 12px; }
+    @media (max-width: 480px) { padding: 28px 22px; border-radius: 10px; }
+  }
+
+  &__promo-glow {
+    position: absolute;
+    right: -80px;
+    top: -80px;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(v.$primary, 0.18) 0%, transparent 65%);
+    pointer-events: none;
+
+    @media (max-width: 768px) { right: -40px; top: -60px; width: 200px; height: 200px; }
+  }
+
+  &__promo-left { min-width: 0; }
+
+  &__promo-chips {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+
+    span {
+      @include m.poppins;
+      font-size: 0.71rem;
+      font-weight: 600;
+      color: rgba(v.$primary, 0.95);
+      background: rgba(v.$primary, 0.14);
+      border: 1px solid rgba(v.$primary, 0.3);
+      border-radius: 20px;
+      padding: 3px 12px;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+    }
+  }
+
+  &__promo-heading {
+    @include m.poppins;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: v.$white;
+    margin: 0 0 10px;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+
+    @media (max-width: 768px) { font-size: 1.28rem; }
+    @media (max-width: 480px) { font-size: 1.12rem; }
+  }
+
+  &__promo-text {
+    @include m.poppins;
+    font-size: 0.9rem;
+    color: rgba(v.$white, 0.62);
+    margin: 0;
+    line-height: 1.5;
+
+    @media (max-width: 480px) { font-size: 0.85rem; }
+  }
+
+  &__promo-btn {
+    @include m.poppins;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    background: v.$primary;
+    color: v.$white;
+    border: none;
+    border-radius: 10px;
+    padding: 15px 34px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      background: v.$primary-hover;
+      color: v.$white;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(v.$primary, 0.35);
+    }
+
+    svg { flex-shrink: 0; transition: transform 0.2s ease; }
+    &:hover svg { transform: translateX(3px); }
+
+    @media (max-width: 768px) { width: 100%; justify-content: center; padding: 14px 28px; }
+    @media (max-width: 480px) { padding: 13px 22px; font-size: 0.86rem; }
+  }
+}
+
+// ── Left Navigation ───────────────────────────────────────────────────────────
+.user-leftnav {
+  background: v.$white;
+  border: 1px solid v.$gray-border;
+  border-radius: 12px;
+  overflow: hidden;
+
+  &__header {
+    padding: 16px 20px 14px;
+    border-bottom: 1px solid v.$gray-border;
+  }
+
+  &__heading {
+    @include m.poppins;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: v.$gray-mid;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0;
+  }
+
+  &__nav { padding: 6px 0; }
+
+  &__item {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    width: 100%;
+    padding: 12px 20px;
+    border: none;
+    border-left: 3px solid transparent;
+    background: none;
+    text-align: left;
+    font-size: 0.86rem;
+    font-weight: 500;
+    color: v.$text-muted;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    line-height: 1.3;
+
+    &:hover {
+      color: v.$primary;
+      background: #fff5f5;
+    }
+
+    &.is-active {
+      color: v.$primary;
+      background: #fff5f5;
+      font-weight: 600;
+      border-left-color: v.$primary;
+    }
+
+    @media (max-width: 480px) { font-size: 0.83rem; padding: 11px 16px; }
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+
+    svg { width: 16px; height: 16px; }
+  }
+
+  &__footer {
+    border-top: 1px solid v.$gray-border;
+    padding: 6px 0 4px;
+
+    .user-leftnav__item {
+      color: v.$danger;
+
+      &:hover {
+        background: v.$danger-bg;
+        color: v.$danger;
+        border-left-color: transparent;
+      }
+    }
+  }
+}

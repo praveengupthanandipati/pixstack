@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logoSvg from "../assets/logo.svg";
 import "../styles/Header.scss";
 
@@ -62,8 +62,17 @@ const SEARCH_SUGGESTIONS = [
 // ── City data ─────────────────────────────────────────────────────────────────
 import { POPULAR_CITIES, CITIES } from '../constants/cities'
 
+// ── Helpers ───────────────────────────────────────────────────────────────────
+const getInitials = (name = "") => {
+  const parts = name.trim().split(/\s+/);
+  return parts.length >= 2
+    ? (parts[0][0] + parts[1][0]).toUpperCase()
+    : name.slice(0, 2).toUpperCase();
+};
+
 // ── Component ─────────────────────────────────────────────────────────────────
 const Header = ({ gateCity = '' }) => {
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -72,6 +81,11 @@ const Header = ({ gateCity = '' }) => {
   const [selectedCity, setSelectedCity] = useState(gateCity);
   const [cityOpen, setCityOpen] = useState(false);
   const [cityQuery, setCityQuery] = useState("");
+  const [user, setUser] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("pixstack_user")) || null; }
+    catch { return null; }
+  });
+  const [profileOpen, setProfileOpen] = useState(false);
 
   // keep in sync when gateCity is set after the gate closes
   useEffect(() => {
@@ -82,6 +96,7 @@ const Header = ({ gateCity = '' }) => {
   const cityRef = useRef(null);
   const citySearchRef = useRef(null);
   const itemRefs = useRef([]);
+  const profileRef = useRef(null);
 
   const openMenu = () => setMenuOpen(true);
   const closeMenu = () => setMenuOpen(false);
@@ -126,10 +141,20 @@ const Header = ({ gateCity = '' }) => {
         setCityOpen(false);
         setCityQuery("");
       }
+      if (profileRef.current && !profileRef.current.contains(e.target)) {
+        setProfileOpen(false);
+      }
     };
     document.addEventListener("mousedown", handleOutside);
     return () => document.removeEventListener("mousedown", handleOutside);
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("pixstack_user");
+    setUser(null);
+    setProfileOpen(false);
+    navigate("/");
+  };
 
   // Auto-focus city search when dropdown opens
   useEffect(() => {
@@ -232,7 +257,7 @@ const Header = ({ gateCity = '' }) => {
             </button>
 
             <Link to="/post-your-needs" className="nav-link post-needs">
-              Post Your Needs
+              Post Your Request
             </Link>
 
             <button
@@ -416,20 +441,73 @@ const Header = ({ gateCity = '' }) => {
             />
           </div>
 
-          {/* Right — login only */}
+          {/* Right — login or user profile */}
           <div className="header-right">
-            <Link to="/login" className="nav-link login-link">
-              Login / Signup
-            </Link>
-            {/* Icon-only login shown on tablet/mobile */}
-            <Link to="/login" className="login-icon-link" aria-label="Login or Signup">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
-                stroke="currentColor" strokeWidth="1.8"
-                strokeLinecap="round" strokeLinejoin="round">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-              </svg>
-            </Link>
+            {user ? (
+              <div className="header-profile" ref={profileRef}>
+                <button
+                  className={`header-profile__btn${profileOpen ? " is-open" : ""}`}
+                  onClick={() => setProfileOpen((v) => !v)}
+                  aria-haspopup="true"
+                  aria-expanded={profileOpen}
+                >
+                  <span className="header-profile__avatar">{getInitials(user.name)}</span>
+                  <span className="header-profile__name">{user.name.split(" ")[0]}</span>
+                  <svg viewBox="0 0 24 24" width="11" height="11" fill="none"
+                    stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"
+                    className="header-profile__chevron">
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </button>
+
+                {profileOpen && (
+                  <div className="header-profile__dropdown">
+                    <Link to="/profile" className="header-profile__item"
+                      onClick={() => setProfileOpen(false)}>
+                      <svg viewBox="0 0 24 24" width="15" height="15" fill="none"
+                        stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                      </svg>
+                      My Profile
+                    </Link>
+                    <Link to="/favourite-profiles" className="header-profile__item"
+                      onClick={() => setProfileOpen(false)}>
+                      <svg viewBox="0 0 24 24" width="15" height="15" fill="none"
+                        stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                      </svg>
+                      My Favourites
+                    </Link>
+                    <div className="header-profile__divider" />
+                    <button className="header-profile__item header-profile__item--logout"
+                      onClick={handleLogout}>
+                      <svg viewBox="0 0 24 24" width="15" height="15" fill="none"
+                        stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
+                      </svg>
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                <Link to="/login" className="nav-link login-link">
+                  Login / Signup
+                </Link>
+                <Link to="/login" className="login-icon-link" aria-label="Login or Signup">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
+                    stroke="currentColor" strokeWidth="1.8"
+                    strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Close button */}

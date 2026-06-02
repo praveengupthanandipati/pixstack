@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logoSvg from "../assets/logo.svg";
 import photographerBg from "../assets/homebanner-photographer.jpg";
 import "../styles/Login.scss";
@@ -39,6 +39,7 @@ const IconEdit = () => (
 );
 
 const Login = () => {
+  const navigate = useNavigate();
   const [step, setStep] = useState("phone"); // 'phone' | 'otp'
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState("");
@@ -102,8 +103,8 @@ const Login = () => {
       setOtpError("Please enter the complete 6-digit OTP");
       return;
     }
-    // TODO: connect to backend auth
-    console.log("Verify OTP:", code, "for +91", phone);
+    localStorage.setItem("pixstack_user", JSON.stringify({ name: "Praveen Nandipati", phone }));
+    navigate("/profile");
   };
 
   const handleResend = () => {

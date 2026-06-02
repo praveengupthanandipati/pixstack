@@ -20,6 +20,11 @@ import Privacypolicy from './pages/Privacypolicy.jsx'
 import Contact from './pages/Contact.jsx'
 import Blogs from './pages/Blogs.jsx'
 
+//user profile pages
+import Userprofile from './pages/Userprofile/Profile.jsx'
+import Postrequest from './pages/Userprofile/Postrequest.jsx'
+import Favouriteprofiles from './pages/Userprofile/Favouriteprofiles.jsx'
+
 const STORAGE_KEY = 'pixstack_city'
 const NO_LAYOUT_PATHS = ['/login', '/business-login', '/business-signup']
 
@@ -44,6 +49,9 @@ const AppShell = ({ gateCity }) => {
         <Route path='/privacy' element={<Privacypolicy />} />
         <Route path='/contact' element={<Contact />} />
         <Route path='/blogs' element={<Blogs />} />
+        <Route path='/profile' element={<Userprofile />} />
+        <Route path='/post-request' element={<Postrequest />} />
+        <Route path='/favourite-profiles' element={<Favouriteprofiles />} />
       </Routes>
       {!hideLayout && <Footer />}
     </>

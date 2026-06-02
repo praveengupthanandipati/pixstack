@@ -1,0 +1,442 @@
+@use "./variables" as v;
+@use "./mixins" as m;
+
+// ── Card section header ────────────────────────────────────────────────────────
+.fav-hd {
+  padding: 24px 28px 20px;
+  border-bottom: 2px solid v.$gray-border;
+
+  &__title {
+    @include m.poppins;
+    font-size: 1rem;
+    font-weight: 700;
+    color: v.$text-dark;
+    margin: 0 0 4px;
+    letter-spacing: -0.01em;
+
+    span { color: v.$primary; }
+
+    @media (max-width: 480px) { font-size: 0.93rem; }
+  }
+
+  &__sub {
+    @include m.poppins;
+    font-size: 0.8rem;
+    color: v.$text-muted;
+    margin: 0;
+  }
+
+  @media (max-width: 600px) { padding: 18px 18px 16px; }
+}
+
+// ── Grid ──────────────────────────────────────────────────────────────────────
+.fav-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 24px 28px 28px;
+
+  @media (max-width: 1100px) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 700px)  { grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 18px 18px 20px; }
+  @media (max-width: 480px)  { grid-template-columns: 1fr; gap: 14px; }
+}
+
+// ── Card ──────────────────────────────────────────────────────────────────────
+@keyframes fav-remove {
+  0%   { opacity: 1; transform: scale(1);    }
+  100% { opacity: 0; transform: scale(0.88); }
+}
+
+.fav-card {
+  background: v.$white;
+  border: 1px solid v.$gray-border;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+
+  &:hover {
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.12);
+    transform: translateY(-4px);
+  }
+
+  &.is-removing {
+    animation: fav-remove 0.32s ease forwards;
+    pointer-events: none;
+  }
+
+  // ── Image area ──────────────────────────────────────────────────────────────
+  &__img-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+  }
+
+  &:hover &__img { transform: scale(1.05); }
+
+  &__type-badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #1a1a1a;
+    color: v.$white;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 5px 10px;
+    text-transform: uppercase;
+    @include m.poppins;
+  }
+
+  &__heart-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(v.$white, 0.92);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: v.$primary;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.14);
+    transition: background 0.15s ease, transform 0.15s ease, color 0.15s ease;
+
+    svg { width: 14px; height: 14px; display: block; }
+
+    &:hover {
+      background: v.$white;
+      color: v.$danger;
+      transform: scale(1.14);
+    }
+  }
+
+  // ── Card body ───────────────────────────────────────────────────────────────
+  &__body { padding: 14px 16px 14px; }
+
+  &__name {
+    @include m.poppins;
+    font-size: 0.87rem;
+    font-weight: 600;
+    color: v.$text-dark;
+    margin: 0 0 6px;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__location {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.74rem;
+    color: v.$text-muted;
+    margin: 0 0 10px;
+
+    svg { width: 12px; height: 12px; flex-shrink: 0; }
+  }
+
+  &__divider {
+    border: none;
+    border-top: 1px solid v.$gray-border;
+    margin: 0 0 10px;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  &__reviews {
+    @include m.poppins;
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: v.$text-dark;
+  }
+
+  &__rating {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.79rem;
+    font-weight: 700;
+    color: v.$text-dark;
+
+    svg { width: 12px; height: 12px; color: v.$primary; }
+  }
+
+  // ── Un-favourite button ──────────────────────────────────────────────────────
+  &__unfav-btn {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 8px 12px;
+    border: 1.5px solid v.$gray-border;
+    border-radius: 7px;
+    background: none;
+    font-size: 0.77rem;
+    font-weight: 600;
+    color: v.$text-muted;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+
+    svg { flex-shrink: 0; color: v.$primary; transition: color 0.15s ease; }
+
+    &:hover {
+      border-color: v.$danger;
+      color: v.$danger;
+      background: v.$danger-bg;
+
+      svg { color: v.$danger; }
+    }
+  }
+}
+
+// ── Confirm dialog ────────────────────────────────────────────────────────────
+@keyframes fav-confirm-in {
+  from { opacity: 0; transform: scale(0.94) translateY(10px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+
+.fav-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.fav-confirm {
+  background: v.$white;
+  border-radius: 14px;
+  padding: 32px 28px 28px;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  animation: fav-confirm-in 0.22s ease both;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+
+  &__icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: v.$danger-bg;
+    color: v.$danger;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px;
+  }
+
+  &__title {
+    @include m.poppins;
+    font-size: 1rem;
+    font-weight: 700;
+    color: v.$text-dark;
+    margin: 0 0 10px;
+  }
+
+  &__msg {
+    @include m.poppins;
+    font-size: 0.85rem;
+    color: v.$text-muted;
+    line-height: 1.6;
+    margin: 0 0 24px;
+
+    strong { color: v.$text-dark; }
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__remove-btn {
+    @include m.poppins;
+    width: 100%;
+    padding: 12px;
+    background: v.$danger;
+    color: v.$white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.87rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover { background: v.$danger-dark; }
+  }
+
+  &__cancel-btn {
+    @include m.poppins;
+    width: 100%;
+    padding: 11px;
+    background: none;
+    color: v.$text-muted;
+    border: 1.5px solid v.$gray-border;
+    border-radius: 8px;
+    font-size: 0.87rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover { border-color: v.$text-dark; color: v.$text-dark; }
+  }
+}
+
+// ── Toast notification ────────────────────────────────────────────────────────
+@keyframes fav-toast-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fav-progress {
+  from { width: 100%; }
+  to   { width: 0%; }
+}
+
+.fav-toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 600;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: v.$text-dark;
+  color: v.$white;
+  border-radius: 10px;
+  padding: 14px 18px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22);
+  min-width: 280px;
+  max-width: 90vw;
+  animation: fav-toast-in 0.22s ease both;
+  overflow: hidden;
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    flex: 1;
+
+    svg { flex-shrink: 0; color: #4ade80; }
+
+    span {
+      @include m.poppins;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+  }
+
+  &__undo {
+    @include m.poppins;
+    background: none;
+    border: 1.5px solid rgba(v.$white, 0.35);
+    border-radius: 6px;
+    padding: 5px 14px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: v.$white;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background 0.15s ease, border-color 0.15s ease;
+
+    &:hover {
+      background: rgba(v.$white, 0.12);
+      border-color: rgba(v.$white, 0.6);
+    }
+  }
+
+  &__progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: v.$primary;
+    border-radius: 0 0 10px 10px;
+    animation: fav-progress 4s linear forwards;
+  }
+
+  @media (max-width: 480px) {
+    bottom: 16px;
+    min-width: calc(100vw - 32px);
+    border-radius: 8px;
+  }
+}
+
+// ── Empty state ───────────────────────────────────────────────────────────────
+.fav-empty {
+  padding: 64px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+
+  svg { color: v.$gray-border; margin-bottom: 8px; }
+
+  &__title {
+    @include m.poppins;
+    font-size: 1rem;
+    font-weight: 700;
+    color: v.$text-dark;
+    margin: 0;
+  }
+
+  &__sub {
+    @include m.poppins;
+    font-size: 0.84rem;
+    color: v.$text-muted;
+    max-width: 300px;
+    line-height: 1.6;
+  }
+
+  &__cta {
+    @include m.poppins;
+    display: inline-flex;
+    align-items: center;
+    margin-top: 8px;
+    background: v.$primary;
+    color: v.$white;
+    border: none;
+    border-radius: 8px;
+    padding: 11px 28px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover { background: v.$primary-hover; color: v.$white; }
+  }
+
+  @media (max-width: 480px) { padding: 48px 20px; }
+}
