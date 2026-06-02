@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logoSvg from "../../assets/logo.svg";
 import studioBg from "../../assets/photostudio-banner.jpg";
 import "../../styles/Login.scss";
@@ -39,6 +39,7 @@ const IconEdit = () => (
 );
 
 const Businesslogin = () => {
+  const navigate = useNavigate();
   const [step, setStep] = useState("phone"); // 'phone' | 'otp'
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState("");
@@ -100,8 +101,8 @@ const Businesslogin = () => {
       setOtpError("Please enter the complete 6-digit OTP");
       return;
     }
-    // TODO: connect to backend business auth
-    console.log("Business Verify OTP:", code, "for +91", phone);
+    localStorage.setItem("pixstack_business", JSON.stringify({ phone }));
+    navigate("/business-basic");
   };
 
   const handleResend = () => {

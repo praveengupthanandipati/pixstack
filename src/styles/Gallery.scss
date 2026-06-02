@@ -1,0 +1,307 @@
+@use "./variables" as v;
+@use "./mixins" as m;
+
+// ── Upload button variant ─────────────────────────────────────────────────────
+.gal-upload-btn {
+  display: flex !important;
+  align-items: center;
+  gap: 6px;
+}
+
+// ── Photo grid ────────────────────────────────────────────────────────────────
+.gal-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+
+  @media (max-width: 900px)  { grid-template-columns: repeat(4, 1fr); }
+  @media (max-width: 700px)  { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  @media (max-width: 480px)  { grid-template-columns: repeat(2, 1fr); gap: 5px; }
+}
+
+.gal-photo {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover img { transform: scale(1.06); }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    border-radius: 6px;
+  }
+
+  &:hover &__overlay { opacity: 1; }
+}
+
+.gal-delete-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(v.$white, 0.15);
+  border: 1.5px solid rgba(v.$white, 0.5);
+  color: v.$white;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  backdrop-filter: blur(4px);
+
+  &:hover {
+    background: v.$danger;
+    border-color: v.$danger;
+    transform: scale(1.1);
+  }
+}
+
+// ── YouTube section title icon ────────────────────────────────────────────────
+.gal-yt-icon {
+  display: inline-flex;
+  align-items: center;
+  color: #ff0000;
+  margin-right: 2px;
+}
+
+// ── Video add form ────────────────────────────────────────────────────────────
+.gal-video-form {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  @media (max-width: 600px) { flex-direction: column; }
+}
+
+.gal-video-inputs {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gal-video-url-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.gal-add-btn {
+  margin-top: 0;
+  align-self: flex-start;
+
+  @media (max-width: 600px) { width: 100%; justify-content: center; }
+}
+
+// ── Video grid ────────────────────────────────────────────────────────────────
+.gal-video-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+
+  @media (max-width: 600px) { grid-template-columns: 1fr; gap: 16px; }
+}
+
+.gal-video-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid v.$gray-border;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+
+  &:hover { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); }
+}
+
+.gal-video-frame {
+  background: v.$text-dark;
+
+  iframe {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: none;
+  }
+}
+
+.gal-video-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: v.$white;
+  border-top: 1px solid v.$gray-border;
+}
+
+.gal-video-title {
+  @include m.poppins;
+  flex: 1;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: v.$text-muted;
+  margin: 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.gal-video-del {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  background: none;
+  border: 1.5px solid v.$gray-border;
+  color: v.$gray-mid;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: v.$danger-bg;
+    border-color: v.$danger;
+    color: v.$danger;
+  }
+}
+
+// ── Confirm delete dialog ─────────────────────────────────────────────────────
+@keyframes gal-confirm-in {
+  from { opacity: 0; transform: scale(0.94) translateY(10px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+
+.gal-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.gal-confirm {
+  background: v.$white;
+  border-radius: 14px;
+  padding: 32px 28px 28px;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  animation: gal-confirm-in 0.22s ease both;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+
+  &__icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: v.$danger-bg;
+    color: v.$danger;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px;
+
+    svg { width: 22px; height: 22px; }
+  }
+
+  &__title {
+    @include m.poppins;
+    font-size: 1rem;
+    font-weight: 700;
+    color: v.$text-dark;
+    margin: 0 0 10px;
+  }
+
+  &__msg {
+    @include m.poppins;
+    font-size: 0.85rem;
+    color: v.$text-muted;
+    line-height: 1.6;
+    margin: 0 0 24px;
+
+    strong { color: v.$text-dark; }
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__delete-btn {
+    @include m.poppins;
+    width: 100%;
+    padding: 12px;
+    background: v.$danger;
+    color: v.$white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.87rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover { background: v.$danger-dark; }
+  }
+
+  &__cancel-btn {
+    @include m.poppins;
+    width: 100%;
+    padding: 11px;
+    background: none;
+    color: v.$text-muted;
+    border: 1.5px solid v.$gray-border;
+    border-radius: 8px;
+    font-size: 0.87rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover { border-color: v.$text-dark; color: v.$text-dark; }
+  }
+}
+
+// ── Empty state ───────────────────────────────────────────────────────────────
+.gal-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 40px 20px;
+  text-align: center;
+
+  svg { color: v.$gray-border; }
+
+  &__yt { font-size: 2rem; color: #e0e0e0; }
+
+  p {
+    @include m.poppins;
+    font-size: 0.85rem;
+    color: v.$text-muted;
+    margin: 0;
+  }
+}

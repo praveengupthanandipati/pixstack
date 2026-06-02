@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Listitem from "../components/Listitem";
 import "../styles/Businessdetail.scss";
 import bannerImg from "../assets/businessdetailbanner.jpg";
+import emblumImg from "../assets/emblum.jpg";
 import img01 from "../assets/list-itemsimg/listitemimg01.jpg";
 import img02 from "../assets/list-itemsimg/listitemimg02.jpg";
 import img03 from "../assets/list-itemsimg/listitemimg03.jpg";
@@ -365,7 +366,9 @@ const Businessdetail = () => {
       {/* ── Section 02: Business Info Bar ────────────────────────────────────── */}
       <div className="biz-detail__info-bar">
         <div className="biz-detail__info-inner">
-          <div className="biz-detail__logo"><span>FS</span></div>
+          <div className="biz-detail__logo">
+            <img src={emblumImg} alt="Focus Snaps Photography" />
+          </div>
 
           <div className="biz-detail__info-main">
             <h1 className="biz-detail__name">{BUSINESS.name}</h1>

@@ -1,0 +1,235 @@
+@use "./variables" as v;
+@use "./mixins" as m;
+
+// ── Add form ──────────────────────────────────────────────────────────────────
+.sl-add-form {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.sl-platform-select {
+  width: 200px;
+  flex-shrink: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a4a4a4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 14px;
+  padding-right: 32px;
+  appearance: none;
+  cursor: pointer;
+
+  @media (max-width: 560px) { width: 100%; }
+}
+
+.sl-url-wrap {
+  flex: 1;
+  min-width: 180px;
+
+  @media (max-width: 560px) { min-width: 0; width: 100%; }
+}
+
+.sl-add-btn {
+  flex-shrink: 0;
+  @media (max-width: 560px) { width: 100%; justify-content: center; }
+}
+
+// ── Links list ────────────────────────────────────────────────────────────────
+.sl-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+// ── Link item ─────────────────────────────────────────────────────────────────
+.sl-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1.5px solid v.$gray-border;
+  border-radius: 10px;
+  background: v.$white;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.07);
+    border-color: darken(#e4e4e4, 6%);
+  }
+
+  &__icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: v.$gray-50;
+    border: 1px solid v.$gray-border;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  &__info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  &__label {
+    @include m.poppins;
+    font-size: 0.86rem;
+    font-weight: 600;
+    color: v.$text-dark;
+  }
+
+  &__url {
+    @include m.poppins;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.78rem;
+    color: v.$text-muted;
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+
+    svg { flex-shrink: 0; color: v.$gray-mid; }
+
+    &:hover { color: v.$primary; svg { color: v.$primary; } }
+  }
+
+  &__del {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 7px;
+    background: none;
+    border: 1.5px solid v.$gray-border;
+    color: v.$gray-mid;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.15s ease;
+
+    &:hover {
+      background: v.$danger-bg;
+      border-color: v.$danger;
+      color: v.$danger;
+    }
+  }
+}
+
+// ── Empty state ───────────────────────────────────────────────────────────────
+.sl-empty {
+  p {
+    @include m.poppins;
+    font-size: 0.85rem;
+    color: v.$text-muted;
+    margin: 0;
+  }
+}
+
+// ── Confirm dialog ────────────────────────────────────────────────────────────
+@keyframes sl-confirm-in {
+  from { opacity: 0; transform: scale(0.94) translateY(10px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+
+.sl-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.sl-confirm {
+  background: v.$white;
+  border-radius: 14px;
+  padding: 32px 28px 28px;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  animation: sl-confirm-in 0.22s ease both;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+
+  &__icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: v.$danger-bg;
+    color: v.$danger;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px;
+
+    svg { width: 22px; height: 22px; }
+  }
+
+  &__title {
+    @include m.poppins;
+    font-size: 1rem;
+    font-weight: 700;
+    color: v.$text-dark;
+    margin: 0 0 10px;
+  }
+
+  &__msg {
+    @include m.poppins;
+    font-size: 0.85rem;
+    color: v.$text-muted;
+    line-height: 1.6;
+    margin: 0 0 24px;
+
+    strong { color: v.$text-dark; }
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__delete-btn {
+    @include m.poppins;
+    width: 100%;
+    padding: 12px;
+    background: v.$danger;
+    color: v.$white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.87rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover { background: v.$danger-dark; }
+  }
+
+  &__cancel-btn {
+    @include m.poppins;
+    width: 100%;
+    padding: 11px;
+    background: none;
+    color: v.$text-muted;
+    border: 1.5px solid v.$gray-border;
+    border-radius: 8px;
+    font-size: 0.87rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover { border-color: v.$text-dark; color: v.$text-dark; }
+  }
+}

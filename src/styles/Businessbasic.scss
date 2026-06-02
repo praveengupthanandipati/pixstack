@@ -1,0 +1,558 @@
+@use "./variables" as v;
+@use "./mixins" as m;
+
+// ── About page ────────────────────────────────────────────────────────────────
+.ab-about-wrap { display: flex; flex-direction: column; gap: 6px; }
+
+.ab-about-textarea {
+  min-height: 220px;
+  line-height: 1.8;
+}
+
+.ab-about-text {
+  @include m.poppins;
+  font-size: 0.88rem;
+  color: v.$text-muted;
+  line-height: 1.9;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.ab-word-count {
+  @include m.poppins;
+  font-size: 0.73rem;
+  font-weight: 600;
+  color: #34a853;
+  text-align: right;
+
+  &--low { color: v.$danger; }
+
+  span { font-weight: 400; opacity: 0.85; }
+}
+
+// ── Input with suffix label ───────────────────────────────────────────────────
+.ab-input-suffix {
+  display: flex;
+  align-items: center;
+  gap: 0;
+
+  .bb-input {
+    border-radius: 8px 0 0 8px;
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.ab-suffix {
+  @include m.poppins;
+  display: flex;
+  align-items: center;
+  padding: 0 13px;
+  height: 42px;
+  background: v.$gray-50;
+  border: 1.5px solid v.$gray-border;
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: v.$text-muted;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+// ── Stats display grid ────────────────────────────────────────────────────────
+.ab-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+
+  @media (max-width: 600px) { grid-template-columns: 1fr; gap: 12px; }
+}
+
+.ab-stat {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  background: v.$gray-50;
+  border: 1px solid v.$gray-border;
+  border-radius: 10px;
+
+  svg { color: v.$primary; flex-shrink: 0; }
+
+  &__label {
+    @include m.poppins;
+    display: block;
+    font-size: 0.71rem;
+    font-weight: 600;
+    color: v.$text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 3px;
+  }
+
+  &__value {
+    @include m.poppins;
+    display: block;
+    font-size: 0.97rem;
+    font-weight: 700;
+    color: v.$text-dark;
+  }
+}
+
+// ── Card header ───────────────────────────────────────────────────────────────
+.bb-hd {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px 28px 20px;
+  border-bottom: 2px solid v.$gray-border;
+
+  &__title {
+    @include m.poppins;
+    font-size: 1rem;
+    font-weight: 700;
+    color: v.$text-dark;
+    margin: 0 0 4px;
+    letter-spacing: -0.01em;
+    span { color: v.$primary; }
+    @media (max-width: 480px) { font-size: 0.93rem; }
+  }
+
+  &__sub {
+    @include m.poppins;
+    font-size: 0.8rem;
+    color: v.$text-muted;
+    margin: 0;
+  }
+
+  &__edit-btn {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1.5px solid v.$gray-border;
+    background: v.$white;
+    border-radius: 7px;
+    padding: 8px 16px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: v.$text-dark;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+    svg { flex-shrink: 0; }
+    &:hover { border-color: v.$primary; color: v.$primary; }
+    @media (max-width: 480px) { padding: 7px 12px; font-size: 0.75rem; }
+  }
+
+  @media (max-width: 600px) { padding: 18px 18px 16px; flex-wrap: wrap; }
+}
+
+// ── Body ──────────────────────────────────────────────────────────────────────
+.bb-body { padding: 0 0 4px; }
+
+// ── Section ───────────────────────────────────────────────────────────────────
+.bb-section {
+  padding: 22px 28px;
+  border-bottom: 1px solid v.$gray-border;
+
+  &:last-of-type { border-bottom: none; }
+
+  &--logo-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  @media (max-width: 600px) { padding: 18px 18px; }
+}
+
+.bb-section-title {
+  @include m.poppins;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: v.$text-dark;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 14px;
+}
+
+// ── Banner ────────────────────────────────────────────────────────────────────
+.bb-banner-area { display: flex; flex-direction: column; gap: 12px; }
+
+.bb-banner-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+  border: 1px solid v.$gray-border;
+}
+
+.bb-banner-placeholder {
+  width: 100%;
+  height: 160px;
+  border: 2px dashed v.$gray-border;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: v.$gray-50;
+
+  svg { color: v.$gray-mid; }
+
+  p {
+    @include m.poppins;
+    font-size: 0.8rem;
+    color: v.$gray-mid;
+    margin: 0;
+  }
+}
+
+.bb-upload-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+// ── Logo ──────────────────────────────────────────────────────────────────────
+.bb-logo-area {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.bb-logo-img {
+  width: 88px;
+  height: 88px;
+  border-radius: 10px;
+  object-fit: cover;
+  display: block;
+  border: 2px solid v.$gray-border;
+}
+
+.bb-logo-placeholder {
+  width: 88px;
+  height: 88px;
+  border-radius: 10px;
+  border: 2px dashed v.$gray-border;
+  background: v.$gray-50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  svg { color: v.$gray-mid; }
+}
+
+.bb-logo-change {
+  position: absolute;
+  bottom: -6px;
+  right: -6px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: v.$primary;
+  color: v.$white;
+  border: 2px solid v.$white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  &:hover { background: v.$primary-hover; }
+}
+
+.bb-logo-info { flex: 1; min-width: 0; }
+
+// ── Upload button ─────────────────────────────────────────────────────────────
+.bb-upload-btn {
+  @include m.poppins;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1.5px solid v.$primary;
+  background: none;
+  border-radius: 7px;
+  padding: 8px 16px;
+  font-size: 0.79rem;
+  font-weight: 600;
+  color: v.$primary;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease, color 0.15s ease;
+
+  &:hover { background: v.$primary; color: v.$white; }
+
+  &--sm { padding: 7px 14px; font-size: 0.76rem; margin-top: 8px; }
+}
+
+.bb-hint {
+  @include m.poppins;
+  font-size: 0.74rem;
+  color: v.$gray-mid;
+  margin: 0;
+  line-height: 1.5;
+  strong { color: v.$text-muted; }
+}
+
+// ── Fields grid ───────────────────────────────────────────────────────────────
+.bb-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 24px;
+  @media (max-width: 600px) { grid-template-columns: 1fr; gap: 14px; }
+}
+
+.bb-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  &--full { grid-column: 1 / -1; }
+}
+
+.bb-label {
+  @include m.poppins;
+  font-size: 0.71rem;
+  font-weight: 600;
+  color: v.$text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.bb-value {
+  @include m.poppins;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: v.$text-dark;
+  margin: 0;
+  line-height: 1.45;
+  padding: 2px 0;
+
+  a {
+    color: v.$primary;
+    text-decoration: none;
+    &:hover { text-decoration: underline; }
+  }
+}
+
+.bb-input,
+.bb-textarea {
+  @include m.poppins;
+  width: 100%;
+  border: 1.5px solid v.$gray-border;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.86rem;
+  color: v.$text-dark;
+  background: v.$white;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+
+  &::placeholder { color: v.$gray-mid; }
+
+  &:focus {
+    border-color: v.$primary;
+    box-shadow: 0 0 0 3px rgba(v.$primary, 0.1);
+  }
+
+  &.has-error {
+    border-color: v.$danger;
+    box-shadow: 0 0 0 3px rgba(v.$danger, 0.08);
+  }
+
+  @media (max-width: 480px) { font-size: 0.84rem; padding: 9px 11px; }
+}
+
+.bb-textarea {
+  resize: vertical;
+  min-height: 72px;
+  font-family: "Poppins", sans-serif;
+}
+
+.bb-error {
+  @include m.poppins;
+  font-size: 0.71rem;
+  color: v.$danger;
+  margin: 2px 0 0;
+}
+
+// ── Save / Cancel ─────────────────────────────────────────────────────────────
+.bb-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 28px 24px;
+  border-top: 1px solid v.$gray-border;
+
+  @media (max-width: 480px) { flex-direction: column; padding: 16px 18px 20px; }
+}
+
+.bb-save-btn {
+  @include m.poppins;
+  background: v.$primary;
+  color: v.$white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 32px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  &:hover { background: v.$primary-hover; }
+  @media (max-width: 480px) { width: 100%; padding: 13px; }
+}
+
+.bb-cancel-btn {
+  @include m.poppins;
+  background: none;
+  color: v.$text-muted;
+  border: 1.5px solid v.$gray-border;
+  border-radius: 8px;
+  padding: 11px 24px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  &:hover { border-color: v.$text-dark; color: v.$text-dark; }
+  @media (max-width: 480px) { width: 100%; padding: 12px; }
+}
+
+// ── Searchable State Dropdown ─────────────────────────────────────────────────
+@keyframes bb-dropdown-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.bb-state-wrap {
+  position: relative;
+  &.is-open .bb-state-chevron { transform: rotate(180deg); }
+}
+
+.bb-state-trigger {
+  @include m.poppins;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid v.$gray-border;
+  border-radius: 8px;
+  background: v.$white;
+  font-size: 0.86rem;
+  color: v.$text-dark;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  &.is-placeholder span { color: v.$gray-mid; }
+  &:hover, &:focus { border-color: v.$primary; outline: none; }
+  &.has-error { border-color: v.$danger; box-shadow: 0 0 0 3px rgba(v.$danger, 0.08); }
+
+  @media (max-width: 480px) { font-size: 0.84rem; padding: 9px 11px; }
+}
+
+.bb-state-chevron {
+  color: v.$gray-mid;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.bb-state-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background: v.$white;
+  border: 1.5px solid v.$gray-border;
+  border-radius: 10px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  animation: bb-dropdown-in 0.18s ease both;
+}
+
+.bb-state-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid v.$gray-border;
+  background: v.$gray-50;
+
+  svg { flex-shrink: 0; color: v.$gray-mid; }
+
+  input {
+    @include m.poppins;
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 0.84rem;
+    color: v.$text-dark;
+    &::placeholder { color: v.$gray-mid; }
+  }
+}
+
+.bb-state-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 2px;
+  color: v.$gray-mid;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: color 0.15s ease, background 0.15s ease;
+  &:hover { color: v.$text-dark; background: v.$gray-border; }
+}
+
+.bb-state-list {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  max-height: 200px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-thumb { background: v.$gray-border; border-radius: 4px; }
+}
+
+.bb-state-option {
+  @include m.poppins;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 14px;
+  font-size: 0.85rem;
+  color: v.$text-dark;
+  cursor: pointer;
+  transition: background 0.12s ease;
+
+  &:hover { background: v.$gray-50; }
+
+  &.is-selected {
+    color: v.$primary;
+    font-weight: 600;
+    background: #fff5f5;
+    svg { color: v.$primary; }
+  }
+}
+
+.bb-state-empty {
+  @include m.poppins;
+  padding: 14px;
+  font-size: 0.83rem;
+  color: v.$gray-mid;
+  text-align: center;
+}

@@ -1,0 +1,182 @@
+@use "./variables" as v;
+@use "./mixins" as m;
+
+// ── Rating summary ────────────────────────────────────────────────────────────
+.cr-summary {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+
+  &__score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  &__avg {
+    @include m.poppins;
+    font-size: 3rem;
+    font-weight: 800;
+    color: v.$text-dark;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  &__total {
+    @include m.poppins;
+    font-size: 0.77rem;
+    color: v.$text-muted;
+  }
+
+  &__bars {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  @media (max-width: 560px) { flex-direction: column; align-items: flex-start; gap: 20px; }
+}
+
+// ── Bar row ───────────────────────────────────────────────────────────────────
+.cr-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cr-bar-label {
+  @include m.poppins;
+  font-size: 0.77rem;
+  font-weight: 600;
+  color: v.$text-muted;
+  width: 28px;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.cr-bar-track {
+  flex: 1;
+  height: 7px;
+  background: v.$gray-border;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.cr-bar-fill {
+  height: 100%;
+  background: v.$primary;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.cr-bar-count {
+  @include m.poppins;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: v.$text-muted;
+  width: 16px;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+// ── Stars ─────────────────────────────────────────────────────────────────────
+.cr-stars {
+  display: flex;
+  gap: 2px;
+}
+
+// ── Reviews list ─────────────────────────────────────────────────────────────
+.cr-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+// ── Review card ───────────────────────────────────────────────────────────────
+.cr-card {
+  padding: 20px 0;
+  border-bottom: 1px solid v.$gray-border;
+
+  &:first-child { padding-top: 0; }
+  &:last-child  { border-bottom: none; padding-bottom: 0; }
+
+  &__head {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+
+  &__avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    span {
+      @include m.poppins;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: v.$white;
+      letter-spacing: 0.04em;
+    }
+
+    @media (max-width: 480px) { width: 36px; height: 36px; }
+  }
+
+  &__meta { flex: 1; min-width: 0; }
+
+  &__name {
+    @include m.poppins;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: v.$text-dark;
+    margin: 0 0 4px;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+  }
+
+  &__date {
+    @include m.poppins;
+    font-size: 0.72rem;
+    color: v.$gray-mid;
+  }
+
+  &__location {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.74rem;
+    color: v.$text-muted;
+    margin: 0;
+
+    svg { flex-shrink: 0; color: v.$gray-mid; }
+  }
+
+  &__text {
+    @include m.poppins;
+    font-size: 0.85rem;
+    color: v.$text-muted;
+    line-height: 1.8;
+    margin: 0;
+
+    @media (max-width: 480px) { font-size: 0.82rem; }
+  }
+
+  @media (max-width: 480px) { padding: 16px 0; }
+}

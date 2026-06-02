@@ -1,0 +1,196 @@
+@use "./variables" as v;
+@use "./mixins" as m;
+
+// ── Filter section ────────────────────────────────────────────────────────────
+.enq-filter-section { padding-bottom: 16px; }
+
+.enq-filter {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+
+  &__label {
+    @include m.poppins;
+    font-size: 0.77rem;
+    font-weight: 600;
+    color: v.$text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  &__chip {
+    @include m.poppins;
+    padding: 6px 16px;
+    border: 1.5px solid v.$gray-border;
+    border-radius: 20px;
+    background: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: v.$text-muted;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover { border-color: v.$primary; color: v.$primary; }
+
+    &.is-active {
+      background: v.$primary;
+      border-color: v.$primary;
+      color: v.$white;
+      font-weight: 600;
+    }
+  }
+}
+
+// ── Enquiry list ──────────────────────────────────────────────────────────────
+.enq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+// ── Enquiry card ──────────────────────────────────────────────────────────────
+.enq-card {
+  border: 1.5px solid v.$gray-border;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+
+  &:hover { box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08); }
+
+  // ── Head ──────────────────────────────────────────────────────────────────
+  &__head {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 18px;
+    background: v.$gray-50;
+    border-bottom: 1px solid v.$gray-border;
+
+    @media (max-width: 600px) { flex-wrap: wrap; padding: 14px 14px; }
+  }
+
+  &__avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    span {
+      @include m.poppins;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: v.$white;
+      letter-spacing: 0.04em;
+    }
+  }
+
+  &__info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__name {
+    @include m.poppins;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: v.$text-dark;
+    margin: 0 0 6px;
+  }
+
+  &__contacts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+  }
+
+  &__phone,
+  &__email {
+    @include m.poppins;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.15s ease;
+
+    svg { flex-shrink: 0; }
+  }
+
+  &__phone {
+    color: v.$primary;
+    svg { color: v.$primary; }
+    &:hover { color: v.$primary-dark; text-decoration: underline; }
+  }
+
+  &__email {
+    color: v.$text-muted;
+    svg { color: v.$gray-mid; }
+    &:hover { color: v.$primary; svg { color: v.$primary; } }
+  }
+
+  &__date {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.76rem;
+    font-weight: 500;
+    color: v.$text-muted;
+    white-space: nowrap;
+    flex-shrink: 0;
+
+    svg { flex-shrink: 0; color: v.$gray-mid; }
+
+    @media (max-width: 600px) { width: 100%; margin-left: 56px; }
+  }
+
+  // ── Message ────────────────────────────────────────────────────────────────
+  &__message {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 18px;
+    background: v.$white;
+
+    @media (max-width: 600px) { padding: 12px 14px; }
+  }
+
+  &__message-icon {
+    display: flex;
+    padding-top: 2px;
+    color: v.$gray-mid;
+    flex-shrink: 0;
+  }
+
+  &__message p {
+    @include m.poppins;
+    font-size: 0.85rem;
+    color: v.$text-muted;
+    line-height: 1.75;
+    margin: 0;
+  }
+}
+
+// ── Empty state ───────────────────────────────────────────────────────────────
+.enq-empty {
+  p {
+    @include m.poppins;
+    font-size: 0.85rem;
+    color: v.$text-muted;
+    margin: 0;
+    text-align: center;
+    padding: 32px 0;
+  }
+}

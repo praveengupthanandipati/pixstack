@@ -1,0 +1,236 @@
+@use "./variables" as v;
+@use "./mixins" as m;
+
+// ── Shared badges ─────────────────────────────────────────────────────────────
+.wh-closed-badge {
+  @include m.poppins;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: v.$danger;
+  background: v.$danger-bg;
+  border: 1px solid rgba(v.$danger, 0.25);
+  border-radius: 20px;
+  padding: 3px 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.wh-today-tag {
+  @include m.poppins;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: v.$primary;
+  background: #fff0f0;
+  border: 1px solid rgba(v.$primary, 0.3);
+  border-radius: 20px;
+  padding: 2px 9px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+// ── View mode ─────────────────────────────────────────────────────────────────
+.wh-view-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.wh-view-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 0;
+  border-bottom: 1px solid v.$gray-border;
+
+  &:last-child { border-bottom: none; }
+
+  &.is-today {
+    .wh-view-row__day { color: v.$primary; font-weight: 700; }
+    .wh-view-row__time { color: v.$primary; }
+  }
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__day {
+    @include m.poppins;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: v.$text-dark;
+    min-width: 90px;
+  }
+
+  &__time {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.86rem;
+    font-weight: 500;
+    color: v.$text-muted;
+  }
+
+  &__time-icon { display: flex; color: v.$gray-mid; flex-shrink: 0; }
+}
+
+.wh-today-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: v.$primary;
+  flex-shrink: 0;
+}
+
+// ── Edit mode ─────────────────────────────────────────────────────────────────
+.wh-edit-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.wh-edit-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px 20px;
+  padding: 14px 0;
+  border-bottom: 1px solid v.$gray-border;
+
+  &:last-of-type { border-bottom: none; }
+
+  &.is-today {
+    .wh-edit-row__day { color: v.$primary; font-weight: 700; }
+  }
+
+  &__day-col {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 180px;
+    flex-shrink: 0;
+  }
+
+  &__day {
+    @include m.poppins;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: v.$text-dark;
+    min-width: 80px;
+
+    &.is-closed { color: v.$gray-mid; }
+  }
+
+  &__times {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  &__sep {
+    @include m.poppins;
+    font-size: 0.9rem;
+    color: v.$gray-mid;
+    font-weight: 600;
+  }
+
+  &__error {
+    width: 100%;
+    margin: 0;
+  }
+
+  @media (max-width: 560px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+// ── Toggle switch ─────────────────────────────────────────────────────────────
+.wh-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+
+  input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  &__track {
+    width: 38px;
+    height: 22px;
+    border-radius: 11px;
+    background: v.$gray-border;
+    position: relative;
+    transition: background 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  &__thumb {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: v.$white;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    transition: left 0.2s ease;
+  }
+
+  input:checked ~ &__track {
+    background: v.$primary;
+  }
+
+  input:checked ~ &__track &__thumb {
+    left: 19px;
+  }
+}
+
+// ── Time inputs ───────────────────────────────────────────────────────────────
+.wh-time-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wh-time-label {
+  @include m.poppins;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: v.$text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.wh-time-input {
+  @include m.poppins;
+  border: 1.5px solid v.$gray-border;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.86rem;
+  color: v.$text-dark;
+  background: v.$white;
+  outline: none;
+  width: 120px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+
+  &:focus {
+    border-color: v.$primary;
+    box-shadow: 0 0 0 3px rgba(v.$primary, 0.1);
+  }
+
+  &.has-error {
+    border-color: v.$danger;
+    box-shadow: 0 0 0 3px rgba(v.$danger, 0.08);
+  }
+
+  @media (max-width: 480px) { width: 100px; font-size: 0.83rem; }
+}

@@ -1,0 +1,112 @@
+@use "./variables" as v;
+@use "./mixins" as m;
+
+// ── Business Profile page layout ──────────────────────────────────────────────
+.biz-profile {
+  background: v.$gray-50;
+  min-height: calc(100vh - 70px);
+
+  &__wrapper {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 36px 40px 80px;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 28px;
+    align-items: start;
+
+    @media (max-width: 1024px) { padding: 28px 24px 64px; grid-template-columns: 210px 1fr; }
+    @media (max-width: 768px)  { grid-template-columns: 1fr; padding: 20px 16px 56px; gap: 20px; }
+    @media (max-width: 480px)  { padding: 16px 12px 48px; gap: 16px; }
+  }
+
+  &__sidebar {
+    position: sticky;
+    top: 88px;
+    @media (max-width: 768px) { position: static; }
+  }
+
+  &__main { display: flex; flex-direction: column; gap: 24px; }
+
+  &__card {
+    background: v.$white;
+    border: 1px solid v.$gray-border;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+}
+
+// ── Business Left Navigation ──────────────────────────────────────────────────
+.biz-leftnav {
+  background: v.$white;
+  border: 1px solid v.$gray-border;
+  border-radius: 12px;
+  overflow: hidden;
+
+  &__header {
+    padding: 16px 18px 14px;
+    border-bottom: 1px solid v.$gray-border;
+  }
+
+  &__heading {
+    @include m.poppins;
+    font-size: 0.67rem;
+    font-weight: 700;
+    color: v.$gray-mid;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0;
+  }
+
+  &__nav { padding: 6px 0; }
+
+  &__item {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 11px 18px;
+    border: none;
+    border-left: 3px solid transparent;
+    background: none;
+    text-align: left;
+    font-size: 0.84rem;
+    font-weight: 500;
+    color: v.$text-muted;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    line-height: 1.3;
+
+    &:hover { color: v.$primary; background: #fff5f5; }
+
+    &.is-active {
+      color: v.$primary;
+      background: #fff5f5;
+      font-weight: 600;
+      border-left-color: v.$primary;
+    }
+
+    @media (max-width: 480px) { font-size: 0.82rem; padding: 10px 16px; }
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    svg { width: 16px; height: 16px; }
+  }
+
+  &__footer {
+    border-top: 1px solid v.$gray-border;
+    padding: 6px 0 4px;
+
+    .biz-leftnav__item {
+      color: v.$danger;
+      &:hover { background: v.$danger-bg; color: v.$danger; border-left-color: transparent; }
+    }
+  }
+}

@@ -25,6 +25,16 @@ import Userprofile from './pages/Userprofile/Profile.jsx'
 import Postrequest from './pages/Userprofile/Postrequest.jsx'
 import Favouriteprofiles from './pages/Userprofile/Favouriteprofiles.jsx'
 
+//Business Profile
+import Businessbasic from './pages/Business/Businessbasic.jsx'
+import Aboutbusiness from './pages/Business/About.jsx'
+import Services from './pages/Business/Services.jsx'
+import Gallery from './pages/Business/Gallery.jsx'
+import Reviews from './pages/Business/Customerreviews.jsx'
+import Enquiries from './pages/Business/Customerenquiries.jsx'
+import Socialprofiles from './pages/Business/Socialprofiles.jsx'
+import Workinghours from './pages/Business/Workinghours.jsx'
+
 const STORAGE_KEY = 'pixstack_city'
 const NO_LAYOUT_PATHS = ['/login', '/business-login', '/business-signup']
 
@@ -52,6 +62,14 @@ const AppShell = ({ gateCity }) => {
         <Route path='/profile' element={<Userprofile />} />
         <Route path='/post-request' element={<Postrequest />} />
         <Route path='/favourite-profiles' element={<Favouriteprofiles />} />
+        <Route path='/business-basic' element={<Businessbasic />} />
+        <Route path='/business-about' element={<Aboutbusiness />} />
+        <Route path='/business-services' element={<Services />} />
+        <Route path='/business-gallery' element={<Gallery />} />
+        <Route path='/business-reviews' element={<Reviews />} />
+        <Route path='/business-enquiries' element={<Enquiries />} />
+        <Route path='/business-social' element={<Socialprofiles />} />
+        <Route path='/business-working-hours' element={<Workinghours />} />
       </Routes>
       {!hideLayout && <Footer />}
     </>

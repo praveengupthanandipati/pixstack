@@ -524,7 +524,7 @@ const Header = ({ gateCity = '' }) => {
           </button>
 
           {/* Business Profile — flush to right edge */}
-          <Link to="/business-profile" className="btn-business">
+          <Link to="/business-login" className="btn-business">
             + Business Profile
           </Link>
 

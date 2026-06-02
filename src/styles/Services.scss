@@ -1,0 +1,114 @@
+@use "./variables" as v;
+@use "./mixins" as m;
+
+// ── Add row ───────────────────────────────────────────────────────────────────
+.svc-add-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  @media (max-width: 560px) { flex-direction: column; }
+}
+
+.svc-add-input-wrap {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.svc-add-input { width: 100%; }
+
+.svc-add-btn {
+  @include m.poppins;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: v.$primary;
+  color: v.$white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+
+  &:hover { background: v.$primary-hover; }
+
+  @media (max-width: 560px) { width: 100%; justify-content: center; }
+}
+
+// ── Chips list ────────────────────────────────────────────────────────────────
+.svc-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.svc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: v.$gray-50;
+  border: 1.5px solid v.$gray-border;
+  border-radius: 20px;
+  padding: 7px 10px 7px 14px;
+  transition: border-color 0.15s ease, background 0.15s ease;
+
+  &:hover {
+    border-color: v.$primary;
+    background: #fff5f5;
+  }
+
+  &__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: v.$primary;
+    flex-shrink: 0;
+  }
+
+  &__name {
+    @include m.poppins;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: v.$text-dark;
+    white-space: nowrap;
+  }
+
+  &__del {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: none;
+    border: none;
+    color: v.$gray-mid;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s ease, color 0.15s ease;
+    padding: 0;
+
+    &:hover {
+      background: v.$danger;
+      color: v.$white;
+    }
+  }
+}
+
+// ── Empty state ───────────────────────────────────────────────────────────────
+.svc-empty {
+  p {
+    @include m.poppins;
+    font-size: 0.85rem;
+    color: v.$text-muted;
+    margin: 0;
+  }
+}
