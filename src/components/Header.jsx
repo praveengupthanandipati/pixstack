@@ -256,7 +256,7 @@ const Header = ({ gateCity = '' }) => {
               <span className="menu-label">Menu</span>
             </button>
 
-            <Link to="/post-your-needs" className="nav-link post-needs">
+            <Link to="/post-request" className="nav-link post-needs">
               Post Your Request
             </Link>
 
@@ -495,6 +495,9 @@ const Header = ({ gateCity = '' }) => {
               </div>
             ) : (
               <>
+                <Link to="/jobs" className="nav-link jobs-link">
+                  Jobs
+                </Link>
                 <Link to="/login" className="nav-link login-link">
                   Login / Signup
                 </Link>

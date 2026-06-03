@@ -94,11 +94,26 @@ const StateSelect = ({ value, onChange, hasError }) => {
   );
 };
 
+// ─── Business Primary Types ───────────────────────────────────────────────────
+const PRIMARY_TYPES = [
+  'Photography Studio',
+  'Freelance Photographer',
+  'Digital Lab',
+  'Album Vendor',
+  'Camera & Equipment Vendor',
+  'Photography Trainer',
+  'Camera Rental',
+  'Studio Rental',
+  'Videography Studio',
+  'Others',
+];
+
 // ─── Initial Data ─────────────────────────────────────────────────────────────
 const INITIAL = {
   bannerUrl: '',
   logoUrl: '',
   legalName: 'Focus Snaps Photography',
+  primaryType: 'Photography Studio',
   address: '3rd Floor, Prestige Centre, Banjara Hills',
   city: 'Hyderabad',
   state: 'Telangana',
@@ -311,6 +326,23 @@ const Businessbasic = () => {
                         onChange={(e) => set('legalName', e.target.value)} />
                     ) : (
                       <p className="bb-value">{data.legalName || '—'}</p>
+                    )}
+                  </Field>
+
+                  <Field label="Business Primary Type" error={errors.primaryType} full>
+                    {isEditing ? (
+                      <select
+                        className={`bb-input${errors.primaryType ? ' has-error' : ''}`}
+                        value={draft.primaryType}
+                        onChange={(e) => set('primaryType', e.target.value)}
+                      >
+                        <option value="">Select business type</option>
+                        {PRIMARY_TYPES.map((t) => (
+                          <option key={t} value={t}>{t}</option>
+                        ))}
+                      </select>
+                    ) : (
+                      <p className="bb-value">{data.primaryType || '—'}</p>
                     )}
                   </Field>
 

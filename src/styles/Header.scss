@@ -554,7 +554,8 @@
       pointer-events: auto;
     }
 
-    .login-link {
+    .login-link,
+    .jobs-link {
       opacity: 0;
       max-width: 0;
       pointer-events: none;
@@ -846,6 +847,7 @@
     // hide text-heavy desktop-only items
     .post-needs,
     .login-link,
+    .jobs-link,
     .btn-business { display: none; }
 
     // hide "MENU" label — keep hamburger bars only

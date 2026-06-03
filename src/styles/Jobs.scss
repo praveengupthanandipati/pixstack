@@ -1,0 +1,337 @@
+@use "./variables" as v;
+@use "./mixins" as m;
+
+.jobs-page {
+  padding: 40px 40px 72px;
+  background: v.$gray-50;
+  min-height: 100vh;
+
+  // ── Header ────────────────────────────────────────────────────────────────
+  &__header {
+    margin-bottom: 32px;
+  }
+
+  &__title-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+
+  &__title {
+    @include m.poppins;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: v.$text-dark;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+
+  &__city {
+    color: v.$primary;
+  }
+
+  &__count {
+    @include m.poppins;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: v.$primary;
+    color: v.$white;
+    padding: 4px 13px;
+    border-radius: 20px;
+  }
+
+  &__subtitle {
+    @include m.poppins;
+    font-size: 0.83rem;
+    color: v.$text-muted;
+    margin: 0 0 20px;
+    line-height: 1.6;
+  }
+
+  // ── Category filters ──────────────────────────────────────────────────────
+  &__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  &__filter-btn {
+    @include m.poppins;
+    font-size: 0.77rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: v.$text-dark;
+    background: v.$white;
+    border: 1.5px solid v.$gray-border;
+    padding: 7px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: border-color 0.18s ease, color 0.18s ease, background 0.18s ease;
+
+    &:hover {
+      border-color: v.$primary;
+      color: v.$primary;
+    }
+
+    &--active {
+      background: v.$primary;
+      border-color: v.$primary;
+      color: v.$white;
+
+      &:hover {
+        background: v.$primary;
+        color: v.$white;
+      }
+    }
+  }
+
+  // ── Job list ──────────────────────────────────────────────────────────────
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 24px 16px 48px;
+  }
+}
+
+// ── Job card ────────────────────────────────────────────────────────────────
+.job-card {
+  background: v.$white;
+  border: 1px solid v.$gray-border;
+  border-radius: 10px;
+  padding: 24px 28px;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    border-color: darken(v.$gray-border, 8%);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+  }
+
+  // ── Top row: badges + date ────────────────────────────────────────────────
+  &__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__type {
+    @include m.poppins;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+
+    &--full-time {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    &--part-time {
+      background: #fff8e1;
+      color: #f57f17;
+    }
+
+    &--freelance {
+      background: #e3f2fd;
+      color: #1565c0;
+    }
+  }
+
+  &__category {
+    @include m.poppins;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: v.$text-muted;
+    background: v.$gray-50;
+    border: 1px solid v.$gray-border;
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+
+  &__posted {
+    @include m.poppins;
+    font-size: 0.75rem;
+    color: v.$gray-mid;
+  }
+
+  // ── Title & company ───────────────────────────────────────────────────────
+  &__title {
+    @include m.poppins;
+    font-size: 1rem;
+    font-weight: 700;
+    color: v.$text-dark;
+    margin: 0 0 4px;
+    letter-spacing: -0.01em;
+  }
+
+  &__company {
+    @include m.poppins;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: v.$primary;
+    margin: 0 0 12px;
+  }
+
+  // ── Detail chips ──────────────────────────────────────────────────────────
+  &__details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  &__detail {
+    @include m.poppins;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: v.$text-muted;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    svg {
+      color: v.$gray-mid;
+      flex-shrink: 0;
+    }
+
+    &--salary {
+      color: v.$text-dark;
+      font-weight: 600;
+
+      svg {
+        color: v.$primary;
+      }
+    }
+  }
+
+  // ── Job description block ─────────────────────────────────────────────────
+  &__desc-block {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid v.$gray-border;
+  }
+
+  &__desc-title {
+    @include m.poppins;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: v.$text-dark;
+    margin: 0 0 8px;
+  }
+
+  &__desc {
+    @include m.poppins;
+    font-size: 0.83rem;
+    color: v.$text-muted;
+    line-height: 1.8;
+    margin: 0;
+  }
+
+  &__read-more {
+    background: none;
+    border: none;
+    padding: 0 0 0 4px;
+    cursor: pointer;
+    @include m.poppins;
+    font-size: 0.83rem;
+    font-weight: 700;
+    color: v.$primary;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+
+    &:hover {
+      color: v.$primary-hover;
+    }
+  }
+
+  // ── Contact details ───────────────────────────────────────────────────────
+  &__contact {
+    padding-top: 4px;
+  }
+
+  &__contact-title {
+    @include m.poppins;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: v.$text-dark;
+    margin: 0 0 12px;
+  }
+
+  &__contact-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px 24px;
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__contact-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    svg {
+      color: v.$primary;
+      flex-shrink: 0;
+    }
+  }
+
+  &__contact-label {
+    @include m.poppins;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: v.$text-muted;
+    min-width: 52px;
+  }
+
+  &__contact-value {
+    @include m.poppins;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: v.$text-dark;
+  }
+
+  &__contact-link {
+    color: v.$primary;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    padding: 18px 16px;
+
+    &__details {
+      gap: 10px;
+    }
+  }
+}

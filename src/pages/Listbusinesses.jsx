@@ -319,15 +319,38 @@ const HOW_IT_WORKS = [
   },
 ];
 
+const SORT_OPTIONS = [
+  { value: "default", label: "Sort By" },
+  { value: "rating_high", label: "Rating: High to Low" },
+  { value: "rating_low", label: "Rating: Low to High" },
+  { value: "reviews_high", label: "Most Reviews" },
+  { value: "reviews_low", label: "Fewest Reviews" },
+];
+
 const Listbusinesses = () => {
   const navigate = useNavigate();
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const [sortBy, setSortBy] = useState("default");
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const timerRef = useRef(null);
 
-  const visibleItems = ALL_ITEMS.slice(0, visibleCount);
-  const hasMore = visibleCount < ALL_ITEMS.length;
+  const filteredItems = (() => {
+    const base = [...ALL_ITEMS];
+    if (sortBy === "rating_high") return base.sort((a, b) => b.rating - a.rating);
+    if (sortBy === "rating_low") return base.sort((a, b) => a.rating - b.rating);
+    if (sortBy === "reviews_high") return base.sort((a, b) => b.reviews - a.reviews);
+    if (sortBy === "reviews_low") return base.sort((a, b) => a.reviews - b.reviews);
+    return base;
+  })();
+
+  const visibleItems = filteredItems.slice(0, visibleCount);
+  const hasMore = visibleCount < filteredItems.length;
+
+  const handleSortChange = (e) => {
+    setSortBy(e.target.value);
+    setVisibleCount(PAGE_SIZE);
+  };
 
   const handleLike = (isLiked) => {
     setToastMessage(isLiked ? "Added to Wishlist" : "Removed from Wishlist");
@@ -359,9 +382,22 @@ const Listbusinesses = () => {
             Hyderabad
           </span>
         </div>
-        <p className="list-page__caption">
-          Showing 200 results as per your search criteria
-        </p>
+        <div className="list-page__filters">
+          <p className="list-page__caption">
+            Showing {filteredItems.length} results as per your search criteria
+          </p>
+          <select
+            className={`list-page__sort-select${sortBy !== "default" ? " list-page__sort-select--active" : ""}`}
+            value={sortBy}
+            onChange={handleSortChange}
+          >
+            {SORT_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       {/* Business grid — 5 columns × 5 rows = 25 cards */}

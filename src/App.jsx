@@ -9,6 +9,7 @@ import CityGate from './components/CityGate.jsx'
 import Home from './pages/Home.jsx'
 import Listbusinesses from './pages/Listbusinesses.jsx'
 import Login from './pages/Login.jsx'
+import Jobs from './pages/Jobs.jsx'
 import Businesslogin from './pages/Business/Businesslogin.jsx'
 import Businesssignup from './pages/Business/Businesssignup.jsx'
 import Businessdetail from './pages/Businessdetail.jsx'
@@ -19,6 +20,7 @@ import Legalterms from './pages/Legalterms.jsx'
 import Privacypolicy from './pages/Privacypolicy.jsx'
 import Contact from './pages/Contact.jsx'
 import Blogs from './pages/Blogs.jsx'
+import Sitemaps from './pages/Sitemaps.jsx'
 
 //user profile pages
 import Userprofile from './pages/Userprofile/Profile.jsx'
@@ -34,6 +36,7 @@ import Reviews from './pages/Business/Customerreviews.jsx'
 import Enquiries from './pages/Business/Customerenquiries.jsx'
 import Socialprofiles from './pages/Business/Socialprofiles.jsx'
 import Workinghours from './pages/Business/Workinghours.jsx'
+import Businessjobs from './pages/Business/Jobs.jsx'
 
 const STORAGE_KEY = 'pixstack_city'
 const NO_LAYOUT_PATHS = ['/login', '/business-login', '/business-signup']
@@ -49,6 +52,7 @@ const AppShell = ({ gateCity }) => {
         <Route path='/' element={<Home />} />
         <Route path='/businesses' element={<Listbusinesses />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/jobs' element={<Jobs />} />
         <Route path='/business-login' element={<Businesslogin />} />
         <Route path='/business-signup' element={<Businesssignup />} />
         <Route path='/business/:id' element={<Businessdetail />} />
@@ -70,6 +74,8 @@ const AppShell = ({ gateCity }) => {
         <Route path='/business-enquiries' element={<Enquiries />} />
         <Route path='/business-social' element={<Socialprofiles />} />
         <Route path='/business-working-hours' element={<Workinghours />} />
+        <Route path='/business-jobs' element={<Businessjobs />} />
+        <Route path='/site-maps' element={<Sitemaps />} />
       </Routes>
       {!hideLayout && <Footer />}
     </>
