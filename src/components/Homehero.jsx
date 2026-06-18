@@ -33,7 +33,7 @@ const CATEGORIES = [
   {
     id: "studios",
     label: "Photo Studios",
-    link: "/photo-studios",
+    link: "/businesses",
     viewAllLabel: "View All Photo Studios",
     bg: homeBannerStudio,
     featuredTitle: "Premium Photo Studios Near You",
@@ -53,7 +53,7 @@ const CATEGORIES = [
   {
     id: "labs",
     label: "Digital Labs",
-    link: "/digital-labs",
+    link: "/businesses",
     viewAllLabel: "View All Digital Labs",
     bg: homeBannerPrinter,
     featuredTitle: "Professional Digital Photo Labs",
@@ -71,7 +71,7 @@ const CATEGORIES = [
   {
     id: "vendors",
     label: "Vendors",
-    link: "/vendors",
+    link: "/businesses",
     viewAllLabel: "View All Vendors",
     bg: homeBannerVendor,
     featuredTitle: "Camera & Album Vendors in Hyderabad",
@@ -89,7 +89,7 @@ const CATEGORIES = [
   {
     id: "training",
     label: "Training",
-    link: "/training",
+    link: "/businesses",
     viewAllLabel: "View All Training",
     bg: homeBannerTraining,
     featuredTitle: "Photography Training & Courses",

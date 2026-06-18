@@ -156,6 +156,96 @@
     @media (max-width: 600px) { width: 100%; margin-left: 56px; }
   }
 
+  // ── Meta column (enquiry date) ────────────────────────────────────────────
+  &__meta-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    flex-shrink: 0;
+
+    @media (max-width: 600px) { width: 100%; align-items: flex-start; margin-left: 56px; }
+  }
+
+  // ── Occasion + Status row ─────────────────────────────────────────────────
+  &__details-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 18px;
+    background: #fafafa;
+    border-bottom: 1px solid v.$gray-border;
+
+    @media (max-width: 600px) { padding: 10px 14px; }
+  }
+
+  &__occasion {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    svg { color: v.$primary; flex-shrink: 0; }
+  }
+
+  &__occasion-label {
+    @include m.poppins;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: v.$text-muted;
+  }
+
+  &__occasion-value {
+    @include m.poppins;
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: v.$text-dark;
+  }
+
+  // ── Status ─────────────────────────────────────────────────────────────────
+  &__status-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__status-badge {
+    @include m.poppins;
+    font-size: 0.67rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+
+    &--new       { background: #e3f2fd; color: #1565c0; }
+    &--contacted { background: #fff8e1; color: #f57f17; }
+    &--converted { background: #e8f5e9; color: #2e7d32; }
+    &--closed    { background: #f3e5f5; color: #6a1b9a; }
+  }
+
+  &__status-select {
+    @include m.poppins;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: v.$text-dark;
+    background: v.$white;
+    border: 1.5px solid v.$gray-border;
+    border-radius: 6px;
+    padding: 4px 28px 4px 10px;
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    transition: border-color 0.15s ease;
+
+    &:hover, &:focus { border-color: v.$primary; }
+  }
+
   // ── Message ────────────────────────────────────────────────────────────────
   &__message {
     display: flex;

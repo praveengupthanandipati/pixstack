@@ -4,8 +4,10 @@ import "../../styles/Businessprofile.scss";
 import "../../styles/Businessbasic.scss";
 import "../../styles/Customerenquiries.scss";
 
+const STATUSES = ["New", "Contacted", "Converted", "Closed"];
+
 // ─── Seed enquiries ───────────────────────────────────────────────────────────
-const ENQUIRIES = [
+const SEED_ENQUIRIES = [
   {
     id: 1,
     name: "Rahul Sharma",
@@ -14,6 +16,8 @@ const ENQUIRIES = [
     message:
       "Hi, I am planning my wedding in February 2026 and would like to know your packages for full-day candid wedding photography along with pre-wedding shoot.",
     date: "2025-06-01",
+    occasionDate: "2026-02-14",
+    status: "New",
   },
   {
     id: 2,
@@ -23,6 +27,8 @@ const ENQUIRIES = [
     message:
       "We need a photographer for our annual corporate event on 20th July. Please share your rates for 6-hour event coverage with edited photos delivered within 5 days.",
     date: "2025-05-28",
+    occasionDate: "2025-07-20",
+    status: "Contacted",
   },
   {
     id: 3,
@@ -32,6 +38,8 @@ const ENQUIRIES = [
     message:
       "Looking for maternity photography session, preferably outdoor. My due date is in August. Can we schedule something in July? Please let me know your availability.",
     date: "2025-05-20",
+    occasionDate: "2025-07-10",
+    status: "Converted",
   },
   {
     id: 4,
@@ -41,6 +49,8 @@ const ENQUIRIES = [
     message:
       "We are launching a new jewellery collection and need professional product photography. Around 50 pieces. Can you provide a quote for studio shoot?",
     date: "2025-04-15",
+    occasionDate: "2025-05-05",
+    status: "Closed",
   },
   {
     id: 5,
@@ -50,6 +60,8 @@ const ENQUIRIES = [
     message:
       "I run a fashion boutique and need lookbook photos for our new summer collection. About 20 outfits, 2 models. Please share your fashion photography packages.",
     date: "2025-04-02",
+    occasionDate: "2025-04-25",
+    status: "Contacted",
   },
   {
     id: 6,
@@ -59,6 +71,8 @@ const ENQUIRIES = [
     message:
       "Startup launch event in Hyderabad HITEC City on May 5th. Need event photography and a short reel for social media. How much would this cost?",
     date: "2025-03-18",
+    occasionDate: "2025-05-05",
+    status: "Converted",
   },
   {
     id: 7,
@@ -68,6 +82,8 @@ const ENQUIRIES = [
     message:
       "Interested in candid wedding photography for my daughter's wedding this December. Guest count approximately 400. Please share your wedding packages.",
     date: "2024-12-10",
+    occasionDate: "2025-12-18",
+    status: "New",
   },
   {
     id: 8,
@@ -77,6 +93,8 @@ const ENQUIRIES = [
     message:
       "I own a restaurant and need food photography for our new menu. Around 40-50 dishes. Would like to schedule a studio shoot at your location if possible.",
     date: "2024-11-22",
+    occasionDate: "2024-12-10",
+    status: "Closed",
   },
   {
     id: 9,
@@ -86,6 +104,8 @@ const ENQUIRIES = [
     message:
       "Looking for a photographer for our college annual day celebration on 15th January 2025. Around 500 students. Please quote for 8-hour coverage.",
     date: "2024-10-05",
+    occasionDate: "2025-01-15",
+    status: "Converted",
   },
   {
     id: 10,
@@ -95,6 +115,8 @@ const ENQUIRIES = [
     message:
       "Our advertising agency needs commercial photography for a new real estate project. Multiple locations in Hyderabad. Interested in a long-term partnership.",
     date: "2024-08-14",
+    occasionDate: "",
+    status: "Contacted",
   },
 ];
 
@@ -188,17 +210,40 @@ const AVATAR_COLORS = [
   "#8b4513",
 ];
 
+const IconOccasion = (
+  <svg viewBox="0 0 24 24" width="13" height="13" fill="none"
+    stroke="currentColor" strokeWidth="1.8"
+    strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10" />
+    <polyline points="12 6 12 12 16 14" />
+  </svg>
+);
+
+const STATUS_META = {
+  New:       { cls: "new",       label: "New"       },
+  Contacted: { cls: "contacted", label: "Contacted" },
+  Converted: { cls: "converted", label: "Converted" },
+  Closed:    { cls: "closed",    label: "Closed"    },
+};
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 const Customerenquiries = () => {
-  const years = [...new Set(ENQUIRIES.map((e) => e.date.slice(0, 4)))].sort(
+  const [enquiries, setEnquiries] = useState(SEED_ENQUIRIES);
+
+  const years = [...new Set(enquiries.map((e) => e.date.slice(0, 4)))].sort(
     (a, b) => b - a,
   );
   const [year, setYear] = useState("All");
 
   const filtered =
     year === "All"
-      ? ENQUIRIES
-      : ENQUIRIES.filter((e) => e.date.startsWith(year));
+      ? enquiries
+      : enquiries.filter((e) => e.date.startsWith(year));
+
+  const handleStatusChange = (id, newStatus) =>
+    setEnquiries((prev) =>
+      prev.map((e) => (e.id === id ? { ...e, status: newStatus } : e))
+    );
 
   return (
     <div className="biz-profile">
@@ -286,9 +331,37 @@ const Customerenquiries = () => {
                               </a>
                             </div>
                           </div>
-                          <div className="enq-card__date">
-                            {IconCalendar}
-                            {fmtDate(enq.date)}
+                          <div className="enq-card__meta-col">
+                            <div className="enq-card__date">
+                              {IconCalendar}
+                              {fmtDate(enq.date)}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Occasion + Status row */}
+                        <div className="enq-card__details-row">
+                          <div className="enq-card__occasion">
+                            {IconOccasion}
+                            <span className="enq-card__occasion-label">Date of Occasion:</span>
+                            <span className="enq-card__occasion-value">
+                              {enq.occasionDate ? fmtDate(enq.occasionDate) : "—"}
+                            </span>
+                          </div>
+                          <div className="enq-card__status-wrap">
+                            <span className={`enq-card__status-badge enq-card__status-badge--${STATUS_META[enq.status]?.cls}`}>
+                              {enq.status}
+                            </span>
+                            <select
+                              className="enq-card__status-select"
+                              value={enq.status}
+                              onChange={(e) => handleStatusChange(enq.id, e.target.value)}
+                              aria-label="Change status"
+                            >
+                              {STATUSES.map((s) => (
+                                <option key={s} value={s}>{s}</option>
+                              ))}
+                            </select>
                           </div>
                         </div>
 

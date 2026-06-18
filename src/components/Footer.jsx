@@ -4,10 +4,12 @@ import '../styles/Footer.scss'
 
 const Footer = () => {
   const [email, setEmail] = useState('')
+  const [subscribed, setSubscribed] = useState(false)
 
   const handleSubscribe = (e) => {
     e.preventDefault()
     setEmail('')
+    setSubscribed(true)
   }
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -59,19 +61,36 @@ const Footer = () => {
             activity to do. If you don&rsquo;t feel like coloring, you can still create
             templates.
           </p>
-          <form className="site-footer__form" onSubmit={handleSubscribe}>
-            <input
-              type="email"
-              className="site-footer__input"
-              placeholder="Enter your Email id"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <button type="submit" className="site-footer__subscribe-btn">
-              Subscribe Now
-            </button>
-          </form>
+          {subscribed ? (
+            <div className="site-footer__subscribe-success">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
+                stroke="currentColor" strokeWidth="2.2"
+                strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                <polyline points="22 4 12 14.01 9 11.01" />
+              </svg>
+              <div>
+                <p className="site-footer__subscribe-success-title">You're subscribed!</p>
+                <p className="site-footer__subscribe-success-msg">
+                  Thank you for subscribing. We'll send you the latest photography news and updates.
+                </p>
+              </div>
+            </div>
+          ) : (
+            <form className="site-footer__form" onSubmit={handleSubscribe}>
+              <input
+                type="email"
+                className="site-footer__input"
+                placeholder="Enter your Email id"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <button type="submit" className="site-footer__subscribe-btn">
+                Subscribe Now
+              </button>
+            </form>
+          )}
 
           <div className="site-footer__stores">
             <p className="site-footer__stores-label">Download the App</p>

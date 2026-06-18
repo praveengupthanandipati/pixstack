@@ -268,6 +268,14 @@ const Businesssignup = () => {
 
       {/* ── Right form panel ───────────────────────────────────────────────────── */}
       <div className="login-page__form-panel">
+        <Link to="/" className="login-page__close-btn" aria-label="Go to Home">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
+            stroke="currentColor" strokeWidth="2.2"
+            strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </Link>
         <div className="login-page__form-inner">
           {/* Logo — mobile only */}
           <Link to="/" className="login-page__mobile-logo">
