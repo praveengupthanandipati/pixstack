@@ -78,7 +78,9 @@ const Header = ({ gateCity = '' }) => {
   const [query, setQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
-  const [selectedCity, setSelectedCity] = useState(gateCity);
+  const [selectedCity, setSelectedCity] = useState(
+    gateCity || localStorage.getItem('pixstack_city') || ''
+  );
   const [cityOpen, setCityOpen] = useState(false);
   const [cityQuery, setCityQuery] = useState("");
   const [user, setUser] = useState(() => {
@@ -86,11 +88,24 @@ const Header = ({ gateCity = '' }) => {
     catch { return null; }
   });
   const [profileOpen, setProfileOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobCityExpanded, setMobCityExpanded] = useState(false);
+  const [mobCityQuery, setMobCityQuery] = useState("");
 
   // keep in sync when gateCity is set after the gate closes
   useEffect(() => {
     if (gateCity) setSelectedCity(gateCity);
   }, [gateCity]);
+
+  // close mobile menu on Escape
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") { setMobileMenuOpen(false); setMobCityExpanded(false); setMobCityQuery(""); }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [mobileMenuOpen]);
   const searchInputRef = useRef(null);
   const dropdownRef = useRef(null);
   const cityRef = useRef(null);
@@ -242,6 +257,29 @@ const Header = ({ gateCity = '' }) => {
 
           {/* Left — always visible */}
           <div className="header-left">
+            {/* Mobile-only quick-menu trigger */}
+            <button
+              className={`mob-menu-btn${mobileMenuOpen ? " is-open" : ""}`}
+              onClick={() => { setMobileMenuOpen((p) => !p); setMobCityExpanded(false); setMobCityQuery(""); }}
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileMenuOpen}
+            >
+              {mobileMenuOpen ? (
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
+                  stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              ) : (
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
+                  stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <line x1="3" y1="12" x2="16" y2="12" />
+                  <line x1="3" y1="18" x2="21" y2="18" />
+                </svg>
+              )}
+            </button>
+
             <button
               className="menu-btn"
               onClick={openMenu}
@@ -256,32 +294,26 @@ const Header = ({ gateCity = '' }) => {
               <span className="menu-label">Menu</span>
             </button>
 
-            <Link to="/post-request" className="nav-link post-needs">
-              Post Your Request
+            <Link to="/post-request" className="nav-link post-needs" aria-label="Post Your Request">
+              <svg className="post-needs__icon" viewBox="0 0 24 24" width="19" height="19"
+                fill="none" stroke="currentColor" strokeWidth="2"
+                strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="12" y1="11" x2="12" y2="17"/>
+                <line x1="9" y1="14" x2="15" y2="14"/>
+              </svg>
+              <span className="post-needs__text">Post Your Request</span>
             </Link>
 
-            <button
-              className="search-btn"
-              onClick={openSearch}
-              aria-label="Open search"
-            >
-              <svg viewBox="0 0 24 24" width="17" height="17" fill="none"
-                stroke="currentColor" strokeWidth="2.2"
-                strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="7.5" />
-                <line x1="20.5" y1="20.5" x2="16.2" y2="16.2" />
-              </svg>
-            </button>
-
-            {/* ── City selector ──────────────────────────────────────────── */}
+            {/* ── City selector (icon-only on mobile, full pill on desktop) ── */}
             <div className="city-selector" ref={cityRef}>
-
-              {/* Trigger button */}
               <button
                 className={`city-selector__btn${cityOpen ? " is-open" : ""}${selectedCity ? " has-value" : ""}`}
                 onClick={() => setCityOpen((prev) => !prev)}
                 aria-haspopup="listbox"
                 aria-expanded={cityOpen}
+                aria-label={selectedCity ? `Location: ${selectedCity}` : "Select city"}
               >
                 <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"
                   aria-hidden="true" className="city-selector__pin">
@@ -299,13 +331,11 @@ const Header = ({ gateCity = '' }) => {
                 </svg>
               </button>
 
-              {/* Dropdown panel */}
               <div
                 className={`city-dropdown${cityOpen ? " is-open" : ""}`}
                 role="dialog"
                 aria-label="Select your city"
               >
-                {/* Header */}
                 <div className="city-dropdown__head">
                   <div className="city-dropdown__head-left">
                     <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"
@@ -327,7 +357,6 @@ const Header = ({ gateCity = '' }) => {
                   </button>
                 </div>
 
-                {/* Search input */}
                 <div className="city-dropdown__search">
                   <svg viewBox="0 0 24 24" width="14" height="14" fill="none"
                     stroke="currentColor" strokeWidth="2.2"
@@ -363,7 +392,6 @@ const Header = ({ gateCity = '' }) => {
                 </div>
 
                 <div className="city-dropdown__body">
-                  {/* Popular cities — shown only when not searching */}
                   {!cityQuery && (
                     <div className="city-dropdown__section">
                       <p className="city-dropdown__section-label">Popular Cities</p>
@@ -380,8 +408,6 @@ const Header = ({ gateCity = '' }) => {
                       </div>
                     </div>
                   )}
-
-                  {/* All / filtered cities grid */}
                   <div className="city-dropdown__section">
                     {!cityQuery && (
                       <p className="city-dropdown__section-label">All Cities</p>
@@ -416,6 +442,20 @@ const Header = ({ gateCity = '' }) => {
                 </div>
               </div>
             </div>
+
+            <button
+              className="search-btn"
+              onClick={openSearch}
+              aria-label="Open search"
+            >
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
+                stroke="currentColor" strokeWidth="2"
+                strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="7.5" />
+                <line x1="20.5" y1="20.5" x2="16.2" y2="16.2" />
+              </svg>
+            </button>
+
           </div>
 
           {/* Center – Logo */}
@@ -583,6 +623,121 @@ const Header = ({ gateCity = '' }) => {
           );
         })()}
       </header>
+
+      {/* ── Mobile quick-actions panel ─────────────────────────────────────── */}
+      <div className={`mob-actions${mobileMenuOpen ? " is-open" : ""}`}>
+
+        {/* Search */}
+        <button
+          className="mob-actions__row"
+          onClick={() => { setMobileMenuOpen(false); openSearch(); }}
+        >
+          <span className="mob-actions__icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
+              stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="7.5" />
+              <line x1="20.5" y1="20.5" x2="16.2" y2="16.2" />
+            </svg>
+          </span>
+          <span className="mob-actions__label">Search</span>
+          <svg className="mob-actions__arrow" viewBox="0 0 24 24" width="16" height="16"
+            fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"
+            strokeLinejoin="round">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
+
+        {/* City select */}
+        <div className={`mob-actions__row mob-actions__row--city${mobCityExpanded ? " is-expanded" : ""}`}>
+          <button
+            className="mob-actions__row-trigger"
+            onClick={() => setMobCityExpanded((p) => !p)}
+          >
+            <span className="mob-actions__icon mob-actions__icon--pin">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/>
+              </svg>
+            </span>
+            <span className="mob-actions__label">
+              {selectedCity || "Select City"}
+              {selectedCity && <span className="mob-actions__sub">Tap to change</span>}
+              {!selectedCity && <span className="mob-actions__sub">Choose your location</span>}
+            </span>
+            <svg className={`mob-actions__arrow${mobCityExpanded ? " is-rotated" : ""}`}
+              viewBox="0 0 24 24" width="16" height="16" fill="none"
+              stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"
+              strokeLinejoin="round">
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </button>
+
+          {mobCityExpanded && (
+            <div className="mob-actions__city-picker">
+              <input
+                type="text"
+                className="mob-actions__city-search"
+                placeholder="Search city..."
+                value={mobCityQuery}
+                onChange={(e) => setMobCityQuery(e.target.value)}
+                autoComplete="off"
+              />
+              <div className="mob-actions__city-chips">
+                {(mobCityQuery
+                  ? CITIES.filter((c) => c.toLowerCase().includes(mobCityQuery.toLowerCase()))
+                  : POPULAR_CITIES
+                ).map((city) => (
+                  <button
+                    key={city}
+                    className={`mob-actions__city-chip${city === selectedCity ? " is-selected" : ""}`}
+                    onClick={() => {
+                      setSelectedCity(city);
+                      localStorage.setItem('pixstack_city', city);
+                      setMobCityExpanded(false);
+                      setMobCityQuery("");
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    {city}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Post New Request */}
+        <Link
+          to="/post-request"
+          className="mob-actions__row"
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          <span className="mob-actions__icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
+              stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="12" y1="11" x2="12" y2="17"/>
+              <line x1="9" y1="14" x2="15" y2="14"/>
+            </svg>
+          </span>
+          <span className="mob-actions__label">Post New Request</span>
+          <svg className="mob-actions__arrow" viewBox="0 0 24 24" width="16" height="16"
+            fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"
+            strokeLinejoin="round">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </Link>
+
+      </div>
+
+      {/* ── Mobile menu backdrop ───────────────────────────────────────────── */}
+      {mobileMenuOpen && (
+        <div
+          className="mob-actions-backdrop"
+          onClick={() => { setMobileMenuOpen(false); setMobCityExpanded(false); setMobCityQuery(""); }}
+          aria-hidden="true"
+        />
+      )}
 
       {/* ── Off-canvas backdrop ────────────────────────────────────────────── */}
       <div

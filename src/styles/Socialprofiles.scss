@@ -3,15 +3,15 @@
 
 // ── Add form ──────────────────────────────────────────────────────────────────
 .sl-add-form {
-  display: flex;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: minmax(140px, 200px) 1fr auto;
   gap: 10px;
-  flex-wrap: wrap;
+  align-items: start;
 }
 
 .sl-platform-select {
-  width: 200px;
-  flex-shrink: 0;
+  width: 100%;
+  min-width: 0;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a4a4a4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 10px center;
@@ -19,20 +19,16 @@
   padding-right: 32px;
   appearance: none;
   cursor: pointer;
-
-  @media (max-width: 560px) { width: 100%; }
 }
 
 .sl-url-wrap {
-  flex: 1;
-  min-width: 180px;
+  min-width: 0;
 
-  @media (max-width: 560px) { min-width: 0; width: 100%; }
+  .bb-input { width: 100%; box-sizing: border-box; }
 }
 
 .sl-add-btn {
-  flex-shrink: 0;
-  @media (max-width: 560px) { width: 100%; justify-content: center; }
+  white-space: nowrap;
 }
 
 // ── Links list ────────────────────────────────────────────────────────────────
@@ -87,20 +83,25 @@
 
   &__url {
     @include m.poppins;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     gap: 5px;
     font-size: 0.78rem;
     color: v.$text-muted;
     text-decoration: none;
+    min-width: 0;
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 100%;
 
     svg { flex-shrink: 0; color: v.$gray-mid; }
 
     &:hover { color: v.$primary; svg { color: v.$primary; } }
+  }
+
+  &__url-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
   }
 
   &__del {
@@ -123,6 +124,10 @@
       color: v.$danger;
     }
   }
+
+  &__del-label {
+    display: none; // hidden on desktop — shown only on mobile
+  }
 }
 
 // ── Empty state ───────────────────────────────────────────────────────────────
@@ -132,6 +137,133 @@
     font-size: 0.85rem;
     color: v.$text-muted;
     margin: 0;
+  }
+}
+
+// ── Tablet responsive (768px – 1024px) ───────────────────────────────────────
+@media (max-width: 1024px) {
+  .sl-add-form {
+    grid-template-columns: minmax(120px, 170px) 1fr auto;
+    gap: 8px;
+  }
+
+  .sl-item {
+    padding: 12px 14px;
+    gap: 12px;
+
+    &__icon { width: 36px; height: 36px; border-radius: 8px; }
+    &__label { font-size: 0.83rem; }
+    &__url   { font-size: 0.76rem; }
+  }
+}
+
+// ── Mobile responsive (≤767px) ────────────────────────────────────────────────
+@media (max-width: 767px) {
+
+  // Add form: single column, every element 100% wide
+  .sl-add-form {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  // Override svc-add-btn's inline-flex + flex-shrink:0 so the button fills the column
+  .sl-add-btn {
+    display: flex !important;
+    width: 100%;
+    justify-content: center;
+    flex-shrink: unset;
+  }
+
+  // Compact inputs
+  .sl-platform-select,
+  .sl-url-wrap .bb-input {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 0.8rem;
+    padding: 8px 10px;
+  }
+
+  .sl-platform-select {
+    padding-right: 28px;
+    background-position: right 8px center;
+    background-size: 12px;
+  }
+
+  .sl-list { gap: 8px; }
+
+  .sl-item {
+    width: 100%;
+    box-sizing: border-box;
+    flex-wrap: wrap;       // lets delete row drop to its own line
+    padding: 12px;
+    gap: 8px 10px;
+
+    &__icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      flex-shrink: 0;
+
+      svg { width: 16px !important; height: 16px !important; }
+    }
+
+    &__info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    &__label {
+      font-size: 0.82rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &__url {
+      font-size: 0.73rem;
+      gap: 4px;
+    }
+
+    // Full-width delete bar at bottom
+    &__del {
+      flex: 0 0 100%;       // push onto its own row
+      width: 100%;
+      height: 34px;
+      border-radius: 8px;
+      gap: 6px;
+      border-color: rgba(v.$danger, 0.35);
+      color: v.$danger;
+      font-size: 0.75rem;
+      font-weight: 600;
+
+      svg { width: 13px !important; height: 13px !important; }
+
+      &:hover {
+        background: v.$danger-bg;
+        border-color: v.$danger;
+      }
+    }
+
+    &__del-label {
+      @include m.poppins;
+      display: inline;
+    }
+  }
+
+  .sl-empty p { font-size: 0.8rem; }
+}
+
+// ── Small mobile (≤480px) ─────────────────────────────────────────────────────
+@media (max-width: 480px) {
+
+  .sl-item {
+    padding: 10px 11px;
+    gap: 7px 8px;
+
+    &__icon  { width: 32px; height: 32px; }
+    &__label { font-size: 0.77rem; }
+    &__url   { font-size: 0.7rem; }
+    &__del   { height: 32px; font-size: 0.72rem; }
   }
 }
 

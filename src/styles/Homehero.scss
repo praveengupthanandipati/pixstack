@@ -219,7 +219,7 @@
     height: 75vh;
 
     &__inner {
-      padding: 2.5rem 1rem 4.5rem;
+      padding: 2.5rem 1rem 5rem;
       gap: 1.25rem;
     }
 
@@ -234,6 +234,18 @@
     }
 
     &__feature { height: 110px; }
+
+    // full-width tap-friendly strip at the bottom on mobile
+    &__view-all {
+      left: 0;
+      right: 0;
+      bottom: 0;
+      justify-content: center;
+      text-align: center;
+      padding: 0.9rem 1rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+    }
   }
 }
 
@@ -250,6 +262,6 @@
 
     &__cat-icon { width: 28px; height: 28px; }
     &__cat-label { font-size: 0.52rem; }
-    &__feature { height: 120px; }
+    &__feature { height: 130px; }
   }
 }

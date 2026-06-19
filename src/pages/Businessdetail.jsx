@@ -182,6 +182,10 @@ const SocialIcons = {
 const Businessdetail = () => {
   const navigate = useNavigate();
   const [isFav, setIsFav] = useState(false);
+  const [aboutExpanded, setAboutExpanded] = useState(false);
+  const [servicesExpanded, setServicesExpanded] = useState(false);
+  const [photosExpanded, setPhotosExpanded] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [lightbox, setLightbox] = useState({ open: false, index: 0 });
   const [showAllReviews, setShowAllReviews] = useState(false);
   const [reviews, setReviews] = useState(REVIEWS);
@@ -218,11 +222,11 @@ const Businessdetail = () => {
     return () => document.removeEventListener("keydown", handler);
   }, [lightbox.open]);
 
-  // Lock body scroll when lightbox is open
+  // Lock body scroll when lightbox or sidebar popup is open
   useEffect(() => {
-    document.body.style.overflow = lightbox.open ? "hidden" : "";
+    document.body.style.overflow = (lightbox.open || sidebarOpen) ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
-  }, [lightbox.open]);
+  }, [lightbox.open, sidebarOpen]);
 
   const openPhoto = (index) => setLightbox({ open: true, index });
   const prevPhoto = () => setLightbox((lb) => ({ ...lb, index: (lb.index - 1 + PHOTOS.length) % PHOTOS.length }));
@@ -409,10 +413,35 @@ const Businessdetail = () => {
         {/* ══════ MAIN COLUMN ══════ */}
         <div className="biz-detail__main">
 
+          {/* Mobile-only trigger to open enquiry / contact / hours popup */}
+          <button className="biz-detail__sidebar-trigger" onClick={() => setSidebarOpen(true)}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
+              strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+            <span>Send Enquiry &amp; Contact Info</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"
+              strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
+
           {/* Section 03: About */}
           <div className="biz-detail__card">
             <h2 className="biz-detail__section-title">About <span>Focus Snaps</span></h2>
-            <p className="biz-detail__about-text">{BUSINESS.about}</p>
+            <p className={`biz-detail__about-text${aboutExpanded ? "" : " biz-detail__about-text--clamped"}`}>
+              {BUSINESS.about}
+            </p>
+            <button
+              className={`biz-detail__read-more${aboutExpanded ? " biz-detail__read-more--open" : ""}`}
+              onClick={() => setAboutExpanded((e) => !e)}
+            >
+              {aboutExpanded ? "Show less" : "Read more"}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"
+                strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
             <div className="biz-detail__about-stats">
               <div className="biz-detail__stat-card">
                 <strong>{BUSINESS.since}</strong><span>On Pixstack</span>
@@ -432,23 +461,43 @@ const Businessdetail = () => {
           {/* Section 04: Services */}
           <div className="biz-detail__card">
             <h2 className="biz-detail__section-title">Services <span>Offered</span></h2>
-            <div className="biz-detail__services">
+            <div className={`biz-detail__services${servicesExpanded ? " is-expanded" : ""}`}>
               {SERVICES.map((s) => (
                 <span key={s} className="biz-detail__service-tag">{s}</span>
               ))}
             </div>
+            <button
+              className={`biz-detail__show-more biz-detail__show-more--services${servicesExpanded ? " biz-detail__show-more--open" : ""}`}
+              onClick={() => setServicesExpanded((e) => !e)}
+            >
+              {servicesExpanded ? "Show less" : "Show more"}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"
+                strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
           </div>
 
           {/* Section 07: Popular Photos */}
           <div className="biz-detail__card">
             <h2 className="biz-detail__section-title">Popular <span>Photos</span></h2>
-            <div className="biz-detail__photos-grid">
+            <div className={`biz-detail__photos-grid${photosExpanded ? " is-expanded" : ""}`}>
               {PHOTOS.map((src, i) => (
                 <div key={i} className="biz-detail__photo-thumb" onClick={() => openPhoto(i)}>
                   <img src={src} alt={`Portfolio ${i + 1}`} loading="lazy" />
                 </div>
               ))}
             </div>
+            <button
+              className={`biz-detail__show-more${photosExpanded ? " biz-detail__show-more--open" : ""}`}
+              onClick={() => setPhotosExpanded((e) => !e)}
+            >
+              {photosExpanded ? "Show less" : "Load more"}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"
+                strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
           </div>
 
           {/* Section 08: Popular Videos */}
@@ -780,6 +829,152 @@ const Businessdetail = () => {
       </div>
 
       {/* ── Lightbox ──────────────────────────────────────────────────────────── */}
+      {/* ── Mobile Sidebar Popup (Enquiry / Social / Hours) ─────────────────────── */}
+      <div className={`biz-detail__mob-sidebar${sidebarOpen ? " is-open" : ""}`}>
+        <div className="biz-detail__mob-sidebar-backdrop" onClick={() => setSidebarOpen(false)} />
+        <div className="biz-detail__mob-sidebar-panel">
+          <div className="biz-detail__mob-sidebar-header">
+            <span>Contact &amp; Business Info</span>
+            <button className="biz-detail__mob-sidebar-close" onClick={() => setSidebarOpen(false)}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"
+                strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+          <div className="biz-detail__mob-sidebar-body">
+
+            {/* Send Enquiry */}
+            <div className="biz-detail__card">
+              <h2 className="biz-detail__section-title">Send <span>Enquiry</span></h2>
+              {enquirySent ? (
+                <div className="biz-detail__enquiry-success">
+                  ✓ Your message has been sent to Focus Snaps Photography.<br />
+                  They will get back to you soon on your query.
+                </div>
+              ) : (
+                <form onSubmit={handleEnquirySubmit} noValidate>
+                  <div className="biz-detail__enquiry-field">
+                    <label className="biz-detail__enquiry-label">Your Name</label>
+                    <input type="text" className="biz-detail__enquiry-input" placeholder="Write your name"
+                      value={enquiry.name} onChange={(e) => handleEnquiryChange("name", e.target.value)} />
+                    {enquiryErrors.name && <p style={{ color: "#dc3545", fontSize: "0.73rem", marginTop: 4, fontFamily: "Poppins" }}>{enquiryErrors.name}</p>}
+                  </div>
+                  <div className="biz-detail__enquiry-field">
+                    <label className="biz-detail__enquiry-label">
+                      Phone Number
+                      {phoneStep === "verified" && <span className="biz-detail__phone-verified-badge">✓ Verified</span>}
+                    </label>
+                    {phoneStep === "input" && (
+                      <div className="biz-detail__enquiry-phone-row">
+                        <input type="tel" className="biz-detail__enquiry-input" placeholder="10-digit mobile number"
+                          value={enquiry.phone}
+                          onChange={(e) => handleEnquiryChange("phone", e.target.value.replace(/\D/g, "").slice(0, 10))}
+                          onKeyDown={(e) => e.key === "Enter" && handleSendOtp()} maxLength={10} />
+                        <button type="button" className="biz-detail__send-otp-btn" onClick={handleSendOtp}>Send OTP</button>
+                      </div>
+                    )}
+                    {phoneStep === "otp" && (
+                      <div className="biz-detail__otp-section">
+                        <div className="biz-detail__otp-phone-row">
+                          <span>+91 {enquiry.phone}</span>
+                          <button type="button" className="biz-detail__otp-change"
+                            onClick={() => { setPhoneStep("input"); setEnquiryOtp(["","","","","",""]); setOtpError(""); }}>Change</button>
+                        </div>
+                        <div className="biz-detail__otp-boxes">
+                          {enquiryOtp.map((digit, idx) => (
+                            <input key={idx} ref={(el) => { otpRefs.current[idx] = el; }}
+                              type="text" inputMode="numeric"
+                              className={`biz-detail__otp-box${otpError ? " has-error" : ""}`}
+                              value={digit} maxLength={1}
+                              onChange={(e) => handleOtpChange(idx, e.target.value)}
+                              onKeyDown={(e) => handleOtpKeyDown(idx, e)}
+                              onPaste={idx === 0 ? handleOtpPaste : undefined}
+                              autoComplete="one-time-code" />
+                          ))}
+                        </div>
+                        {otpError && <p className="biz-detail__otp-error">{otpError}</p>}
+                        <div className="biz-detail__otp-actions">
+                          <button type="button" className="biz-detail__verify-otp-btn" onClick={handleVerifyOtp}>Verify OTP</button>
+                          <span className="biz-detail__otp-resend">
+                            {otpTimer > 0
+                              ? <>Resend in <strong>0:{String(otpTimer).padStart(2, "0")}</strong></>
+                              : <button type="button" className="biz-detail__resend-link" onClick={handleResendOtp}>Resend OTP</button>}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                    {phoneStep === "verified" && (
+                      <div className="biz-detail__phone-verified">
+                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none"
+                          stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" />
+                        </svg>
+                        +91 {enquiry.phone}
+                        <button type="button" className="biz-detail__otp-change"
+                          onClick={() => { setPhoneStep("input"); setEnquiryOtp(["","","","","",""]); handleEnquiryChange("phone", ""); }}>Change</button>
+                      </div>
+                    )}
+                    {enquiryErrors.phone && <p className="biz-detail__otp-error">{enquiryErrors.phone}</p>}
+                  </div>
+                  <div className="biz-detail__enquiry-field">
+                    <label className="biz-detail__enquiry-label">Email</label>
+                    <input type="email" className="biz-detail__enquiry-input" placeholder="your@email.com"
+                      value={enquiry.email} onChange={(e) => handleEnquiryChange("email", e.target.value)} />
+                    {enquiryErrors.email && <p style={{ color: "#dc3545", fontSize: "0.73rem", marginTop: 4, fontFamily: "Poppins" }}>{enquiryErrors.email}</p>}
+                  </div>
+                  <div className="biz-detail__enquiry-field">
+                    <label className="biz-detail__enquiry-label">Message</label>
+                    <textarea className="biz-detail__enquiry-textarea" placeholder="Write your message…"
+                      value={enquiry.message} onChange={(e) => handleEnquiryChange("message", e.target.value)} />
+                    {enquiryErrors.message && <p style={{ color: "#dc3545", fontSize: "0.73rem", marginTop: 4, fontFamily: "Poppins" }}>{enquiryErrors.message}</p>}
+                  </div>
+                  <p className="biz-detail__enquiry-note">
+                    Your message will be sent to <strong>Focus Snaps Photography</strong>. They will get back to you soon on your query.
+                  </p>
+                  <button type="submit" className="biz-detail__enquiry-btn">Send Enquiry</button>
+                </form>
+              )}
+            </div>
+
+            {/* Stay in Touch */}
+            <div className="biz-detail__card">
+              <h2 className="biz-detail__section-title">Stay in <span>Touch</span></h2>
+              <div className="biz-detail__social-links">
+                {[
+                  { key: "facebook",  label: "Facebook",    url: "https://facebook.com/focussnaps" },
+                  { key: "instagram", label: "Instagram",   url: "https://instagram.com/focussnaps" },
+                  { key: "twitter",   label: "Twitter / X", url: "https://twitter.com/focussnaps" },
+                  { key: "linkedin",  label: "LinkedIn",    url: "https://linkedin.com/company/focussnaps" },
+                ].map((s) => (
+                  <a key={s.key} href={s.url} target="_blank" rel="noreferrer"
+                    className={`biz-detail__social-link biz-detail__social-link--${s.key}`}>
+                    {SocialIcons[s.key]}{s.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Working Hours */}
+            <div className="biz-detail__card">
+              <h2 className="biz-detail__section-title">Working <span>Hours</span></h2>
+              <div className="biz-detail__hours">
+                {HOURS.map((h) => (
+                  <div key={h.day}
+                    className={`biz-detail__hours-row${h.jsDay === today ? " is-today" : ""}`}>
+                    <span className="biz-detail__hours-day">{h.day}</span>
+                    {h.closed
+                      ? <span className="biz-detail__hours-closed">Closed</span>
+                      : <span className="biz-detail__hours-time">{h.from} – {h.to}</span>}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
       {lightbox.open && (
         <div className="biz-detail__lightbox">
           <div className="biz-detail__lightbox-backdrop" onClick={() => setLightbox({ open: false, index: 0 })} />

@@ -51,6 +51,10 @@
   // ── Body ──────────────────────────────────────────────────────────────────
   &__body {
     padding: 14px 16px 12px;
+
+    @media (max-width: 480px) {
+      padding: 10px 10px 9px;
+    }
   }
 
   &__title-row {
@@ -68,6 +72,8 @@
     color: v.$text-dark;
     margin: 0;
     line-height: 1.4;
+
+    @media (max-width: 480px) { font-size: 0.78rem; }
   }
 
   // ── Like button ───────────────────────────────────────────────────────────
@@ -107,6 +113,8 @@
     color: v.$text-muted;
     margin: 0 0 10px;
 
+    @media (max-width: 480px) { font-size: 0.68rem; margin-bottom: 8px; }
+
     svg {
       width: 12px;
       height: 12px;
@@ -132,6 +140,8 @@
     font-size: 0.75rem;
     font-weight: 600;
     color: v.$text-dark;
+
+    @media (max-width: 480px) { font-size: 0.68rem; }
   }
 
   &__rating {
@@ -142,6 +152,8 @@
     font-size: 0.8rem;
     font-weight: 700;
     color: v.$text-dark;
+
+    @media (max-width: 480px) { font-size: 0.72rem; }
 
     svg {
       width: 13px;

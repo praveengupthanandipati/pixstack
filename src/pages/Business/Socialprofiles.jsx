@@ -233,12 +233,13 @@ const Socialprofiles = () => {
                             <a href={link.url} target="_blank" rel="noreferrer"
                               className="sl-item__url">
                               {IconLink}
-                              {link.url}
+                              <span className="sl-item__url-text">{link.url}</span>
                             </a>
                           </div>
                           <button className="sl-item__del" onClick={() => requestDelete(link)}
                             aria-label={`Remove ${platform?.label}`}>
                             {IconTrash}
+                            <span className="sl-item__del-label">Remove</span>
                           </button>
                         </div>
                       );

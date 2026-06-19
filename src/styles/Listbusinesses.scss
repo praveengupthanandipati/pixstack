@@ -6,9 +6,15 @@
   background: v.$gray-50;
   min-height: 100vh;
 
+  @media (max-width: 767px) {
+    padding: 20px 12px 56px;
+  }
+
   // ── Page header ─────────────────────────────────────────────────────────────
   &__header {
     margin-bottom: 32px;
+
+    @media (max-width: 767px) { margin-bottom: 18px; }
   }
 
   &__title-row {
@@ -17,6 +23,8 @@
     flex-wrap: wrap;
     gap: 12px;
     margin-bottom: 8px;
+
+    @media (max-width: 767px) { gap: 8px; margin-bottom: 5px; }
   }
 
   &__title {
@@ -26,6 +34,8 @@
     color: v.$text-dark;
     margin: 0;
     letter-spacing: -0.02em;
+
+    @media (max-width: 767px) { font-size: 1.2rem; }
   }
 
   &__city-badge {
@@ -100,21 +110,10 @@
     gap: 20px;
     margin-bottom: 44px;
 
-    @media (max-width: 1200px) {
-      grid-template-columns: repeat(4, 1fr);
-    }
-
-    @media (max-width: 992px) {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    @media (max-width: 768px) {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    @media (max-width: 480px) {
-      grid-template-columns: 1fr;
-    }
+    @media (max-width: 1200px) { grid-template-columns: repeat(4, 1fr); }
+    @media (max-width: 992px)  { grid-template-columns: repeat(3, 1fr); }
+    @media (max-width: 767px)  { grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 28px; }
+    @media (max-width: 320px)  { grid-template-columns: 1fr; }
   }
 
   // ── Load More ────────────────────────────────────────────────────────────────
@@ -147,6 +146,12 @@
       opacity: 0.5;
       cursor: not-allowed;
     }
+
+    @media (max-width: 767px) {
+      width: 100%;
+      padding: 13px 20px;
+      letter-spacing: 0.07em;
+    }
   }
 
   // ── Content sections ─────────────────────────────────────────────────────────
@@ -156,6 +161,11 @@
     border-radius: 8px;
     padding: 36px 40px;
     margin-bottom: 24px;
+
+    @media (max-width: 767px) {
+      padding: 20px 16px;
+      margin-bottom: 14px;
+    }
   }
 
   &__content-title {
@@ -294,9 +304,16 @@
       opacity: 1;
       transform: translateX(0);
     }
+
+    @media (max-width: 767px) {
+      top: 80px;
+      right: 50%;
+      transform: translateX(50%) translateX(20px);
+
+      &.list-page__toast--visible {
+        transform: translateX(50%);
+      }
+    }
   }
 
-  @media (max-width: 768px) {
-    padding: 24px 16px 48px;
-  }
 }

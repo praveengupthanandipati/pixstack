@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../../styles/Businessprofile.scss";
 
@@ -176,42 +176,50 @@ const NAV_ITEMS = [
 const Leftnav = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const currentItem = NAV_ITEMS.find((item) => item.path === pathname);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const handler = (e) => { if (e.key === "Escape") setMobileOpen(false); };
+    document.addEventListener("keydown", handler);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handler);
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
+  const handleNav = (path) => {
+    navigate(path);
+    setMobileOpen(false);
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("pixstack_business");
     navigate("/");
   };
 
-  return (
-    <aside className="biz-leftnav">
-      <div className="biz-leftnav__header">
-        <p className="biz-leftnav__heading">Business Dashboard</p>
-      </div>
-
+  const NavContent = () => (
+    <>
       <nav className="biz-leftnav__nav">
         {NAV_ITEMS.map((item) => (
           <button
             key={item.key}
             className={`biz-leftnav__item${pathname === item.path ? " is-active" : ""}`}
-            onClick={() => navigate(item.path)}
+            onClick={() => handleNav(item.path)}
           >
             <span className="biz-leftnav__icon">{item.icon}</span>
             {item.label}
           </button>
         ))}
       </nav>
-
       <div className="biz-leftnav__footer">
         <button className="biz-leftnav__item" onClick={handleLogout}>
           <span className="biz-leftnav__icon">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
               <polyline points="16 17 21 12 16 7" />
               <line x1="21" y1="12" x2="9" y2="12" />
@@ -220,7 +228,51 @@ const Leftnav = () => {
           Logout
         </button>
       </div>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* ── Desktop sidebar ── */}
+      <aside className="biz-leftnav biz-leftnav--desktop">
+        <div className="biz-leftnav__header">
+          <p className="biz-leftnav__heading">Business Dashboard</p>
+        </div>
+        <NavContent />
+      </aside>
+
+      {/* ── Mobile trigger bar ── */}
+      <button className="biz-leftnav__mob-trigger" onClick={() => setMobileOpen(true)}>
+        <span className="biz-leftnav__icon">{currentItem?.icon}</span>
+        <span className="biz-leftnav__mob-trigger-label">
+          {currentItem?.label ?? "Business Dashboard"}
+        </span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
+
+      {/* ── Mobile nav overlay (bottom sheet) ── */}
+      <div className={`biz-leftnav__mob-overlay${mobileOpen ? " is-open" : ""}`}>
+        <div className="biz-leftnav__mob-backdrop" onClick={() => setMobileOpen(false)} />
+        <div className="biz-leftnav__mob-panel">
+          <div className="biz-leftnav__mob-panel-header">
+            <p className="biz-leftnav__heading">Business Dashboard</p>
+            <button className="biz-leftnav__mob-close" onClick={() => setMobileOpen(false)}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+          <NavContent />
+        </div>
+      </div>
+    </>
   );
 };
 

@@ -6,6 +6,7 @@ import './styles/App.scss'
 import Header from './components/Header.jsx'
 import Footer from './components/Footer.jsx'
 import CityGate from './components/CityGate.jsx'
+import MobileBottomNav from './components/MobileBottomNav.jsx'
 import Home from './pages/Home.jsx'
 import Listbusinesses from './pages/Listbusinesses.jsx'
 import Login from './pages/Login.jsx'
@@ -40,10 +41,17 @@ import Businessjobs from './pages/Business/Jobs.jsx'
 
 const STORAGE_KEY = 'pixstack_city'
 const NO_LAYOUT_PATHS = ['/login', '/business-login', '/business-signup']
+const BIZ_DASHBOARD_PREFIX = [
+  '/business-basic', '/business-about', '/business-services',
+  '/business-gallery', '/business-reviews', '/business-enquiries',
+  '/business-social', '/business-working-hours', '/business-jobs',
+]
 
 const AppShell = ({ gateCity }) => {
   const { pathname } = useLocation()
   const hideLayout = NO_LAYOUT_PATHS.includes(pathname)
+  const isBizDashboard = BIZ_DASHBOARD_PREFIX.some((p) => pathname.startsWith(p))
+  const showBottomNav = !hideLayout && !isBizDashboard
 
   return (
     <>
@@ -78,6 +86,7 @@ const AppShell = ({ gateCity }) => {
         <Route path='/site-maps' element={<Sitemaps />} />
       </Routes>
       {!hideLayout && <Footer />}
+      {showBottomNav && <MobileBottomNav />}
     </>
   )
 }

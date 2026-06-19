@@ -11,18 +11,66 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   @include m.siteMain;
   letter-spacing: 0.15px;
   overflow-x: hidden;
+  overscroll-behavior-y: none;
+  -webkit-font-smoothing: antialiased;
 }
 
 img,
 svg {
   max-width: 100%;
   height: auto;
+}
+
+// ── Mobile: prevent iOS input zoom (font-size < 16px triggers it) ─────────────
+@media (max-width: 991px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+
+// ── Touch-friendly tap targets ────────────────────────────────────────────────
+button, a, [role="button"] {
+  touch-action: manipulation;
+}
+
+// ── Mobile app body padding (bottom nav clearance + safe area) ────────────────
+@media (max-width: 991px) {
+  body.has-bottom-nav {
+    padding-bottom: calc(62px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+// ── Mobile: footer safe-area bottom padding ───────────────────────────────────
+@media (max-width: 991px) {
+  .site-footer {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
+
+// ── Mobile: card/button press feedback ───────────────────────────────────────
+@media (max-width: 991px) {
+  .list-item,
+  .job-card,
+  .enq-card,
+  .bjobs-card {
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    &:active {
+      transform: scale(0.985);
+      box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+    }
+  }
 }
 
 @keyframes spin {

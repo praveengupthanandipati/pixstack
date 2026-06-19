@@ -458,3 +458,139 @@
     }
   }
 }
+
+// ── Mobile responsive ─────────────────────────────────────────────────────────
+@media (max-width: 767px) {
+
+  // Header: title + icon-btn on row 1, full-width description on row 2
+  .bjobs-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 6px 12px;
+    align-items: center;
+    padding: 16px 18px;
+
+    // Make the anonymous wrapper div transparent so h1 and p
+    // become direct grid children that can be individually placed
+    > div:first-child { display: contents; }
+
+    .bjobs-header__title {
+      grid-column: 1;
+      grid-row: 1;
+      margin-bottom: 0;
+    }
+
+    .bjobs-header__sub {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      max-width: none;
+    }
+
+    &__create-btn {
+      grid-column: 2;
+      grid-row: 1;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      font-size: 0;       // hides "Create Job" text
+      gap: 0;
+      border-radius: 8px;
+      justify-content: center;
+
+      svg {
+        width: 18px !important;
+        height: 18px !important;
+      }
+    }
+  }
+
+  // Job cards: tighter padding on small screens
+  .bjobs-card {
+    padding: 16px 18px;
+  }
+
+  // Toast: center on mobile
+  .bjobs-toast {
+    top: 80px;
+    right: 50%;
+    transform: translateX(50%) translateX(20px);
+
+    &--visible { transform: translateX(50%); }
+  }
+
+  // Modal: bottom-sheet on mobile
+  .bjobs-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .bjobs-modal {
+    max-width: 100%;
+    max-height: 92vh;
+    border-radius: 20px 20px 0 0;
+
+    &__head {
+      padding: 14px 16px 12px;
+    }
+
+    &__title {
+      font-size: 0.9rem;
+    }
+
+    &__body {
+      padding: 14px 16px 0;
+      gap: 10px;
+    }
+
+    &__section-label {
+      font-size: 0.66rem;
+      margin: 2px 0 0;
+    }
+
+    &__label {
+      font-size: 0.72rem;
+    }
+
+    &__row {
+      gap: 10px;
+    }
+
+    &__field {
+      gap: 4px;
+    }
+
+    &__textarea {
+      min-height: 80px;
+    }
+
+    &__footer {
+      padding: 12px 16px;
+      gap: 8px;
+      flex-direction: column-reverse;
+    }
+
+    &__btn {
+      width: 100%;
+      padding: 10px 16px;
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      justify-content: center;
+    }
+
+    // Compact inputs / selects / textarea inside the modal
+    .bb-input,
+    .bb-textarea {
+      padding: 8px 10px;
+      font-size: 0.75rem;
+
+      &::placeholder { font-size: 0.75rem; }
+    }
+
+    // Dropdown selected value + option items
+    select.bb-input {
+      font-size: 0.75rem;
+
+      option { font-size: 0.75rem; }
+    }
+  }
+}
