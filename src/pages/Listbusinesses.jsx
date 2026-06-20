@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import Listitem from "../components/Listitem";
+import Listitem, { ListitemSkeleton } from "../components/Listitem";
 import "../styles/Listbusinesses.scss";
 
 import img01 from "../assets/list-itemsimg/listitemimg01.jpg";
@@ -329,11 +329,17 @@ const SORT_OPTIONS = [
 
 const Listbusinesses = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [sortBy, setSortBy] = useState("default");
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const timerRef = useRef(null);
+
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 1500);
+    return () => clearTimeout(t);
+  }, []);
 
   const filteredItems = (() => {
     const base = [...ALL_ITEMS];
@@ -400,34 +406,38 @@ const Listbusinesses = () => {
         </div>
       </div>
 
-      {/* Business grid — 5 columns × 5 rows = 25 cards */}
+      {/* Business grid */}
       <div className="list-page__grid">
-        {visibleItems.map((item) => (
-          <Listitem
-            key={item.id}
-            image={item.image}
-            businessType={item.businessType}
-            businessName={item.businessName}
-            city={item.city}
-            state={item.state}
-            reviews={item.reviews}
-            rating={item.rating}
-            onLike={handleLike}
-            onClick={() => navigate(`/business/${item.id}`)}
-          />
-        ))}
+        {loading
+          ? Array.from({ length: 10 }, (_, i) => <ListitemSkeleton key={i} />)
+          : visibleItems.map((item) => (
+              <Listitem
+                key={item.id}
+                image={item.image}
+                businessType={item.businessType}
+                businessName={item.businessName}
+                city={item.city}
+                state={item.state}
+                reviews={item.reviews}
+                rating={item.rating}
+                onLike={handleLike}
+                onClick={() => navigate(`/business/${item.id}`)}
+              />
+            ))}
       </div>
 
       {/* Load More */}
-      <div className="list-page__load-more-wrap">
-        <button
-          className="list-page__load-more"
-          onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
-          disabled={!hasMore}
-        >
-          {hasMore ? "Load More" : "No More Results"}
-        </button>
-      </div>
+      {!loading && (
+        <div className="list-page__load-more-wrap">
+          <button
+            className="list-page__load-more"
+            onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
+            disabled={!hasMore}
+          >
+            {hasMore ? "Load More" : "No More Results"}
+          </button>
+        </div>
+      )}
 
       {/* ── Content sections (Pixstack-branded) ─────────────────────────────── */}
 
