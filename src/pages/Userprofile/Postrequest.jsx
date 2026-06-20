@@ -59,6 +59,9 @@ const SEED_REQUESTS = [
     specialReq: 'Candid + traditional shots needed. Need a second photographer.',
     weddingType: 'Hindu', weddingDays: '3', weddingEvents: ['Mehndi', 'Sangeet', 'Haldi', 'Ceremony', 'Reception'],
     preWedding: 'Yes', albums: 'Yes', albumQty: '2', videography: 'Yes',
+    photographerName: 'Arjun Mehta',
+    photographerStudio: 'LensArt Photography',
+    photographerAddress: 'Banjara Hills Road No. 12, Hyderabad, Telangana – 500034',
   },
   {
     id: 2, occasion: 'Birthday', emoji: '🎂',
@@ -621,17 +624,19 @@ const Postrequest = () => {
                   <button className="pr-accordion__head" onClick={() => toggleItem(req.id)}>
                     <div className="pr-accordion__left">
                       <span className="pr-acc-emoji">{req.emoji}</span>
-                      <div>
+                      <div className="pr-acc-text">
                         <p className="pr-acc-occasion">{req.occasion}</p>
                         <p className="pr-acc-meta">
                           {fmtDate(req.eventDate)} &nbsp;·&nbsp; {req.venueName}
                         </p>
                       </div>
                     </div>
-                    <div className="pr-accordion__right">
+                    <div className="pr-acc-status">
                       <span className={`pr-badge ${STATUS_CLS[req.status] || ''}`}>
                         {req.status}
                       </span>
+                    </div>
+                    <div className="pr-accordion__right">
                       <svg className="pr-chevron" viewBox="0 0 24 24" width="16" height="16"
                         fill="none" stroke="currentColor" strokeWidth="2.2"
                         strokeLinecap="round" strokeLinejoin="round">
@@ -642,6 +647,40 @@ const Postrequest = () => {
 
                   {openItems[req.id] && (
                     <div className="pr-accordion__body">
+
+                      {/* ── Booked photographer (Completed only) ── */}
+                      {req.status === 'Completed' && req.photographerStudio && (
+                        <div className="pr-photographer">
+                          <div className="pr-photographer__label">
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="none"
+                              stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                              <circle cx="12" cy="13" r="4"/>
+                            </svg>
+                            Booked Photographer
+                          </div>
+                          <div className="pr-photographer__card">
+                            <div className="pr-photographer__avatar">
+                              {req.photographerStudio.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()}
+                            </div>
+                            <div className="pr-photographer__info">
+                              <p className="pr-photographer__studio">{req.photographerStudio}</p>
+                              {req.photographerName && (
+                                <p className="pr-photographer__name">{req.photographerName}</p>
+                              )}
+                              <p className="pr-photographer__addr">
+                                <svg viewBox="0 0 24 24" width="11" height="11" fill="none"
+                                  stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                  <circle cx="12" cy="10" r="3"/>
+                                </svg>
+                                {req.photographerAddress}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
                       <div className="pr-detail-grid">
 
                         <div className="pr-detail-cell">

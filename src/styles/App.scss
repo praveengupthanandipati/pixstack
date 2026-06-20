@@ -33,10 +33,9 @@ svg {
   height: auto;
 }
 
-// ── Mobile: prevent iOS input zoom (font-size < 16px triggers it) ─────────────
 @media (max-width: 991px) {
   input, select, textarea {
-    font-size: 16px !important;
+    font-size: 13px;
   }
 }
 

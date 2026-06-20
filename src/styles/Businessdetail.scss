@@ -789,7 +789,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-top: 20px;
+    margin: 20px 0 4px;
     background: none;
     border: none;
     padding: 0;
@@ -799,11 +799,15 @@
     cursor: pointer;
     transition: gap 0.2s ease, opacity 0.2s ease;
 
-    &:hover { gap: 12px; opacity: 0.82;
-      svg { transform: translateY(2px); }
-    }
+    &:hover { gap: 12px; opacity: 0.82; }
 
     svg { transition: transform 0.25s ease; }
+
+    &--less {
+      color: v.$text-muted;
+
+      &:hover { color: v.$text-dark; opacity: 1; gap: 10px; }
+    }
 
     @media (max-width: 480px) {
       width: 100%;
@@ -811,6 +815,11 @@
       border: 1.5px solid v.$primary;
       border-radius: 8px;
       padding: 10px 16px;
+      margin-top: 16px;
+
+      &.biz-detail__load-more-reviews--less {
+        border-color: v.$gray-border;
+      }
     }
   }
 

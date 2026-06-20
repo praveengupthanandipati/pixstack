@@ -15,6 +15,10 @@ const REVIEWS = [
     location: "Hyderabad, Telangana",
     text: "Absolutely stunning work! The team captured every detail of our wedding beautifully. Professional, creative, and incredibly patient. Every candid shot told a story. Highly recommend Focus Snaps to anyone looking for world-class photography!",
     color: "#E42929",
+    reply: {
+      text: "Thank you so much, Rahul! It was a pleasure being part of your special day. Your family's warmth made every shot come alive — we truly enjoyed every moment. Looking forward to capturing more milestones with you!",
+      date: "March 2025",
+    },
   },
   {
     id: 2,
@@ -77,6 +81,22 @@ const IconPin = (
   </svg>
 );
 
+const IconReply = (
+  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor"
+    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="9 17 4 12 9 7" />
+    <path d="M20 18v-2a4 4 0 0 0-4-4H4" />
+  </svg>
+);
+
+const IconEdit = (
+  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor"
+    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+  </svg>
+);
+
 // ─── Star rating ──────────────────────────────────────────────────────────────
 const StarRating = ({ rating }) => (
   <div className="cr-stars">
@@ -101,12 +121,41 @@ const avgRating = (reviews) =>
 const Customerreviews = () => {
   const [reviews] = useState(REVIEWS);
 
+  // Seed existing replies from review data
+  const [replies, setReplies] = useState(() =>
+    Object.fromEntries(
+      REVIEWS.filter((r) => r.reply).map((r) => [r.id, r.reply])
+    )
+  );
+  const [replyOpen, setReplyOpen]   = useState({});
+  const [replyDraft, setReplyDraft] = useState({});
+
   const avg   = avgRating(reviews);
   const total = reviews.length;
   const dist  = [5, 4, 3, 2, 1].map((star) => ({
     star,
     count: reviews.filter((r) => r.rating === star).length,
   }));
+
+  // ── Reply handlers ──────────────────────────────────────────────────────────
+  const openReply = (id) => {
+    setReplyOpen((p) => ({ ...p, [id]: true }));
+    setReplyDraft((p) => ({ ...p, [id]: replies[id]?.text ?? "" }));
+  };
+
+  const cancelReply = (id) => {
+    setReplyOpen((p) => ({ ...p, [id]: false }));
+    setReplyDraft((p) => ({ ...p, [id]: "" }));
+  };
+
+  const submitReply = (id) => {
+    const text = (replyDraft[id] ?? "").trim();
+    if (!text) return;
+    const date = new Date().toLocaleString("en-US", { month: "long", year: "numeric" });
+    setReplies((p) => ({ ...p, [id]: { text, date } }));
+    setReplyOpen((p) => ({ ...p, [id]: false }));
+    setReplyDraft((p) => ({ ...p, [id]: "" }));
+  };
 
   return (
     <div className="biz-profile">
@@ -160,6 +209,8 @@ const Customerreviews = () => {
                 <div className="cr-list">
                   {reviews.map((r) => (
                     <div key={r.id} className="cr-card">
+
+                      {/* Customer info */}
                       <div className="cr-card__head">
                         <div className="cr-card__avatar" style={{ background: r.color }}>
                           <span>{r.initials}</span>
@@ -176,7 +227,54 @@ const Customerreviews = () => {
                           </p>
                         </div>
                       </div>
+
+                      {/* Review text */}
                       <p className="cr-card__text">{r.text}</p>
+
+                      {/* ── Owner reply (if exists and form is not open) ── */}
+                      {replies[r.id] && !replyOpen[r.id] && (
+                        <div className="cr-card__reply">
+                          <div className="cr-card__reply-head">
+                            <div className="cr-card__reply-avatar">FS</div>
+                            <div className="cr-card__reply-info">
+                              <span className="cr-card__reply-label">Owner Reply</span>
+                              <span className="cr-card__reply-date">{replies[r.id].date}</span>
+                            </div>
+                          </div>
+                          <p className="cr-card__reply-text">{replies[r.id].text}</p>
+                        </div>
+                      )}
+
+                      {/* ── Inline reply form ── */}
+                      {replyOpen[r.id] ? (
+                        <div className="cr-reply-form">
+                          <textarea
+                            className="cr-reply-form__input"
+                            placeholder="Write your reply as the business owner…"
+                            value={replyDraft[r.id] ?? ""}
+                            onChange={(e) =>
+                              setReplyDraft((p) => ({ ...p, [r.id]: e.target.value }))
+                            }
+                            rows={3}
+                            autoFocus
+                          />
+                          <div className="cr-reply-form__actions">
+                            <button className="cr-reply-form__cancel" onClick={() => cancelReply(r.id)}>
+                              Cancel
+                            </button>
+                            <button className="cr-reply-form__submit" onClick={() => submitReply(r.id)}>
+                              {replies[r.id] ? "Update Reply" : "Post Reply"}
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        /* ── Reply / Edit Reply trigger ── */
+                        <button className="cr-card__reply-btn" onClick={() => openReply(r.id)}>
+                          {replies[r.id] ? IconEdit : IconReply}
+                          {replies[r.id] ? "Edit Reply" : "Reply"}
+                        </button>
+                      )}
+
                     </div>
                   ))}
                 </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../../styles/Userprofile.scss";
 
@@ -57,49 +57,56 @@ const NAV_ITEMS = [
         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
       </svg>
     ),
-  },  
+  },
 ];
 
 const Leftnav = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  return (
-    <aside className="user-leftnav">
-      <div className="user-leftnav__header">
-        <p className="user-leftnav__heading">My Account</p>
-      </div>
+  const currentItem = NAV_ITEMS.find((item) => item.path === pathname);
 
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const handler = (e) => { if (e.key === "Escape") setMobileOpen(false); };
+    document.addEventListener("keydown", handler);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handler);
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
+  const handleNav = (path) => {
+    navigate(path);
+    setMobileOpen(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("pixstack_user");
+    navigate("/");
+  };
+
+  const NavContent = () => (
+    <>
       <nav className="user-leftnav__nav">
         {NAV_ITEMS.map((item) => (
           <button
             key={item.key}
             className={`user-leftnav__item${pathname === item.path ? " is-active" : ""}`}
-            onClick={() => navigate(item.path)}
+            onClick={() => handleNav(item.path)}
           >
             <span className="user-leftnav__icon">{item.icon}</span>
             {item.label}
           </button>
         ))}
       </nav>
-
       <div className="user-leftnav__footer">
-        <button
-          className="user-leftnav__item"
-          onClick={() => {
-            localStorage.removeItem("pixstack_user");
-            navigate("/");
-          }}
-        >
+        <button className="user-leftnav__item" onClick={handleLogout}>
           <span className="user-leftnav__icon">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
               <polyline points="16 17 21 12 16 7" />
               <line x1="21" y1="12" x2="9" y2="12" />
@@ -108,7 +115,51 @@ const Leftnav = () => {
           Logout
         </button>
       </div>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* ── Desktop sidebar ── */}
+      <aside className="user-leftnav user-leftnav--desktop">
+        <div className="user-leftnav__header">
+          <p className="user-leftnav__heading">My Account</p>
+        </div>
+        <NavContent />
+      </aside>
+
+      {/* ── Mobile trigger bar ── */}
+      <button className="user-leftnav__mob-trigger" onClick={() => setMobileOpen(true)}>
+        <span className="user-leftnav__icon">{currentItem?.icon}</span>
+        <span className="user-leftnav__mob-trigger-label">
+          {currentItem?.label ?? "My Account"}
+        </span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
+
+      {/* ── Mobile nav overlay (bottom-sheet) ── */}
+      <div className={`user-leftnav__mob-overlay${mobileOpen ? " is-open" : ""}`}>
+        <div className="user-leftnav__mob-backdrop" onClick={() => setMobileOpen(false)} />
+        <div className="user-leftnav__mob-panel">
+          <div className="user-leftnav__mob-panel-header">
+            <p className="user-leftnav__heading">My Account</p>
+            <button className="user-leftnav__mob-close" onClick={() => setMobileOpen(false)}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+          <NavContent />
+        </div>
+      </div>
+    </>
   );
 };
 

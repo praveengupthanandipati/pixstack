@@ -2,7 +2,12 @@
 @use "./mixins" as m;
 
 // ── Filter section ────────────────────────────────────────────────────────────
-.enq-filter-section { padding-bottom: 16px; }
+.enq-filter-section {
+  padding-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
 
 .enq-filter {
   display: flex;
@@ -12,12 +17,13 @@
 
   &__label {
     @include m.poppins;
-    font-size: 0.77rem;
-    font-weight: 600;
+    font-size: 0.72rem;
+    font-weight: 700;
     color: v.$text-muted;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.07em;
     white-space: nowrap;
+    min-width: 44px;
   }
 
   &__chips {
@@ -28,11 +34,14 @@
 
   &__chip {
     @include m.poppins;
-    padding: 6px 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 13px;
     border: 1.5px solid v.$gray-border;
     border-radius: 20px;
     background: none;
-    font-size: 0.8rem;
+    font-size: 0.79rem;
     font-weight: 500;
     color: v.$text-muted;
     cursor: pointer;
@@ -46,7 +55,35 @@
       color: v.$white;
       font-weight: 600;
     }
+
+    // ── Status-specific active colours ──────────────────────────────────────
+    &--new.is-active       { background: #1565c0; border-color: #1565c0; }
+    &--contacted.is-active { background: #b45309; border-color: #b45309; }
+    &--converted.is-active { background: #2e7d32; border-color: #2e7d32; }
+    &--closed.is-active    { background: #6a1b9a; border-color: #6a1b9a; }
+
+    &--new:not(.is-active):hover       { border-color: #1565c0; color: #1565c0; }
+    &--contacted:not(.is-active):hover { border-color: #b45309; color: #b45309; }
+    &--converted:not(.is-active):hover { border-color: #2e7d32; color: #2e7d32; }
+    &--closed:not(.is-active):hover    { border-color: #6a1b9a; color: #6a1b9a; }
   }
+
+  // Count badge on each chip
+  &__chip-count {
+    @include m.poppins;
+    font-size: 0.65rem;
+    font-weight: 700;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 1px 6px;
+    min-width: 16px;
+    text-align: center;
+    line-height: 1.4;
+
+    .is-active & { background: rgba(255, 255, 255, 0.25); }
+  }
+
+  @media (max-width: 767px) { gap: 8px; }
 }
 
 // ── Enquiry list ──────────────────────────────────────────────────────────────
@@ -228,7 +265,7 @@
 
   &__status-select {
     @include m.poppins;
-    font-size: 0.75rem;
+    font-size: 13px;
     font-weight: 600;
     color: v.$text-dark;
     background: v.$white;
@@ -347,7 +384,7 @@
 
     &__date {
       font-size: 0.7rem;
-      margin-left: 46px;
+      margin-left: 0;
     }
 
     // Occasion + status row → stack vertically
@@ -376,7 +413,7 @@
     }
 
     &__status-select {
-      font-size: 0.65rem;
+      font-size: 0.8125rem;
       padding: 3px 20px 3px 7px;
       border-radius: 4px;
       background-position: right 5px center;

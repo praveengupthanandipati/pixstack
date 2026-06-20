@@ -468,7 +468,6 @@
   &__head {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 12px;
     width: 100%;
     padding: 18px 28px;
@@ -480,7 +479,12 @@
 
     &:hover { background: v.$gray-50; }
 
-    @media (max-width: 600px) { padding: 14px 18px; }
+    @media (max-width: 600px) {
+      padding: 14px 18px;
+      flex-wrap: wrap;
+      gap: 6px 10px;
+      align-items: flex-start;
+    }
   }
 
   &__left {
@@ -488,13 +492,17 @@
     align-items: center;
     gap: 14px;
     min-width: 0;
+    flex: 1;
+
+    @media (max-width: 600px) { order: 1; gap: 10px; }
   }
 
   &__right {
     display: flex;
     align-items: center;
-    gap: 10px;
     flex-shrink: 0;
+
+    @media (max-width: 600px) { order: 2; margin-top: 2px; }
   }
 
   &__body {
@@ -509,6 +517,13 @@
   font-size: 1.6rem;
   line-height: 1;
   flex-shrink: 0;
+
+  @media (max-width: 600px) { font-size: 1.35rem; }
+}
+
+.pr-acc-text {
+  flex: 1;
+  min-width: 0;
 }
 
 .pr-acc-occasion {
@@ -517,6 +532,8 @@
   font-weight: 600;
   color: v.$text-dark;
   margin: 0 0 2px;
+
+  @media (max-width: 600px) { font-size: 0.85rem; }
 }
 
 .pr-acc-meta {
@@ -529,7 +546,19 @@
   text-overflow: ellipsis;
   max-width: 380px;
 
-  @media (max-width: 600px) { max-width: 180px; }
+  @media (max-width: 600px) { max-width: 100%; font-size: 0.73rem; }
+}
+
+// Status wrapper — sits between __left and __right on desktop,
+// wraps to its own row below on mobile
+.pr-acc-status {
+  flex-shrink: 0;
+
+  @media (max-width: 600px) {
+    order: 3;
+    flex: 0 0 100%;         // forces its own row
+    padding-left: 44px;     // indent to align under text (emoji ~22px + gap 10px + 12px buffer)
+  }
 }
 
 .pr-chevron {
@@ -737,4 +766,100 @@
   font-size: 0.83rem;
   color: v.$gray-mid;
   text-align: center;
+}
+
+// ── Booked Photographer banner (Completed requests) ───────────────────────────
+.pr-photographer {
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  background: #f0fdf4;
+  border: 1.5px solid #a7f3c0;
+  border-radius: 10px;
+
+  &__label {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.67rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #166534;
+    margin-bottom: 10px;
+
+    svg { flex-shrink: 0; color: #16a34a; }
+  }
+
+  &__card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  &__avatar {
+    @include m.poppins;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: #16a34a;
+    color: v.$white;
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    @media (max-width: 480px) { width: 38px; height: 38px; font-size: 0.74rem; border-radius: 8px; }
+  }
+
+  &__info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  &__studio {
+    @include m.poppins;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #14532d;
+    margin: 0;
+
+    @media (max-width: 480px) { font-size: 0.84rem; }
+  }
+
+  &__name {
+    @include m.poppins;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: #166534;
+    margin: 0;
+
+    @media (max-width: 480px) { font-size: 0.74rem; }
+  }
+
+  &__addr {
+    @include m.poppins;
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    font-size: 0.74rem;
+    color: #4b7a5a;
+    margin: 3px 0 0;
+    line-height: 1.5;
+
+    svg { flex-shrink: 0; margin-top: 2px; color: #16a34a; }
+
+    @media (max-width: 480px) { font-size: 0.7rem; }
+  }
+
+  @media (max-width: 600px) {
+    margin-bottom: 14px;
+    padding: 12px 13px;
+  }
 }

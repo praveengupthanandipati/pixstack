@@ -178,5 +178,165 @@
     @media (max-width: 480px) { font-size: 0.82rem; }
   }
 
+  // ── Owner reply block ────────────────────────────────────────────────────────
+  &__reply {
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: #f8faff;
+    border-left: 3px solid v.$primary;
+    border-radius: 0 8px 8px 0;
+
+    @media (max-width: 480px) { padding: 10px 12px; margin-top: 12px; }
+  }
+
+  &__reply-head {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 8px;
+  }
+
+  &__reply-avatar {
+    @include m.poppins;
+    width: 30px;
+    height: 30px;
+    border-radius: 7px;
+    background: v.$primary;
+    color: v.$white;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  &__reply-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  &__reply-label {
+    @include m.poppins;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: v.$primary;
+    line-height: 1.2;
+  }
+
+  &__reply-date {
+    @include m.poppins;
+    font-size: 0.68rem;
+    color: v.$gray-mid;
+  }
+
+  &__reply-text {
+    @include m.poppins;
+    font-size: 0.83rem;
+    color: v.$text-dark;
+    line-height: 1.75;
+    margin: 0;
+
+    @media (max-width: 480px) { font-size: 0.8rem; }
+  }
+
+  // ── Reply / Edit Reply trigger button ─────────────────────────────────────────
+  &__reply-btn {
+    @include m.poppins;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 12px;
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: v.$text-muted;
+    cursor: pointer;
+    transition: color 0.15s ease;
+
+    svg { flex-shrink: 0; }
+
+    &:hover { color: v.$primary; }
+  }
+
   @media (max-width: 480px) { padding: 16px 0; }
+}
+
+// ── Inline reply form ─────────────────────────────────────────────────────────
+.cr-reply-form {
+  margin-top: 14px;
+
+  &__input {
+    @include m.poppins;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1.5px solid v.$gray-border;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 0.84rem;
+    color: v.$text-dark;
+    background: v.$white;
+    outline: none;
+    resize: vertical;
+    min-height: 80px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &::placeholder { color: v.$gray-mid; font-size: 0.8125rem; }
+
+    &:focus {
+      border-color: v.$primary;
+      box-shadow: 0 0 0 3px rgba(v.$primary, 0.1);
+    }
+
+    @media (max-width: 480px) { font-size: 0.8rem; padding: 9px 10px; }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 8px;
+
+    @media (max-width: 480px) { flex-direction: column-reverse; gap: 8px; }
+  }
+
+  &__cancel {
+    @include m.poppins;
+    background: none;
+    border: 1.5px solid v.$gray-border;
+    border-radius: 7px;
+    padding: 8px 18px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: v.$text-muted;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+
+    &:hover { border-color: v.$text-dark; color: v.$text-dark; }
+
+    @media (max-width: 480px) { width: 100%; padding: 10px; }
+  }
+
+  &__submit {
+    @include m.poppins;
+    background: v.$primary;
+    border: none;
+    border-radius: 7px;
+    padding: 8px 20px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: v.$white;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+    transition: background 0.15s ease;
+
+    &:hover { background: v.$primary-hover; }
+
+    @media (max-width: 480px) { width: 100%; padding: 10px; }
+  }
 }

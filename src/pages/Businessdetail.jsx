@@ -194,7 +194,7 @@ const Businessdetail = () => {
   const [reviewFormErrors, setReviewFormErrors] = useState({});
   const [starHovered, setStarHovered] = useState(0);
 
-  const INITIAL_REVIEWS = 6;
+  const INITIAL_REVIEWS = 4;
   const visibleReviews = showAllReviews ? reviews : reviews.slice(0, INITIAL_REVIEWS);
   const hiddenCount = reviews.length - INITIAL_REVIEWS;
   const [enquiry, setEnquiry] = useState({ name: "", phone: "", email: "", message: "" });
@@ -457,7 +457,6 @@ const Businessdetail = () => {
               </div>
             </div>
           </div>
-
           {/* Section 04: Services */}
           <div className="biz-detail__card">
             <h2 className="biz-detail__section-title">Services <span>Offered</span></h2>
@@ -596,17 +595,29 @@ const Businessdetail = () => {
               ))}
             </div>
 
-            {!showAllReviews && hiddenCount > 0 && (
+            {reviews.length > INITIAL_REVIEWS && (
               <button
-                className="biz-detail__load-more-reviews"
-                onClick={() => setShowAllReviews(true)}
+                className={`biz-detail__load-more-reviews${showAllReviews ? " biz-detail__load-more-reviews--less" : ""}`}
+                onClick={() => setShowAllReviews((v) => !v)}
               >
-                Load More Reviews
-                <span className="biz-detail__load-more-reviews-count">+{hiddenCount} more</span>
-                <svg viewBox="0 0 24 24" width="15" height="15" fill="none"
-                  stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="6 9 12 15 18 9" />
-                </svg>
+                {showAllReviews ? (
+                  <>
+                    Show Less
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none"
+                      stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="18 15 12 9 6 15" />
+                    </svg>
+                  </>
+                ) : (
+                  <>
+                    Show More
+                    <span className="biz-detail__load-more-reviews-count">+{hiddenCount} more</span>
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none"
+                      stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                  </>
+                )}
               </button>
             )}
           </div>

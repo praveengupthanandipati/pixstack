@@ -584,6 +584,13 @@
       padding-right: 0;
       pointer-events: none;
     }
+
+    @media (max-width: 991px) {
+      .login-icon-link,
+      .header-profile {
+        display: none;
+      }
+    }
   }
 
   // ── Search suggestions dropdown ──────────────────────────────────────────

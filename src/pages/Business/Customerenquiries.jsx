@@ -233,12 +233,20 @@ const Customerenquiries = () => {
   const years = [...new Set(enquiries.map((e) => e.date.slice(0, 4)))].sort(
     (a, b) => b - a,
   );
-  const [year, setYear] = useState("All");
+  const [year, setYear]               = useState("All");
+  const [statusFilter, setStatusFilter] = useState("All");
 
-  const filtered =
+  // Year-filtered set (used to compute per-status counts)
+  const yearFiltered =
     year === "All"
       ? enquiries
       : enquiries.filter((e) => e.date.startsWith(year));
+
+  // Status-filtered set (final list rendered)
+  const filtered =
+    statusFilter === "All"
+      ? yearFiltered
+      : yearFiltered.filter((e) => e.status === statusFilter);
 
   const handleStatusChange = (id, newStatus) =>
     setEnquiries((prev) =>
@@ -270,22 +278,48 @@ const Customerenquiries = () => {
             </div>
 
             <div className="bb-body">
-              {/* ── Year filter ── */}
+              {/* ── Filters ── */}
               <div className="bb-section enq-filter-section">
+
+                {/* Year */}
                 <div className="enq-filter">
-                  <span className="enq-filter__label">Filter by Year</span>
+                  <span className="enq-filter__label">Year</span>
                   <div className="enq-filter__chips">
                     {["All", ...years].map((y) => (
                       <button
                         key={y}
                         className={`enq-filter__chip${year === y ? " is-active" : ""}`}
-                        onClick={() => setYear(y)}
+                        onClick={() => { setYear(y); setStatusFilter("All"); }}
                       >
                         {y}
                       </button>
                     ))}
                   </div>
                 </div>
+
+                {/* Status */}
+                <div className="enq-filter">
+                  <span className="enq-filter__label">Status</span>
+                  <div className="enq-filter__chips">
+                    {["All", ...STATUSES].map((s) => {
+                      const count =
+                        s === "All"
+                          ? yearFiltered.length
+                          : yearFiltered.filter((e) => e.status === s).length;
+                      return (
+                        <button
+                          key={s}
+                          className={`enq-filter__chip enq-filter__chip--${s.toLowerCase()}${statusFilter === s ? " is-active" : ""}`}
+                          onClick={() => setStatusFilter(s)}
+                        >
+                          {s}
+                          <span className="enq-filter__chip-count">{count}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
               </div>
 
               {/* ── Enquiry cards ── */}
@@ -377,7 +411,10 @@ const Customerenquiries = () => {
                   </div>
                 ) : (
                   <div className="enq-empty">
-                    <p>No enquiries found for {year}.</p>
+                    <p>
+                      No {statusFilter !== "All" ? statusFilter.toLowerCase() : ""} enquiries
+                      {year !== "All" ? ` in ${year}` : ""}.
+                    </p>
                   </div>
                 )}
               </div>
