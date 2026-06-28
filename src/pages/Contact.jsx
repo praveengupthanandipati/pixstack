@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/Contact.scss";
+import SuccessAlert from "../components/SuccessAlert";
+import FormErrorBanner from "../components/FormErrorBanner";
 
 const DEPARTMENTS = [
   { icon: "🛠️", name: "General Support",    email: "support@pixstack.in",   note: "Platform help, account issues, listing queries" },
@@ -71,6 +73,7 @@ const Contact = () => {
   const [form, setForm] = useState(INITIAL);
   const [errors, setErrors] = useState({});
   const [sent, setSent] = useState(false);
+  const [successMsg, setSuccessMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
   const set = (field, val) => {
@@ -96,10 +99,17 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const errs = validate();
-    if (Object.keys(errs).length > 0) { setErrors(errs); return; }
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     setLoading(true);
-    // simulate async submit
-    setTimeout(() => { setLoading(false); setSent(true); }, 900);
+    setTimeout(() => {
+      setLoading(false);
+      setSent(true);
+      setSuccessMsg("Your message has been sent! We'll get back to you within one business day.");
+    }, 900);
   };
 
   const ErrorMsg = ({ field }) =>
@@ -117,6 +127,7 @@ const Contact = () => {
 
   return (
     <div className="contact">
+      {successMsg && <SuccessAlert message={successMsg} onClose={() => setSuccessMsg("")} />}
 
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
       <div className="contact__hero">
@@ -271,6 +282,7 @@ const Contact = () => {
             </div>
           ) : (
             <form className="contact__form" onSubmit={handleSubmit} noValidate>
+              <FormErrorBanner errors={errors} />
 
               {/* Name + Email */}
               <div className="contact__row">

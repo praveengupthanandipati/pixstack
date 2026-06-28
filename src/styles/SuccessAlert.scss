@@ -1,0 +1,58 @@
+@use "./variables" as v;
+@use "./mixins" as m;
+
+@keyframes sa-slide-down {
+  from { transform: translateY(-100%); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+
+@keyframes sa-progress {
+  from { width: 100%; }
+  to   { width: 0%; }
+}
+
+.success-alert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9500;
+  animation: sa-slide-down 0.32s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+
+  &__inner {
+    @include m.poppins;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #16a34a;
+    color: #fff;
+    padding: 14px 24px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+
+    svg:first-child { flex-shrink: 0; }
+    span { flex: 1; line-height: 1.45; }
+  }
+
+  &__close {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    flex-shrink: 0;
+    border-radius: 3px;
+    transition: color 0.15s ease;
+
+    &:hover { color: #fff; }
+  }
+
+  &__progress {
+    height: 3px;
+    background: rgba(255, 255, 255, 0.45);
+    animation: sa-progress 4.5s linear both;
+  }
+}

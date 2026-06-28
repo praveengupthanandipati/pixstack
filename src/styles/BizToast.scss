@@ -1,0 +1,91 @@
+@use "./variables" as v;
+@use "./mixins" as m;
+
+@keyframes bt-slide-in {
+  from { opacity: 0; transform: translateX(calc(100% + 32px)); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes bt-bar {
+  from { width: 100%; }
+  to   { width: 0%; }
+}
+
+.biz-toast {
+  position: fixed;
+  top: 80px;
+  right: 24px;
+  z-index: 9500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid #d1fae5;
+  border-left: 4px solid #16a34a;
+  border-radius: 10px;
+  padding: 13px 14px 16px;
+  min-width: 280px;
+  max-width: 360px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+  animation: bt-slide-in 0.32s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  overflow: hidden;
+
+  &__icon {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #dcfce7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #16a34a;
+  }
+
+  &__msg {
+    @include m.poppins;
+    flex: 1;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1.45;
+  }
+
+  &__close {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 3px;
+    border-radius: 4px;
+    transition: color 0.15s ease, background 0.15s ease;
+    align-self: flex-start;
+
+    &:hover {
+      color: #374151;
+      background: #f3f4f6;
+    }
+  }
+
+  &__bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: #16a34a;
+    border-radius: 0 0 0 8px;
+    animation: bt-bar 4s linear both;
+  }
+
+  @media (max-width: 480px) {
+    top: auto;
+    bottom: 80px;
+    right: 12px;
+    left: 12px;
+    max-width: 100%;
+    min-width: unset;
+  }
+}

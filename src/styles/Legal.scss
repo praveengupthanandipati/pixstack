@@ -60,6 +60,11 @@
       align-items: center;
       gap: 6px;
     }
+
+    @media (max-width: 480px) {
+      gap: 10px 16px;
+      font-size: 0.76rem;
+    }
   }
 
   // ── Outer wrapper ─────────────────────────────────────────────────────────────
@@ -201,6 +206,8 @@
     color: v.$text-muted;
     line-height: 1.85;
     margin: 0 0 14px;
+    word-break: break-word;
+    overflow-wrap: break-word;
 
     &:last-child { margin-bottom: 0; }
 
@@ -221,6 +228,8 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
+    word-break: break-word;
+    overflow-wrap: break-word;
 
     li { strong { color: v.$text-dark; font-weight: 600; } }
 
@@ -230,6 +239,7 @@
   // ── Cookie type table ─────────────────────────────────────────────────────────
   &__table-wrap {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     margin: 14px 0;
     border-radius: 8px;
     border: 1px solid v.$gray-border;
@@ -269,6 +279,72 @@
     tr:hover td { background: v.$gray-50; }
   }
 
+  // ── Table → card layout on small screens ─────────────────────────────────────
+  @media (max-width: 600px) {
+    &__table-wrap {
+      overflow-x: unset;
+      border: none;
+      border-radius: 0;
+      background: transparent;
+    }
+
+    &__table {
+      min-width: unset;
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+
+      thead { display: none; }
+
+      tbody tr {
+        display: block;
+        background: v.$white;
+        border: 1px solid v.$gray-border;
+        border-radius: 8px;
+        padding: 14px 16px;
+        margin-bottom: 10px;
+
+        &:last-child { margin-bottom: 0; }
+      }
+
+      td {
+        display: block;
+        padding: 4px 0;
+        border-bottom: none;
+        font-size: 0.82rem;
+        white-space: normal;
+
+        &:first-child {
+          font-size: 0.9rem;
+          font-weight: 700;
+          color: v.$text-dark;
+          padding-bottom: 10px;
+          margin-bottom: 8px;
+          border-bottom: 1px solid v.$gray-border;
+        }
+
+        &::before {
+          display: block;
+          font-size: 0.6rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          color: v.$text-muted;
+          margin-bottom: 2px;
+          margin-top: 8px;
+        }
+
+        &:nth-child(1)::before { content: none; margin-top: 0; }
+        &:nth-child(2)::before { content: "Purpose"; }
+        &:nth-child(3)::before { content: "Examples"; }
+        &:nth-child(4)::before { content: "Opt-Out?"; }
+      }
+
+      tr:hover td { background: transparent; }
+      tr:last-child td { border-bottom: none; }
+    }
+  }
+
   // ── Highlight box ─────────────────────────────────────────────────────────────
   &__highlight {
     background: #fff5f5;
@@ -296,6 +372,7 @@
     margin-top: 8px;
 
     @media (max-width: 480px) { padding: 24px 20px; border-radius: 10px; }
+    @media (max-width: 380px) { padding: 20px 14px; }
   }
 
   &__contact-title {
@@ -327,7 +404,63 @@
     font-weight: 700;
     text-decoration: none;
     transition: background 0.2s ease;
+    word-break: break-all;
 
     &:hover { background: v.$primary-hover; }
+
+    @media (max-width: 380px) {
+      font-size: 0.78rem;
+      padding: 10px 16px;
+    }
+  }
+}
+
+// ── Very small phones (≤ 380px) ───────────────────────────────────────────────
+@media (max-width: 380px) {
+  .legal {
+    &__hero {
+      padding: 26px 12px 22px;
+    }
+
+    &__hero-title {
+      font-size: 1.15rem;
+    }
+
+    &__hero-meta {
+      font-size: 0.72rem;
+      gap: 8px 14px;
+    }
+
+    &__outer {
+      padding: 14px 10px 40px;
+      gap: 14px;
+    }
+
+    &__section {
+      padding: 14px 12px;
+    }
+
+    &__section-heading {
+      font-size: 0.93rem;
+    }
+
+    &__p,
+    &__ul {
+      font-size: 0.81rem;
+    }
+
+    &__toc {
+      padding: 14px 12px;
+    }
+
+    &__highlight {
+      padding: 12px 14px;
+
+      p { font-size: 0.8rem; }
+    }
+
+    &__doc {
+      gap: 14px;
+    }
   }
 }

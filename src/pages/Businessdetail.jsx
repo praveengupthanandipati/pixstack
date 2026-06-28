@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Listitem from "../components/Listitem";
+import SuccessAlert from "../components/SuccessAlert";
+import FormErrorBanner from "../components/FormErrorBanner";
 import "../styles/Businessdetail.scss";
 import bannerImg from "../assets/businessdetailbanner.jpg";
 import emblumImg from "../assets/emblum.jpg";
@@ -186,7 +188,7 @@ const Businessdetail = () => {
   const [servicesExpanded, setServicesExpanded] = useState(false);
   const [photosExpanded, setPhotosExpanded] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [lightbox, setLightbox] = useState({ open: false, index: 0 });
+  const [lightbox, setLightbox] = useState({ open: false, index: 0, dir: 1 });
   const [showAllReviews, setShowAllReviews] = useState(false);
   const [reviews, setReviews] = useState(REVIEWS);
   const [showWriteReview, setShowWriteReview] = useState(false);
@@ -200,6 +202,7 @@ const Businessdetail = () => {
   const [enquiry, setEnquiry] = useState({ name: "", phone: "", email: "", message: "" });
   const [enquiryErrors, setEnquiryErrors] = useState({});
   const [enquirySent, setEnquirySent] = useState(false);
+  const [successMsg, setSuccessMsg] = useState("");
 
   // Phone OTP state
   const [phoneStep, setPhoneStep] = useState("input"); // 'input' | 'otp' | 'verified'
@@ -214,9 +217,9 @@ const Businessdetail = () => {
   useEffect(() => {
     if (!lightbox.open) return;
     const handler = (e) => {
-      if (e.key === "Escape")      setLightbox({ open: false, index: 0 });
-      if (e.key === "ArrowRight")  setLightbox((lb) => ({ ...lb, index: (lb.index + 1) % PHOTOS.length }));
-      if (e.key === "ArrowLeft")   setLightbox((lb) => ({ ...lb, index: (lb.index - 1 + PHOTOS.length) % PHOTOS.length }));
+      if (e.key === "Escape")      setLightbox({ open: false, index: 0, dir: 1 });
+      if (e.key === "ArrowRight")  setLightbox((lb) => ({ ...lb, index: (lb.index + 1) % PHOTOS.length, dir: 1 }));
+      if (e.key === "ArrowLeft")   setLightbox((lb) => ({ ...lb, index: (lb.index - 1 + PHOTOS.length) % PHOTOS.length, dir: -1 }));
     };
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
@@ -228,9 +231,9 @@ const Businessdetail = () => {
     return () => { document.body.style.overflow = ""; };
   }, [lightbox.open, sidebarOpen]);
 
-  const openPhoto = (index) => setLightbox({ open: true, index });
-  const prevPhoto = () => setLightbox((lb) => ({ ...lb, index: (lb.index - 1 + PHOTOS.length) % PHOTOS.length }));
-  const nextPhoto = () => setLightbox((lb) => ({ ...lb, index: (lb.index + 1) % PHOTOS.length }));
+  const openPhoto = (index) => setLightbox({ open: true, index, dir: 1 });
+  const prevPhoto = () => setLightbox((lb) => ({ ...lb, index: (lb.index - 1 + PHOTOS.length) % PHOTOS.length, dir: -1 }));
+  const nextPhoto = () => setLightbox((lb) => ({ ...lb, index: (lb.index + 1) % PHOTOS.length, dir: 1 }));
 
   // OTP countdown
   useEffect(() => {
@@ -308,8 +311,13 @@ const Businessdetail = () => {
   const handleEnquirySubmit = (e) => {
     e.preventDefault();
     const errs = validateEnquiry();
-    if (Object.keys(errs).length > 0) { setEnquiryErrors(errs); return; }
+    if (Object.keys(errs).length > 0) {
+      setEnquiryErrors(errs);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     setEnquirySent(true);
+    setSuccessMsg("Your enquiry has been sent to Focus Snaps Photography! They'll get back to you soon.");
   };
 
   const handleToggleReviewForm = () => {
@@ -335,7 +343,11 @@ const Businessdetail = () => {
     if (!reviewForm.reviewText.trim()) errs.reviewText = "Please describe your review";
     if (reviewForm.rating === 0) errs.rating = "Please select a star rating";
     if (!reviewForm.location.trim()) errs.location = "Location is required";
-    if (Object.keys(errs).length > 0) { setReviewFormErrors(errs); return; }
+    if (Object.keys(errs).length > 0) {
+      setReviewFormErrors(errs);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
 
     const words = reviewForm.name.trim().split(/\s+/);
     const initials = words.length >= 2
@@ -359,10 +371,12 @@ const Businessdetail = () => {
     setReviewForm({ name: "", reviewText: "", rating: 0, location: "" });
     setReviewFormErrors({});
     setStarHovered(0);
+    setSuccessMsg("Your review has been submitted successfully. Thank you!");
   };
 
   return (
     <div className="biz-detail">
+      {successMsg && <SuccessAlert message={successMsg} onClose={() => setSuccessMsg("")} />}
 
       {/* ── Section 01: Banner ────────────────────────────────────────────────── */}
       <img src={bannerImg} alt="Focus Snaps Photography" className="biz-detail__banner" />
@@ -538,6 +552,7 @@ const Businessdetail = () => {
             {showWriteReview && (
               <div className="biz-detail__write-review-section">
                 <form className="biz-detail__write-review-form" onSubmit={handleReviewSubmit} noValidate>
+                  <FormErrorBanner errors={reviewFormErrors} />
                   <div className="biz-detail__write-review-field">
                     <label className="biz-detail__write-review-label">Name</label>
                     <input type="text" className="biz-detail__write-review-input" placeholder="Your name"
@@ -638,6 +653,7 @@ const Businessdetail = () => {
               </div>
             ) : (
               <form onSubmit={handleEnquirySubmit} noValidate>
+                <FormErrorBanner errors={enquiryErrors} />
                 <div className="biz-detail__enquiry-field">
                   <label className="biz-detail__enquiry-label">Your Name</label>
                   <input
@@ -1005,8 +1021,8 @@ const Businessdetail = () => {
               </svg>
             </button>
 
-            <img src={PHOTOS[lightbox.index]} alt={`Photo ${lightbox.index + 1}`}
-              className="biz-detail__lightbox-img" />
+            <img key={lightbox.index} src={PHOTOS[lightbox.index]} alt={`Photo ${lightbox.index + 1}`}
+              className="biz-detail__lightbox-img" data-dir={lightbox.dir} />
 
             <button className="biz-detail__lightbox-nav" onClick={nextPhoto} aria-label="Next">
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none"

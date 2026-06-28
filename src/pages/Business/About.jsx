@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Leftnav from "./Leftnav";
+import BizToast from "../../components/BizToast";
+import FormErrorBanner from "../../components/FormErrorBanner";
 import "../../styles/Businessprofile.scss";
 import "../../styles/Businessbasic.scss";
 
@@ -88,6 +90,7 @@ const About = () => {
   const [draft, setDraft] = useState(INITIAL);
   const [isEditing, setIsEditing] = useState(false);
   const [errors, setErrors] = useState({});
+  const [successMsg, setSuccessMsg] = useState("");
 
   const set = (field, val) => {
     setDraft((d) => ({ ...d, [field]: val }));
@@ -133,16 +136,19 @@ const About = () => {
 
     if (Object.keys(errs).length) {
       setErrors(errs);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
     setData({ ...draft });
     setIsEditing(false);
+    setSuccessMsg("About section updated successfully!");
   };
 
   const wc = wordCount(isEditing ? draft.about : data.about);
 
   return (
     <div className="biz-profile">
+      {successMsg && <BizToast message={successMsg} onClose={() => setSuccessMsg("")} />}
       <div className="biz-profile__wrapper">
         {/* Sidebar */}
         <div className="biz-profile__sidebar">
@@ -171,6 +177,7 @@ const About = () => {
             </div>
 
             <div className="bb-body">
+              <FormErrorBanner errors={errors} />
               {/* ── About Text ── */}
               <div className="bb-section">
                 <h3 className="bb-section-title">Company Overview</h3>

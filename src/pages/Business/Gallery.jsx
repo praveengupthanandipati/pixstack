@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import Leftnav from "./Leftnav";
+import BizToast from "../../components/BizToast";
 import img01 from "../../assets/list-itemsimg/listitemimg01.jpg";
 import img02 from "../../assets/list-itemsimg/listitemimg02.jpg";
 import img03 from "../../assets/list-itemsimg/listitemimg03.jpg";
@@ -77,6 +78,7 @@ const Gallery = () => {
   const [videoTitle, setVideoTitle] = useState("");
   const [videoError, setVideoError] = useState("");
   const photoInputRef               = useRef(null);
+  const [successMsg, setSuccessMsg] = useState("");
 
   // ── Photos ──────────────────────────────────────────────────────────────────
   const handlePhotoFiles = (e) => {
@@ -88,6 +90,7 @@ const Gallery = () => {
     }));
     setPhotos((prev) => [...prev, ...newPhotos]);
     e.target.value = "";
+    setSuccessMsg(`${files.length} photo${files.length > 1 ? "s" : ""} uploaded successfully!`);
   };
 
   // ── Confirm dialog ──────────────────────────────────────────────────────────
@@ -127,6 +130,7 @@ const Gallery = () => {
     setVideoUrl("");
     setVideoTitle("");
     setVideoError("");
+    setSuccessMsg("Video added to your gallery successfully!");
   };
 
   const deleteVideo = (id) =>
@@ -134,6 +138,7 @@ const Gallery = () => {
 
   return (
     <div className="biz-profile">
+      {successMsg && <BizToast message={successMsg} onClose={() => setSuccessMsg("")} />}
       <div className="biz-profile__wrapper">
 
         {/* Sidebar */}

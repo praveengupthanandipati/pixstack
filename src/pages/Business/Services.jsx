@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import Leftnav from "./Leftnav";
+import BizToast from "../../components/BizToast";
 import "../../styles/Businessprofile.scss";
 import "../../styles/Businessbasic.scss";
 import "../../styles/Services.scss";
@@ -46,6 +47,7 @@ const Services = () => {
   const [input, setInput]       = useState("");
   const [error, setError]       = useState("");
   const inputRef                = useRef(null);
+  const [successMsg, setSuccessMsg] = useState("");
 
   const handleAdd = () => {
     const trimmed = input.trim();
@@ -62,6 +64,7 @@ const Services = () => {
     setServices((prev) => [...prev, trimmed]);
     setInput("");
     setError("");
+    setSuccessMsg(`"${trimmed}" added to your services!`);
   };
 
   const handleKeyDown = (e) => {
@@ -74,6 +77,7 @@ const Services = () => {
 
   return (
     <div className="biz-profile">
+      {successMsg && <BizToast message={successMsg} onClose={() => setSuccessMsg("")} />}
       <div className="biz-profile__wrapper">
 
         {/* Sidebar */}

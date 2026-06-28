@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Leftnav from './Leftnav';
+import SuccessAlert from '../../components/SuccessAlert';
+import FormErrorBanner from '../../components/FormErrorBanner';
 import '../../styles/Userprofile.scss';
 import '../../styles/Postrequest.scss';
 
@@ -229,6 +231,7 @@ const Postrequest = () => {
   const [showForm, setShowForm]   = useState(false);
   const [requests, setRequests]   = useState(SEED_REQUESTS);
   const [openItems, setOpenItems] = useState({});
+  const [successMsg, setSuccessMsg] = useState("");
 
   // ── Form helpers ────────────────────────────────────────────────────────────
   const set = (field, val) => {
@@ -270,7 +273,11 @@ const Postrequest = () => {
     if (form.occasion === 'Other' && !form.occasionName.trim())
       errs.occasionName = 'Please describe the occasion';
 
-    if (Object.keys(errs).length) { setErrors(errs); return; }
+    if (Object.keys(errs).length) {
+      setErrors(errs);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
 
     const newId  = Date.now();
     const emoji  = OCCASION_OPTIONS.find((o) => o.value === form.occasion)?.emoji ?? '📋';
@@ -314,6 +321,7 @@ const Postrequest = () => {
     setShowForm(false);
     setForm(EMPTY_FORM);
     setErrors({});
+    setSuccessMsg("Your photography request has been posted successfully!");
   };
 
   const cancelForm = () => { setShowForm(false); setForm(EMPTY_FORM); setErrors({}); };
@@ -332,6 +340,7 @@ const Postrequest = () => {
 
   return (
     <div className="user-profile">
+      {successMsg && <SuccessAlert message={successMsg} onClose={() => setSuccessMsg("")} />}
       <div className="user-profile__wrapper">
 
         {/* ── Sidebar ─────────────────────────────────────────────────────── */}
@@ -358,6 +367,7 @@ const Postrequest = () => {
 
             {showForm && (
               <form className="pr-form" onSubmit={handleSubmit} noValidate>
+                <FormErrorBanner errors={errors} />
 
                 {/* ── Event Details ── */}
                 <div className="pr-section">

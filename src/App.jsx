@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.bundle.min.js"
@@ -49,6 +49,9 @@ const BIZ_DASHBOARD_PREFIX = [
 
 const AppShell = ({ gateCity }) => {
   const { pathname } = useLocation()
+
+  useEffect(() => { window.scrollTo(0, 0); }, [pathname])
+
   const hideLayout = NO_LAYOUT_PATHS.includes(pathname)
   const isBizDashboard = BIZ_DASHBOARD_PREFIX.some((p) => pathname.startsWith(p))
   const showBottomNav = !hideLayout && !isBizDashboard

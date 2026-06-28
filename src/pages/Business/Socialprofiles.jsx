@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Leftnav from "./Leftnav";
+import BizToast from "../../components/BizToast";
 import "../../styles/Businessprofile.scss";
 import "../../styles/Businessbasic.scss";
 import "../../styles/Socialprofiles.scss";
@@ -126,6 +127,7 @@ const Socialprofiles = () => {
   const [confirm, setConfirm] = useState(null);       // { id, label }
   const [addKey, setAddKey]   = useState("");
   const [addUrl, setAddUrl]   = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
   const [addError, setAddError] = useState("");
 
   // ── Add ────────────────────────────────────────────────────────────────────
@@ -135,10 +137,12 @@ const Socialprofiles = () => {
     if (!/^https?:\/\//i.test(addUrl.trim())) { setAddError("URL must start with https://"); return; }
     if (links.some((l) => l.key === addKey)) { setAddError("This platform is already added"); return; }
 
+    const platform = PLATFORMS.find((p) => p.key === addKey);
     setLinks((prev) => [...prev, { id: Date.now(), key: addKey, url: addUrl.trim() }]);
     setAddKey("");
     setAddUrl("");
     setAddError("");
+    setSuccessMsg(`${platform?.label || "Social profile"} added successfully!`);
   };
 
   // ── Confirm delete ─────────────────────────────────────────────────────────
@@ -158,6 +162,7 @@ const Socialprofiles = () => {
 
   return (
     <div className="biz-profile">
+      {successMsg && <BizToast message={successMsg} onClose={() => setSuccessMsg("")} />}
       <div className="biz-profile__wrapper">
 
         {/* Sidebar */}

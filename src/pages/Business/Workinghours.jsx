@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Leftnav from "./Leftnav";
+import BizToast from "../../components/BizToast";
+import FormErrorBanner from "../../components/FormErrorBanner";
 import "../../styles/Businessprofile.scss";
 import "../../styles/Businessbasic.scss";
 import "../../styles/Workinghours.scss";
@@ -50,6 +52,7 @@ const Workinghours = () => {
   const [draft, setDraft]       = useState(INITIAL_HOURS);
   const [isEditing, setIsEditing] = useState(false);
   const [errors, setErrors]     = useState({});
+  const [successMsg, setSuccessMsg] = useState("");
 
   const handleEdit = () => {
     setDraft(hours.map((h) => ({ ...h })));
@@ -79,13 +82,19 @@ const Workinghours = () => {
         errs[i] = "Opening time must be before closing time";
       }
     });
-    if (Object.keys(errs).length) { setErrors(errs); return; }
+    if (Object.keys(errs).length) {
+      setErrors(errs);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     setHours(draft.map((h) => ({ ...h })));
     setIsEditing(false);
+    setSuccessMsg("Working hours updated successfully!");
   };
 
   return (
     <div className="biz-profile">
+      {successMsg && <BizToast message={successMsg} onClose={() => setSuccessMsg("")} />}
       <div className="biz-profile__wrapper">
 
         {/* Sidebar */}
@@ -117,6 +126,8 @@ const Workinghours = () => {
                 {isEditing ? (
 
                   /* ── Edit mode ── */
+                  <div>
+                  <FormErrorBanner errors={errors} />
                   <div className="wh-edit-list">
                     {draft.map((row, i) => (
                       <div key={row.day}
@@ -170,6 +181,7 @@ const Workinghours = () => {
                       <button className="bb-save-btn" onClick={handleSave}>Save Changes</button>
                       <button className="bb-cancel-btn" onClick={handleCancel}>Cancel</button>
                     </div>
+                  </div>
                   </div>
 
                 ) : (

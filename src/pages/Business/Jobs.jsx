@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Leftnav from "./Leftnav";
+import BizToast from "../../components/BizToast";
+import FormErrorBanner from "../../components/FormErrorBanner";
 import "../../styles/Businessprofile.scss";
 import "../../styles/Businessbasic.scss";
 import "../../styles/BusinessJobs.scss";
@@ -124,6 +126,7 @@ const JobModal = ({ initial, onSave, onClose }) => {
   const [form, setForm] = useState(initial || EMPTY_FORM);
   const [errors, setErrors] = useState({});
   const firstRef = useRef(null);
+  const formBodyRef = useRef(null);
 
   useEffect(() => {
     firstRef.current?.focus();
@@ -149,11 +152,15 @@ const JobModal = ({ initial, onSave, onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const errs = validate();
-    if (Object.keys(errs).length) { setErrors(errs); return; }
+    if (Object.keys(errs).length) {
+      setErrors(errs);
+      formBodyRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     onSave(form);
   };
 
-  const field = (label, key, type = "text", required = true) => (
+  const field = (label, key, type = "text", required = true, placeholder) => (
     <div className="bjobs-modal__field">
       <label className="bjobs-modal__label">
         {label}{required && <span className="bjobs-modal__req">*</span>}
@@ -164,7 +171,7 @@ const JobModal = ({ initial, onSave, onClose }) => {
         type={type}
         value={form[key]}
         onChange={set(key)}
-        placeholder={label}
+        placeholder={placeholder || label}
       />
       {errors[key] && <p className="bjobs-modal__error">{errors[key]}</p>}
     </div>
@@ -185,7 +192,8 @@ const JobModal = ({ initial, onSave, onClose }) => {
           </button>
         </div>
 
-        <form className="bjobs-modal__body" onSubmit={handleSubmit} noValidate>
+        <form className="bjobs-modal__body" onSubmit={handleSubmit} noValidate ref={formBodyRef}>
+          <FormErrorBanner errors={errors} />
           <p className="bjobs-modal__section-label">Job Details</p>
 
           {field("Job Title", "title")}
@@ -220,7 +228,7 @@ const JobModal = ({ initial, onSave, onClose }) => {
 
           <div className="bjobs-modal__row">
             {field("Experience Required", "experience")}
-            {field("Salary Range", "salary", "text", false)}
+            {field("Salary Range", "salary", "text", false, "e.g. ₹25,000 – ₹50,000 / mo")}
           </div>
 
           {field("Location", "location")}
@@ -268,16 +276,7 @@ const JobModal = ({ initial, onSave, onClose }) => {
 const BusinessJobs = () => {
   const [jobs, setJobs] = useState(SEED_JOBS);
   const [modal, setModal] = useState(null); // null | { mode: "create" } | { mode: "edit", job }
-  const [toast, setToast] = useState(false);
-  const toastTimer = useRef(null);
-
-  const showToast = () => {
-    setToast(true);
-    clearTimeout(toastTimer.current);
-    toastTimer.current = setTimeout(() => setToast(false), 3500);
-  };
-
-  useEffect(() => () => clearTimeout(toastTimer.current), []);
+  const [successMsg, setSuccessMsg] = useState("");
 
   const handleToggleActive = (id) =>
     setJobs((prev) =>
@@ -285,30 +284,19 @@ const BusinessJobs = () => {
     );
 
   const handleSave = (formData) => {
-    if (modal.mode === "create") {
-      setJobs((prev) => [
-        ...prev,
-        { ...formData, id: Date.now(), active: true },
-      ]);
+    const isCreate = modal.mode === "create";
+    if (isCreate) {
+      setJobs((prev) => [{ ...formData, id: Date.now(), active: true }, ...prev]);
     } else {
-      setJobs((prev) =>
-        prev.map((j) => (j.id === modal.job.id ? { ...j, ...formData } : j))
-      );
+      setJobs((prev) => prev.map((j) => (j.id === modal.job.id ? { ...j, ...formData } : j)));
     }
     setModal(null);
-    showToast();
+    setSuccessMsg(isCreate ? "Job posted successfully!" : "Job updated successfully!");
   };
 
   return (
     <div className="biz-profile">
-      {/* Toast */}
-      <div className={`bjobs-toast${toast ? " bjobs-toast--visible" : ""}`}>
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
-          stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="20 6 9 17 4 12" />
-        </svg>
-        Your job notification posted successfully
-      </div>
+      {successMsg && <BizToast message={successMsg} onClose={() => setSuccessMsg("")} />}
 
       <div className="biz-profile__wrapper">
         <div className="biz-profile__sidebar"><Leftnav /></div>
@@ -371,8 +359,11 @@ const BusinessJobs = () => {
                   {job.salary && (
                     <span className="bjobs-card__detail bjobs-card__detail--salary">
                       <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <line x1="12" y1="1" x2="12" y2="23"/>
-                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                        <path d="M6 3h12"/>
+                        <path d="M6 8h12"/>
+                        <path d="m6 13 8.5 8"/>
+                        <path d="M6 13h3"/>
+                        <path d="M9 13c6.667 0 6.667-10 0-10"/>
                       </svg>
                       {job.salary}
                     </span>

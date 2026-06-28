@@ -141,12 +141,12 @@ $footer-light: #f5f4f4;
   &__input {
     @include m.poppins;
     flex: 1;
-    height: 50px;
+    height: 54px;
     border: 1.5px solid v.$gray-border;
     border-right: none;
     outline: none;
-    padding: 0 16px;
-    font-size: 0.82rem;
+    padding: 18px 18px;
+    font-size: 0.84rem;
     color: v.$text-dark;
     background: v.$white;
     transition: border-color 0.2s ease;
@@ -162,7 +162,7 @@ $footer-light: #f5f4f4;
 
   &__subscribe-btn {
     @include m.poppins;
-    height: 50px;
+    height: 54px;
     padding: 0 22px;
     background: $footer-dark;
     color: v.$white;
@@ -420,7 +420,7 @@ $footer-light: #f5f4f4;
 
     &__subscribe-btn {
       width: 100%;
-      height: 46px;
+      height: 50px;
     }
 
     &__bottom-left {

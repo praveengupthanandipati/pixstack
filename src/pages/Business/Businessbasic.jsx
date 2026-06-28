@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Leftnav from './Leftnav';
+import BizToast from '../../components/BizToast';
+import FormErrorBanner from '../../components/FormErrorBanner';
 import '../../styles/Businessprofile.scss';
 import '../../styles/Businessbasic.scss';
 
@@ -137,6 +139,7 @@ const Businessbasic = () => {
   const [draft, setDraft]       = useState(INITIAL);
   const [isEditing, setIsEditing] = useState(false);
   const [errors, setErrors]     = useState({});
+  const [successMsg, setSuccessMsg] = useState("");
   const [bannerPreview, setBannerPreview] = useState('');
   const [logoPreview, setLogoPreview]     = useState('');
   const bannerRef = useRef(null);
@@ -186,7 +189,11 @@ const Businessbasic = () => {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(draft.email))
       errs.email = 'Enter a valid email address';
 
-    if (Object.keys(errs).length) { setErrors(errs); return; }
+    if (Object.keys(errs).length) {
+      setErrors(errs);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
 
     setData({
       ...draft,
@@ -196,6 +203,7 @@ const Businessbasic = () => {
     setBannerPreview('');
     setLogoPreview('');
     setIsEditing(false);
+    setSuccessMsg("Basic details updated successfully!");
   };
 
   const displayBanner = bannerPreview || data.bannerUrl;
@@ -203,6 +211,7 @@ const Businessbasic = () => {
 
   return (
     <div className="biz-profile">
+      {successMsg && <BizToast message={successMsg} onClose={() => setSuccessMsg("")} />}
       <div className="biz-profile__wrapper">
 
         {/* Sidebar */}
@@ -233,6 +242,7 @@ const Businessbasic = () => {
             </div>
 
             <div className="bb-body">
+              <FormErrorBanner errors={errors} />
 
               {/* ── Banner ── */}
               <div className="bb-section">
