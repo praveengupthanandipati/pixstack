@@ -121,6 +121,7 @@ const Header = ({ gateCity = '' }) => {
     setShowDropdown(true);
     setActiveIndex(-1);
     setCityOpen(false);
+    window.dispatchEvent(new CustomEvent("pixstack:search-opened"));
   };
 
   const closeSearch = () => {
@@ -128,7 +129,15 @@ const Header = ({ gateCity = '' }) => {
     setShowDropdown(false);
     setQuery("");
     setActiveIndex(-1);
+    window.dispatchEvent(new CustomEvent("pixstack:search-closed"));
   };
+
+  // Listen for the bottom-nav search button
+  useEffect(() => {
+    const handler = () => openSearch();
+    window.addEventListener("pixstack:open-search", handler);
+    return () => window.removeEventListener("pixstack:open-search", handler);
+  }, []);
 
   const handleQueryChange = (e) => {
     setQuery(e.target.value);
@@ -766,13 +775,16 @@ const Header = ({ gateCity = '' }) => {
         </div>
 
         <ul className="offcanvas-nav__list">
-          <li><Link to="/photographers" className="offcanvas-nav__link" onClick={closeMenu}>Photographers</Link></li>
-          <li><Link to="/photo-studios" className="offcanvas-nav__link" onClick={closeMenu}>Photo Studios</Link></li>
-          <li><Link to="/digital-labs" className="offcanvas-nav__link" onClick={closeMenu}>Digital Labs</Link></li>
-          <li><Link to="/vendors" className="offcanvas-nav__link" onClick={closeMenu}>Album &amp; Camera Vendors</Link></li>
-          <li><Link to="/training" className="offcanvas-nav__link" onClick={closeMenu}>Training</Link></li>
-          <li><Link to="/camerarentals" className="offcanvas-nav__link" onClick={closeMenu}>Camera Rentals</Link></li>
-          <li><Link to="/studiorentals" className="offcanvas-nav__link" onClick={closeMenu}>Studio Rentals</Link></li>
+          <li><Link to="/photographers" className="offcanvas-nav__link" onClick={closeMenu}>Professional Photographers</Link></li>
+          <li><Link to="/photo-studios" className="offcanvas-nav__link" onClick={closeMenu}>Photo Studios & Creative Spaces</Link></li>
+          <li><Link to="/photo-labs" className="offcanvas-nav__link" onClick={closeMenu}>Pro Photo Labs (Printing & Post-Production)</Link></li>
+          <li><Link to="/album-artisans" className="offcanvas-nav__link" onClick={closeMenu}>Album & Photo Book Artisans</Link></li>
+          <li><Link to="/camera-gear" className="offcanvas-nav__link" onClick={closeMenu}>Camera & Gear Stores (New/Used/Rental)</Link></li>
+          <li><Link to="/training" className="offcanvas-nav__link" onClick={closeMenu}>Photography Academies & Training Institutes</Link></li>
+          <li><Link to="/retouching" className="offcanvas-nav__link" onClick={closeMenu}>Post-Production & Retouching Services</Link></li>
+          <li><Link to="/prop-rentals" className="offcanvas-nav__link" onClick={closeMenu}>Prop, Set & Costume Rentals</Link></li>
+          <li><Link to="/digital-tools" className="offcanvas-nav__link" onClick={closeMenu}>Software, Presets & Digital Tools</Link></li>
+          <li><Link to="/event-planners" className="offcanvas-nav__link" onClick={closeMenu}>Event Planners & Talent Agencies (B2B Partners)</Link></li>
         </ul>
         <div className="offcanvas-nav__footer">
           <Link to="/business-profile" className="offcanvas-nav__cta" onClick={closeMenu}>

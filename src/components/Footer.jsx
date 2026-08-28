@@ -37,11 +37,16 @@ const Footer = () => {
           </p>
 
           <nav className="site-footer__nav">
-            <Link to="/photographers" className="site-footer__nav-link">Photographers</Link>
-            <Link to="/photo-studios"  className="site-footer__nav-link">Photo Studios</Link>
-            <Link to="/vendors"        className="site-footer__nav-link">Vendors</Link>
-            <Link to="/freelancers"    className="site-footer__nav-link">Freelancers</Link>
-            <Link to="/training"       className="site-footer__nav-link">Training</Link>
+            <Link to="/photographers"    className="site-footer__nav-link">Photographers</Link>
+            <Link to="/photo-studios"    className="site-footer__nav-link">Photo Studios</Link>
+            <Link to="/photo-labs"       className="site-footer__nav-link">Photo Labs</Link>
+            <Link to="/album-artisans"   className="site-footer__nav-link">Album Artisans</Link>
+            <Link to="/camera-gear"      className="site-footer__nav-link">Camera & Gear</Link>
+            <Link to="/training"         className="site-footer__nav-link">Training</Link>
+            <Link to="/retouching"       className="site-footer__nav-link">Retouching</Link>
+            <Link to="/prop-rentals"     className="site-footer__nav-link">Prop Rentals</Link>
+            <Link to="/digital-tools"    className="site-footer__nav-link">Digital Tools</Link>
+            <Link to="/event-planners"   className="site-footer__nav-link">Event Planners</Link>
           </nav>
 
           <div className="site-footer__social">

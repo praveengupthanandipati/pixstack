@@ -21,15 +21,16 @@ const FAQ_CATEGORIES = [
           <>
             <p>Pixstack covers the entire photography ecosystem, including:</p>
             <ul>
-              <li>Photographers (wedding, candid, portrait, commercial, fashion, etc.)</li>
-              <li>Freelance photographers</li>
-              <li>Digital print labs</li>
-              <li>Photo studios</li>
-              <li>Album and photo book vendors</li>
-              <li>Camera sellers and dealers</li>
-              <li>Photography trainers and institutes</li>
-              <li>Camera and equipment rental services</li>
-              <li>Studio rental spaces</li>
+              <li>Professional Photographers</li>
+              <li>Photo Studios & Creative Spaces</li>
+              <li>Pro Photo Labs (Printing & Post-Production)</li>
+              <li>Album & Photo Book Artisans</li>
+              <li>Camera & Gear Stores (New/Used/Rental)</li>
+              <li>Photography Academies & Training Institutes</li>
+              <li>Post-Production & Retouching Services</li>
+              <li>Prop, Set & Costume Rentals</li>
+              <li>Software, Presets & Digital Tools</li>
+              <li>Event Planners & Talent Agencies (B2B Partners)</li>
             </ul>
           </>
         ),

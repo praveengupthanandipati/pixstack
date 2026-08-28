@@ -30,13 +30,16 @@ const SITEMAP = [
       </svg>
     ),
     links: [
-      { label: "Photographers", path: "/photographers" },
-      { label: "Photo Studios", path: "/photo-studios" },
-      { label: "Digital Labs", path: "/digital-labs" },
-      { label: "Album & Camera Vendors", path: "/vendors" },
-      { label: "Photography Training", path: "/training" },
-      { label: "Camera Rentals", path: "/camerarentals" },
-      { label: "Studio Rentals", path: "/studiorentals" },
+      { label: "Professional Photographers", path: "/photographers" },
+      { label: "Photo Studios & Creative Spaces", path: "/photo-studios" },
+      { label: "Pro Photo Labs (Printing & Post-Production)", path: "/photo-labs" },
+      { label: "Album & Photo Book Artisans", path: "/album-artisans" },
+      { label: "Camera & Gear Stores (New/Used/Rental)", path: "/camera-gear" },
+      { label: "Photography Academies & Training Institutes", path: "/training" },
+      { label: "Post-Production & Retouching Services", path: "/retouching" },
+      { label: "Prop, Set & Costume Rentals", path: "/prop-rentals" },
+      { label: "Software, Presets & Digital Tools", path: "/digital-tools" },
+      { label: "Event Planners & Talent Agencies (B2B Partners)", path: "/event-planners" },
     ],
   },
   {

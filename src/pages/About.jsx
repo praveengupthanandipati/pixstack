@@ -8,55 +8,60 @@ import heroBg from "../assets/homebanner-photographer.jpg";
 const CATEGORIES = [
   {
     icon: "📷",
-    name: "Photographers",
+    name: "Professional Photographers",
     desc: "Wedding, candid, portrait, commercial, fashion, architectural and more — find the right photographer for every moment.",
   },
   {
-    icon: "🎬",
-    name: "Freelancers",
-    desc: "Independent photography professionals available for assignments of all sizes, budgets and styles across India.",
+    icon: "🏢",
+    name: "Photo Studios & Creative Spaces",
+    desc: "Fully equipped photography studios and creative sets offering in-house shoots, backdrops, and lighting rigs.",
   },
   {
     icon: "🖨️",
-    name: "Digital Print Labs",
-    desc: "Professional digital printing services for photo albums, canvas prints, frames, and large-format photography output.",
-  },
-  {
-    icon: "🏢",
-    name: "Photo Studios",
-    desc: "Fully equipped photography studios offering in-house shoots, backdrops, lighting rigs and post-production services.",
+    name: "Pro Photo Labs (Printing & Post-Production)",
+    desc: "Professional printing services for photo albums, canvas prints, frames, and large-format photography output.",
   },
   {
     icon: "📚",
-    name: "Album Vendors",
+    name: "Album & Photo Book Artisans",
     desc: "Handcrafted and designer photo album makers — hardbound, leather, flush-mount and premium coffee-table books.",
   },
   {
     icon: "🛒",
-    name: "Camera Vendors & Sellers",
+    name: "Camera & Gear Stores (New/Used/Rental)",
     desc: "Buy, sell or rent new and used cameras, lenses, tripods and photography accessories from verified dealers.",
   },
   {
     icon: "🎓",
-    name: "Photography Trainers",
+    name: "Photography Academies & Training Institutes",
     desc: "Professional photography institutes, workshops, and one-on-one mentors for beginners to advanced photographers.",
   },
   {
-    icon: "🎥",
-    name: "Camera Rentals",
-    desc: "Rent DSLRs, mirrorless cameras, cinema cameras, drones, and accessories by the day, week or month.",
+    icon: "🎨",
+    name: "Post-Production & Retouching Services",
+    desc: "Expert photo and video retouching, colour grading, and post-production editing for every kind of project.",
   },
   {
-    icon: "🏠",
-    name: "Studio Rentals",
-    desc: "Hourly and daily studio space rental for shoots — with or without equipment and lighting setups included.",
+    icon: "🎭",
+    name: "Prop, Set & Costume Rentals",
+    desc: "Curated props, themed sets, and costume rentals to bring any concept shoot or production to life.",
+  },
+  {
+    icon: "💻",
+    name: "Software, Presets & Digital Tools",
+    desc: "Editing software, Lightroom presets, LUTs, and digital tools built for photographers and creators.",
+  },
+  {
+    icon: "🤝",
+    name: "Event Planners & Talent Agencies",
+    desc: "Corporate event planners and talent agencies (B2B partners) connecting brands with photographers, models, and crews.",
   },
 ];
 
 const STATS = [
   { number: "10,000+", label: "Vendors Listed" },
   { number: "50+",    label: "Cities Covered" },
-  { number: "9",      label: "Business Categories" },
+  { number: "10",     label: "Business Categories" },
   { number: "1L+",    label: "Happy Clients" },
 ];
 
@@ -104,7 +109,7 @@ const WHY_CARDS = [
   },
   {
     title: "All-in-One Platform",
-    desc: "The only Indian marketplace built exclusively for the photography industry — all 9 segments under one roof.",
+    desc: "The only Indian marketplace built exclusively for the photography industry — all 10 segments under one roof.",
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -253,7 +258,7 @@ const About = () => (
             <div className="about__intro-visual-card">
               <span className="about__intro-visual-icon">📷</span>
               <span className="about__intro-visual-label">Photography Marketplace</span>
-              <span className="about__intro-visual-count">9 categories · 50+ cities · 10,000+ vendors</span>
+              <span className="about__intro-visual-count">10 categories · 50+ cities · 10,000+ vendors</span>
             </div>
             {[
               { icon: "🤝", label: "For Clients", count: "Find & book verified vendors" },

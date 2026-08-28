@@ -98,15 +98,16 @@ const StateSelect = ({ value, onChange, hasError }) => {
 
 // ─── Business Primary Types ───────────────────────────────────────────────────
 const PRIMARY_TYPES = [
-  'Photography Studio',
-  'Freelance Photographer',
-  'Digital Lab',
-  'Album Vendor',
-  'Camera & Equipment Vendor',
-  'Photography Trainer',
-  'Camera Rental',
-  'Studio Rental',
-  'Videography Studio',
+  'Professional Photographer',
+  'Photo Studio & Creative Space',
+  'Pro Photo Lab (Printing & Post-Production)',
+  'Album & Photo Book Artisan',
+  'Camera & Gear Store (New/Used/Rental)',
+  'Photography Academy / Training Institute',
+  'Post-Production & Retouching Service',
+  'Prop, Set & Costume Rental',
+  'Software, Presets & Digital Tools Provider',
+  'Event Planner / Talent Agency (B2B Partner)',
   'Others',
 ];
 
